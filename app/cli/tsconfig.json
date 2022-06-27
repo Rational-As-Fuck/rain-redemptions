@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "outDir": "./build",
+    "declaration": false,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "isolatedModules": false,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "suppressImplicitAnyIndexErrors": true,
+    // "lib": ["dom", "es2019"],
+    // "types": ["node"],
+    "paths": {
+      "@raindrops-protocol/sol-kit": ["node_modules/@raindrops-protocol/sol-kit/dist/src/index.d.ts"]
+    },
+    "rootDir": "./src",
+  },
+  // "exclude": ["../../../node_modules", "typings/browser", "typings/browser.d.ts"],
+  // "atom": {
+  //   "rewriteTsconfig": false
+  // }
+}

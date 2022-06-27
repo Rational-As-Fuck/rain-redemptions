@@ -1,0 +1,3 @@
+[submodule "vendor/metaplex-program-library"]
+	path = vendor/metaplex-program-library
+	url = git@github.com:metaplex-foundation/metaplex-program-library.git
