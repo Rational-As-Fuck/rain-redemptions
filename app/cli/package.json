@@ -23,8 +23,8 @@
   "license": "ISC",
   "dependencies": {
     "@solana/spl-token": "^0.2.0",
-    "@raindrops-protocol/rain-redemptions": "^0.1.0",
-    "@raindrops-protocol/sol-command": "^0.3.0"
+    "@raindrops-protocol/rain-redemptions": "^0.1.1",
+    "@raindrops-protocol/sol-command": "^0.4.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.6",

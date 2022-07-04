@@ -24,8 +24,6 @@ export default function Header(props : { showWalletConnect: boolean }) {
         />
       </div>
       <div className="text-3xl max-w-lg leading-relaxed">
-        Trash with Frens
-        <br/>
         $RAIN Redemption
       </div>
       {showWalletConnect && (

@@ -22,11 +22,11 @@ export class NFTSet {
 
   calculateSets() {
     const nftsByLevel = this.nfts.reduce((acc: any, e) => {
-      if (RUG_LEVEL_URIS.includes(e.metadata.data.data.uri)) {
-        if (!acc[e.metadata.data.data.uri]) {
-          acc[e.metadata.data.data.uri] = [];
+      if (RUG_LEVEL_URIS.includes(e.uri)) {
+        if (!acc[e.uri]) {
+          acc[e.uri] = [];
         }
-        acc[e.metadata.data.data.uri].push(e);
+        acc[e.uri].push(e);
       }
       return acc;
     }, {});

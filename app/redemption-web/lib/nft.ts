@@ -1,5 +1,5 @@
 import * as Web3 from '@solana/web3.js';
-import { programs as MetaplexPrograms } from '@metaplex/js';
+import { JsonMetadata } from "@metaplex-foundation/js";
 
 import { Redemption } from "@raindrops-protocol/rain-redemptions";
 
@@ -12,10 +12,11 @@ export enum DTP_TYPE {
 }
 
 export class NFT {
+  uri: string;
   imageUrl: string;
   dtpType: DTP_TYPE;
   mint: Web3.PublicKey;
-  metadata: MetaplexPrograms.metadata.Metadata;
+  metadata: JsonMetadata<string>;
   isRedeemed: boolean;
   isRedeemedForSet: boolean;
   tokenAccount: any;
@@ -23,7 +24,20 @@ export class NFT {
   isRedeeming: boolean = false;
   isRedeemingSet: boolean = false;
 
-  constructor(imageUrl: string, dtpType: DTP_TYPE, mint: Web3.PublicKey, metadata: MetaplexPrograms.metadata.Metadata, tokenAccount: any, tokenAccountAddress: Web3.PublicKey, isRedeemed: boolean = false, isRedeemedForSet: boolean = false, isRedeeming: boolean = false, isRedeemingSet: boolean = false) {
+  constructor(
+    uri: string,
+    imageUrl: string,
+    dtpType: DTP_TYPE,
+    mint: Web3.PublicKey,
+    metadata: JsonMetadata<string>,
+    tokenAccount: any,
+    tokenAccountAddress: Web3.PublicKey,
+    isRedeemed: boolean = false,
+    isRedeemedForSet: boolean = false,
+    isRedeeming: boolean = false,
+    isRedeemingSet: boolean = false
+  ) {
+    this.uri = uri;
     this.imageUrl = imageUrl;
     this.dtpType = dtpType;
     this.mint = mint;

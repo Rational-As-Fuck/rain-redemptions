@@ -2,10 +2,12 @@ import { Redemption } from "@raindrops-protocol/rain-redemptions";
 
 import { NFT } from '../lib/nft';
 
-export default function NFTGridItem(props: { nft: NFT, isRedeemed: boolean, index: number, program: Redemption, redemptionFn: (nft: NFT, program: Redemption) => Promise<void> }) {
+export default function NFTGridItem(props: { nft: NFT, isRedeemed: boolean, index: string, program: Redemption, redemptionFn: (nft: NFT, program: Redemption) => Promise<void> }) {
   const { nft, isRedeemed, index, program, redemptionFn } = props;
 
   console.log("Rendering grid item, redeemed", isRedeemed)
+  console.log(nft.imageUrl)
+  console.log("index", index);
   let buttonClassName = [
     "group",
     "focus:outline-none",

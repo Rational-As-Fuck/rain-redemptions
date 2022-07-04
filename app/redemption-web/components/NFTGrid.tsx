@@ -21,6 +21,7 @@ export class NFTGrid extends React.Component<NFTGridProps, NFTGridState> {
 
   render() {
     const pandas = this.props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.PANDA);
+    console.log("pandas", pandas.length);
     const rugs = this.props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.RUG);
     const rugsNotSetRedeemed = this.props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.RUG && !e.isRedeemedForSet)
     console.log("rugsNotSetRedeemed", rugsNotSetRedeemed)
@@ -67,8 +68,8 @@ export class NFTGrid extends React.Component<NFTGridProps, NFTGridState> {
         <div>
           <div className='mt-14 mb-8 text-5xl'>Pandas</div>
           <div className="grid  grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-4 sm:gap-x-16 lg:gap-x-20">
-            {pandas.map((nft: NFT, index: number) => (
-              <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={index} program={this.props.program} redemptionFn={redemptionFn} />
+            {pandas.length > 0 && pandas.map((nft: NFT, index: number) => (
+              <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={"panda-" + index} program={this.props.program} redemptionFn={redemptionFn} />
             ))}
           </div>
         </div>
@@ -78,7 +79,7 @@ export class NFTGrid extends React.Component<NFTGridProps, NFTGridState> {
               <div className='mt-14 mb-8 text-5xl'>Rugs</div>
               <div className="grid  grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-4 sm:gap-x-16 lg:gap-x-20">
                 {rugs.map((nft: NFT, index: number) => (
-                  <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={index} program={this.props.program} redemptionFn={redemptionFn} />
+                  <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={"rug-" + index} program={this.props.program} redemptionFn={redemptionFn} />
                 ))}
               </div>
             </div>
@@ -92,7 +93,7 @@ export class NFTGrid extends React.Component<NFTGridProps, NFTGridState> {
                     <button className="group hover:rounded-xl hover:ring hover:ring-white " onClick={() => setRedemptionFn(set, this.props.program)}>
                       <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-y-4 sm:gap-y-12 lg:gap-y-16 gap-x-4 sm:gap-x-16 lg:gap-x-20">
                         {set.map((nft: NFT, index: number) => (
-                          <NFTSetGridItem nfts={set} nft={nft} index={index} program={this.props.program} redemptionFn={() => setRedemptionFn(set, this.props.program)} />
+                          <NFTSetGridItem nfts={set} nft={nft} index={"rugset-" + index} program={this.props.program} redemptionFn={() => setRedemptionFn(set, this.props.program)} />
                         ))}
                       </div>
                       <div className="group-hover:bg-violet-600 w-full rounded-b-xl py-4 lg:py-6 group-active:bg-slate-300 group-active:text-black">Redeem Set</div>

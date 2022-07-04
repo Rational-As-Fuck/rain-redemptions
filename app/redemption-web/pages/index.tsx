@@ -33,7 +33,7 @@ const Home: NextPage = () => {
   // Initialize program connection and fetch NFTs from connected wallet
   useEffect(() => {
     if (publicKey && signTransaction && signAllTransactions) {
-      const provider = new Anchor.Provider(
+      const provider = new Anchor.AnchorProvider(
         PROGRAM_CONNECTION, 
         new WebWallet(publicKey, signTransaction, signAllTransactions, sendTransaction), {
           preflightCommitment: "processed",
@@ -63,7 +63,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
-        <title>Trash with Frens $RAIN</title>
+        <title>DTP $RAIN Redemption</title>
         <link rel="icon" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" sizes="16x16" href="/favicon-16x16.png" />
       </Head>

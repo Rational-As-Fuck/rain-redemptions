@@ -8,7 +8,7 @@ enum Environment {
 
 let environment: string = Environment.Localnet;
 
-switch (process.env.VERCEL_ENV) {
+switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
   case "production":
     environment = Environment.Mainnet;
     break;
@@ -19,8 +19,10 @@ switch (process.env.VERCEL_ENV) {
     environment = Environment.Devnet;
     break;
   default:
-    environment = process.env.SOLANA_ENV ? process.env.SOLANA_ENV : environment;
+    environment = process.env.NEXT_PUBLIC_SOLANA_ENV ? process.env.NEXT_PUBLIC_SOLANA_ENV : environment;
 }
+
+console.log(environment)
 
 let walletPubKey, programConnection;
 let endpoint = "https://trashpandas.rpcpool.com";
@@ -30,19 +32,21 @@ switch(environment) {
   case Environment.Localnet:
     endpoint = "http://127.0.0.1:8899";
 
-    rainMint = process.env.RAIN_MINT ?
-      new web3.PublicKey(process.env.RAIN_MINT) :
-      rainMint;
+    if (process.env.NEXT_PUBLIC_RAIN_MINT) {
+      rainMint = new web3.PublicKey(process.env.NEXT_PUBLIC_RAIN_MINT);
+    }
 
-    walletPubKey = process.env.TEST_WALLET_PUBKEY ?
-      new web3.PublicKey(process.env.TEST_WALLET_PUBKEY) :
-      new web3.PublicKey("Gxb6LbG8Bn1gRY75nDwv7mKdPh5pZyPqgJufwm4m69gS");
+    if (process.env.NEXT_PUBLIC_TEST_WALLET_PUBKEY) {
+      walletPubKey = new web3.PublicKey(process.env.NEXT_PUBLIC_TEST_WALLET_PUBKEY);
+    }
     break;
   case Environment.Devnet:
-    endpoint = "https://solana-mainnet.phantom.tech";
+    endpoint = "https://ssc-dao.genesysgo.net/";
   default:
     break;
 };
+
+console.log(endpoint);
 
 programConnection = new web3.Connection(endpoint);
   

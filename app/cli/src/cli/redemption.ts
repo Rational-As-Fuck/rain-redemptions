@@ -8,7 +8,7 @@ import { Wallet, CLI } from "@raindrops-protocol/sol-command";
 CLI.programCommandWithConfig("initialize", async (config, options, _files) => {
   const { keypair, env, rpcUrl } = options;
 
-  const redemptionProgram = await Redemption.getProgram(
+  const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
     Redemption,
     await Wallet.loadWalletKey(keypair),
     env,
@@ -28,24 +28,24 @@ CLI.programCommandWithConfig("initialize", async (config, options, _files) => {
   );
 });
 
-CLI.programCommand("show_treasury")
+CLI.programCommand("show_treasury", false)
   .action(async (_args: string[], cmd) => {
     const { keypair, env, rpcUrl } =
       cmd.opts();
 
-    const redemptionProgram = await Redemption.getProgram(
+    const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
       Redemption,
-      await Wallet.loadWalletKey(keypair),
+      keypair ? await Wallet.loadWalletKey(keypair) : web3.Keypair.generate(),
       env,
       rpcUrl,
     );
 
     const treasury = await redemptionProgram.fetchTreasury();
     log.setLevel("info");
-    log.info("Treasury:", treasury.key.toBase58());
-    log.info("  Update Authority:", treasury.updateAuthority.toBase58());
-    log.info("  Rain Mint:", treasury.rainMint.toBase58());
-    log.info("  Rain Vault:", treasury.rainVault.toBase58());
+    log.info("Treasury:", treasury.key.toString());
+    log.info("  Update Authority:", treasury.updateAuthority.toString());
+    log.info("  Rain Mint:", treasury.rainMint.toString());
+    log.info("  Rain Vault:", treasury.rainVault.toString());
     log.info("  Redemption Multiplier:", treasury.redemptionMultiplier ? treasury.redemptionMultiplier.toString() : "Not cached on object");
     log.info("  Enabled:", treasury.enabled);
     log.info("  Bump:", treasury.bump ? treasury.bump.toString() : "Not cached on object");
@@ -60,7 +60,7 @@ const enableDisableTreasury = [
 CLI.programCommandWithArgs("enable_treasury", enableDisableTreasury, async (updateAuthority, options, _cmd) => {
   const { keypair, env, rpcUrl } = options;
     
-    const redemptionProgram = await Redemption.getProgram(
+    const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
       Redemption,
       await Wallet.loadWalletKey(keypair),
       env,
@@ -76,7 +76,7 @@ CLI.programCommandWithArgs("enable_treasury", enableDisableTreasury, async (upda
 CLI.programCommandWithArgs("disable_treasury", enableDisableTreasury, async (updateAuthority, options, _cmd) => {
   const { keypair, env, rpcUrl } = options;
     
-    const redemptionProgram = await Redemption.getProgram(
+    const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
       Redemption,
       await Wallet.loadWalletKey(keypair),
       env,

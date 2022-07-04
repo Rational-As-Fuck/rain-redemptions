@@ -6,7 +6,7 @@ edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "redemption"
+name = "redemption_v0"
 
 [features]
 no-entrypoint = []

@@ -2,7 +2,7 @@ import { Redemption } from "@raindrops-protocol/rain-redemptions";
 
 import { NFT } from '../lib/nft';
 
-export default function NFTSetGridItem(props: { nft: NFT, nfts: NFT[], index: number, program: Redemption, redemptionFn: (nfts: NFT[], program: Redemption) => Promise<void> }) {
+export default function NFTSetGridItem(props: { nft: NFT, nfts: NFT[], index: string, program: Redemption, redemptionFn: (nfts: NFT[], program: Redemption) => Promise<void> }) {
   const { nft, nfts, index, program, redemptionFn } = props;
 
   console.log("Rendering grid set item")
