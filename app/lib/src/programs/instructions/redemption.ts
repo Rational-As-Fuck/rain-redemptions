@@ -122,8 +122,7 @@ export class Instruction extends SolKitInstruction {
     accounts: RedeemNFTForRainAccounts,
     _additionalArgs: RedeemNFTForRainAdditionalArgs = {}
   ) {
-    const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
-    InstructionUtils.convertNumbersToBNs(args, ["treasuryBump"]);
+    const [treasuryPDA, treasuryBump] = await getTreasuryPDA();
 
     const [rainVaultPDA, _bump] = await getRainVaultPDA();
     const [nftRedeemedPDA, _nftRedeemedBump] = await getNFTRedeemedPDA(accounts.nftMint);
@@ -132,7 +131,7 @@ export class Instruction extends SolKitInstruction {
 
     return [
       await this.program.client.methods
-        .redeemPandaOwnershipRainTokens(args.treasuryBump)
+        .redeemPandaOwnershipRainTokens(new BN(treasuryBump))
         .accounts({
           treasury: treasuryPDA,
           nftRedeemed: nftRedeemedPDA,
@@ -158,8 +157,7 @@ export class Instruction extends SolKitInstruction {
     accounts: RedeemNFTForRainAccounts,
     _additionalArgs: RedeemNFTForRainAdditionalArgs = {}
   ) {
-    const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
-    InstructionUtils.convertNumbersToBNs(args, ["treasuryBump"]);
+    const [treasuryPDA, treasuryBump] = await getTreasuryPDA();
 
     const [rainVaultPDA, _bump] = await getRainVaultPDA();
     const [nftRedeemedPDA, _nftRedeemedBump] = await getNFTRedeemedPDA(accounts.nftMint);
@@ -168,7 +166,7 @@ export class Instruction extends SolKitInstruction {
 
     return [
       await this.program.client.methods
-        .redeemRugOwnershipRainTokens(args.treasuryBump)
+        .redeemRugOwnershipRainTokens(new BN(treasuryBump))
         .accounts({
           treasury: treasuryPDA,
           nftRedeemed: nftRedeemedPDA,
