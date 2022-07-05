@@ -5,6 +5,8 @@ import { Redemption } from "@raindrops-protocol/rain-redemptions";
 
 import { PANDA_CREATORS, RUG_CREATOR, RAIN_MINT } from './constants';
 import { getOrCreateAssociatedTokenAccount } from './token';
+import { getAssociatedTokenAddress } from "../node_modules/@solana/spl-token";
+import { AnchorProvider } from '@project-serum/anchor';
 
 export enum DTP_TYPE {
   PANDA = "PANDA",
@@ -68,9 +70,14 @@ export const getDTPType = (creator: string) => {
 export const redeemPandaOrRugNFT = async (nft: NFT, program: Redemption) => {
   // await sleep(5000);
 
+  const nftTokenAccountAddress = await getAssociatedTokenAddress(
+    nft.mint,
+    (program.client.provider as AnchorProvider).wallet.publicKey
+  );
+
   console.log(`Redeeming ${nft.dtpType}`);
   console.log(`RAIN mint ${RAIN_MINT}`)
-  console.log(`NFT Token account address ${nft.tokenAccountAddress}`)
+  console.log(`NFT Token account address ${nftTokenAccountAddress}`)
   let destRainTokenAccount;
   try {
     if (RAIN_MINT)
@@ -86,7 +93,7 @@ export const redeemPandaOrRugNFT = async (nft: NFT, program: Redemption) => {
   }
   const redemptionAccounts = {
     nftMint: nft.mint,
-    nftTokenAccount: nft.tokenAccountAddress,
+    nftTokenAccount: nftTokenAccountAddress,
     destRainTokenAccount: destRainTokenAccount.address
   }
 

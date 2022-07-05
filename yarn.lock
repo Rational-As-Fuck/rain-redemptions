@@ -1466,10 +1466,10 @@
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
-"@raindrops-protocol/rain-redemptions@^0.1.1":
+"@raindrops-protocol/rain-redemptions@^0.1.2":
   version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/rain-redemptions/0.1.1/e06c655106b275697a0413dd4d3b112146cff1457dc32a205e905b45c9d7056a#f38a4963d9a7a055f2cc97bbe6d3915e1e3ee1c6"
-  integrity sha512-j6whS5+tjVnNiukWI8VksStB3wuE5GIRWf7WaR8CTkWVEgsYxoAUQYq9X03fPcE/YWUIEyeiqDrM3nm6nAxzZw==
+  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/rain-redemptions/0.1.2/c774449aa0578daedfcd5df44d15a92b047c87938630d188b3c418ad8b91c82b#9b2d3af5d0a8949e0ad36fa9d18cd39a6d3e2726"
+  integrity sha512-sspiUc/F2DUZiuTF2np1ozC+keX7i7+RXEp1ipCWHEKmlwBXWGPuK9gM8r8SRyt8g4JEyLA88lQsChMQRROOKg==
   dependencies:
     "@raindrops-protocol/sol-kit" "^0.1.67"
     borsh "^0.4.0"
