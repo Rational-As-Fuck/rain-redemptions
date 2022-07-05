@@ -122,7 +122,7 @@ export class Instruction extends SolKitInstruction {
     accounts: RedeemNFTForRainAccounts,
     _additionalArgs: RedeemNFTForRainAdditionalArgs = {}
   ) {
-    const [treasuryPDA, treasuryBump] = await getTreasuryPDA();
+    const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
 
     const [rainVaultPDA, _bump] = await getRainVaultPDA();
     const [nftRedeemedPDA, _nftRedeemedBump] = await getNFTRedeemedPDA(accounts.nftMint);
@@ -131,7 +131,7 @@ export class Instruction extends SolKitInstruction {
 
     return [
       await this.program.client.methods
-        .redeemPandaOwnershipRainTokens(new BN(treasuryBump))
+        .redeemPandaOwnershipRainTokens()
         .accounts({
           treasury: treasuryPDA,
           nftRedeemed: nftRedeemedPDA,
@@ -157,7 +157,7 @@ export class Instruction extends SolKitInstruction {
     accounts: RedeemNFTForRainAccounts,
     _additionalArgs: RedeemNFTForRainAdditionalArgs = {}
   ) {
-    const [treasuryPDA, treasuryBump] = await getTreasuryPDA();
+    const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
 
     const [rainVaultPDA, _bump] = await getRainVaultPDA();
     const [nftRedeemedPDA, _nftRedeemedBump] = await getNFTRedeemedPDA(accounts.nftMint);
@@ -166,7 +166,7 @@ export class Instruction extends SolKitInstruction {
 
     return [
       await this.program.client.methods
-        .redeemRugOwnershipRainTokens(new BN(treasuryBump))
+        .redeemRugOwnershipRainTokens()
         .accounts({
           treasury: treasuryPDA,
           nftRedeemed: nftRedeemedPDA,
@@ -192,7 +192,7 @@ export class Instruction extends SolKitInstruction {
     accounts: RedeemNFTSetForRainAccounts,
     _additionalArgs: RedeemNFTForRainAdditionalArgs = {}
   ) {
-    const [treasuryPDA, treasuryBump] = await getTreasuryPDA();
+    const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
 
     const [rainVaultPDA, _bump] = await getRainVaultPDA();
 
@@ -251,7 +251,7 @@ export class Instruction extends SolKitInstruction {
 
     return [
       await this.program.client.methods
-        .redeemRugSetOwnershipRainTokens(new BN(treasuryBump))
+        .redeemRugSetOwnershipRainTokens()
         .accounts(instructionAccounts)
         .instruction(),
     ];
