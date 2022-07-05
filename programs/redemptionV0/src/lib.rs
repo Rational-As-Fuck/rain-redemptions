@@ -131,7 +131,7 @@ pub mod redemption_v0 {
         Ok(())
     }
 
-    pub fn redeem_panda_ownership_rain_tokens<'info>(ctx: Context<RedeemNFTForRain<'info>>, _treasury_bump: u8) -> Result<()> {
+    pub fn redeem_panda_ownership_rain_tokens<'info>(ctx: Context<RedeemNFTForRain<'info>>) -> Result<()> {
         treasury_enabled_or_error(&ctx.accounts.treasury).unwrap();
         verify_nft_ownership(
             &ctx.accounts.nft_token_account,
@@ -166,7 +166,7 @@ pub mod redemption_v0 {
         Ok(())
     }
 
-    pub fn redeem_rug_ownership_rain_tokens<'info>(ctx: Context<RedeemNFTForRain<'info>>, _treasury_bump: u8) -> Result<()> {
+    pub fn redeem_rug_ownership_rain_tokens<'info>(ctx: Context<RedeemNFTForRain<'info>>) -> Result<()> {
         treasury_enabled_or_error(&ctx.accounts.treasury).unwrap();
         let rug_metadata_data = verify_nft_ownership(
             &ctx.accounts.nft_token_account,
@@ -197,7 +197,7 @@ pub mod redemption_v0 {
         Ok(())
     }
 
-    pub fn redeem_rug_set_ownership_rain_tokens<'info>(ctx: Context<RedeemNFTSetForRain<'info>>, _treasury_bump: u8) -> Result<()> {
+    pub fn redeem_rug_set_ownership_rain_tokens<'info>(ctx: Context<RedeemNFTSetForRain<'info>>) -> Result<()> {
         treasury_enabled_or_error(&ctx.accounts.treasury).unwrap();
         let token_metadata_program_key = &ctx.accounts.token_metadata_program.key();
 
@@ -513,7 +513,7 @@ pub struct TreasuryAuthority<'info> {
     #[account(
         mut,
         seeds = [PREFIX, b"treasury"],
-        bump
+        bump = treasury.bump
     )]
     treasury: Account<'info, Treasury>,
     #[account(
@@ -523,12 +523,10 @@ pub struct TreasuryAuthority<'info> {
 }
 
 #[derive(Accounts)]
-#[instruction(treasury_bump: u8)]
 pub struct RedeemNFTForRain<'info> {
     #[account(
         seeds = [PREFIX, b"treasury"],
-        constraint = treasury.bump == treasury_bump,
-        bump
+        bump = treasury.bump
     )]
     treasury: Box<Account<'info, Treasury>>,
     #[account(
@@ -558,7 +556,7 @@ pub struct RedeemNFTForRain<'info> {
 
     #[account(
         mut,
-        address = treasury.rain_vault.key(),
+        address = (*treasury).rain_vault.key(),
         seeds = [PREFIX, b"rain_vault"],
         bump,
     )]
@@ -566,7 +564,7 @@ pub struct RedeemNFTForRain<'info> {
     #[account(
         mut,
         constraint = dest_rain_token_account.owner == owner.key(),
-        constraint = dest_rain_token_account.mint == treasury.rain_mint.key()
+        constraint = dest_rain_token_account.mint == (*treasury).rain_mint.key()
     )]
     dest_rain_token_account: Account<'info, TokenAccount>,
 
@@ -579,12 +577,10 @@ pub struct RedeemNFTForRain<'info> {
 }
 
 #[derive(Accounts)]
-#[instruction(treasury_bump: u8)]
 pub struct RedeemNFTSetForRain<'info> {
     #[account(
         seeds = [PREFIX, b"treasury"],
-        constraint = treasury.bump == treasury_bump,
-        bump
+        bump = treasury.bump
     )]
     treasury: Box<Account<'info, Treasury>>,
     #[account(

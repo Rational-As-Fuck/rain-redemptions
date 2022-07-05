@@ -98,7 +98,11 @@ CLI.programCommandWithArgs("deploy", [], async () => {
   console.log("👷‍♂️ Building Redemption program");
   execSync('anchor build');
   console.log("👷‍♂️ Uploading Redemption program");
-  execSync('anchor deploy');
+  execSync('anchor deploy --provider.wallet ../keypairs/tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP.json');
+  console.log("🎉 You can now call `idl`");
+}, false);
+
+CLI.programCommandWithArgs("idl", [], async () => {
   console.log("👷‍♂️ Uploading Redemption contract IDLs");
   execSync('anchor idl init --provider.cluster localnet -f target/idl/redemption_v0.json tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP', { stdio: "ignore" });
   execSync('anchor idl upgrade --provider.cluster localnet -f target/idl/redemption_v0.json tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP', { stdio: "ignore" });
