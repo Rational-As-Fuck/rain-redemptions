@@ -1,10 +1,13 @@
 // import * as Web3 from '@solana/web3.js';
 // import { programs as MetaplexPrograms } from '@metaplex/js';
 
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { Redemption, Instructions } from "@raindrops-protocol/rain-redemptions";
 
 import { NFT, DTP_TYPE } from './nft';
-import { RUG_LEVEL_URIS } from './constants';
+import { RUG_LEVEL_URIS, RAIN_MINT } from './constants';
+import { getAssociatedTokenAddress } from "@solana/spl-token";
+import { getOrCreateAssociatedTokenAccount } from './token';
+import { AnchorProvider } from '@project-serum/anchor';
 
 export class NFTSet {
   dtpType: DTP_TYPE;
@@ -60,42 +63,53 @@ export class NFTSet {
 }
 
 export const redeemRugSet = async (nftSet: NFT[], program: Redemption) => {
-  // console.log(`Redeeming ${nft.dtpType}`);
-  // console.log(`RAIN mint ${RAIN_MINT}`)
-  // console.log(`NFT Token account address ${nft.tokenAccountAddress}`)
-  // let destRainTokenAccount;
-  // try {
-  //   destRainTokenAccount = await getOrCreateAssociatedTokenAccount(program, nft.mint);
-  // } catch (e) {
-  //   console.error("Error creating rain token account", e);
-  // }
+  console.log(`Redeeming RUG Set`);
+  console.log(`RAIN mint ${RAIN_MINT}`)
+
+  const nftTokenAddresses = await Promise.all(nftSet.map(async (nft) => {
+    return { 
+      mint: nft.mint,
+      tokenAddress: await getAssociatedTokenAddress(
+        nft.mint,
+        (program.client.provider as AnchorProvider).wallet.publicKey
+      )
+    };
+  }))
+
+  let destRainTokenAccount;
+  try {
+    if (RAIN_MINT)
+      destRainTokenAccount = await getOrCreateAssociatedTokenAccount(program, RAIN_MINT);
+  } catch (e) {
+    console.error("Error creating rain token account", e);
+  }
   
-  // console.log(`Dest rain token account ${destRainTokenAccount?.address}`)
-  // if (!destRainTokenAccount) {
-  //   console.error("Error creating rain account");
-  //   return;
-  // }
-  // const redemptionAccounts = {
-  //   nftMint: nft.mint,
-  //   nftTokenAccount: nft.tokenAccountAddress,
-  //   destRainTokenAccount: destRainTokenAccount.address
-  // }
+  console.log(`Dest rain token account ${destRainTokenAccount?.address}`)
+  if (!destRainTokenAccount) {
+    console.error("Error creating rain account");
+    return;
+  }
 
-  // console.log(`Calling redemption program to redeem: ${program.program.provider.connection.rpcEndpoint}`)
-  // try {
-  //   if (nft.dtpType === DTP_TYPE.PANDA) {
-  //     await program.redeemPandaOwnershipRainTokens({}, redemptionAccounts);
-  //   } else if (nft.dtpType === DTP_TYPE.RUG) {
-  //     await program.redeemRugOwnershipRainTokens({}, redemptionAccounts);
-  //   } else {
-  //     throw new Error("Unknown DTP nft type");
-  //   }
-  // } catch (e) {
-  //   console.error("Error redeeming nft", e);
-  // }
+  const redemptionAccounts: Instructions.Redemption.RedeemNFTSetForRainAccounts = {
+    nftMint1: nftTokenAddresses[0].mint,
+    nftMint2: nftTokenAddresses[1].mint,
+    nftMint3: nftTokenAddresses[2].mint,
+    nftMint4: nftTokenAddresses[3].mint,
+    nftMint5: nftTokenAddresses[4].mint,
+    nftMint6: nftTokenAddresses[5].mint,
+    nftTokenAccount1: nftTokenAddresses[0].tokenAddress,
+    nftTokenAccount2: nftTokenAddresses[1].tokenAddress,
+    nftTokenAccount3: nftTokenAddresses[2].tokenAddress,
+    nftTokenAccount4: nftTokenAddresses[3].tokenAddress,
+    nftTokenAccount5: nftTokenAddresses[4].tokenAddress,
+    nftTokenAccount6: nftTokenAddresses[5].tokenAddress,
+    destRainTokenAccount: destRainTokenAccount.address,
+  }
 
-  // console.log("Checking if NFT was redeemed", nft.mint);
-  // let redeemed = await program.isNFTRedeemed(nft.mint);
-  // console.log("Nft redemption status", redeemed);
-  // nft.isRedeemed = redeemed;
+  console.log(`Calling redemption program to redeem: ${program.client.provider.connection.rpcEndpoint}`)
+  try {
+    await program.redeemRugSetOwnershipRainTokens({}, redemptionAccounts);
+  } catch (e) {
+    console.error("Error redeeming nft set", e);
+  }
 };

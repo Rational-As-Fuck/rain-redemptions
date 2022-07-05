@@ -5,7 +5,7 @@ import { Redemption } from "@raindrops-protocol/rain-redemptions";
 
 import { PANDA_CREATORS, RUG_CREATOR, RAIN_MINT } from './constants';
 import { getOrCreateAssociatedTokenAccount } from './token';
-import { getAssociatedTokenAddress } from "../node_modules/@solana/spl-token";
+import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { AnchorProvider } from '@project-serum/anchor';
 
 export enum DTP_TYPE {
