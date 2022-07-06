@@ -85,7 +85,7 @@ export const createNFTForNFTToken = async (connection: Web3.Connection, token: {
         }
         // const imageUrl = await (await fetch(nft.metadata.image)).json();
         const imageUrl = nft.metadata.image;
-        return new NFT(imageUrl, getDTPType(verifiedDTPCreators[0]), token.mint, nft.metadata, token, token.address, false);
+        return new NFT(nft.uri, imageUrl, getDTPType(verifiedDTPCreators[0]), token.mint, nft.metadata, token, token.address, false);
       }
     } 
   } catch (e) {

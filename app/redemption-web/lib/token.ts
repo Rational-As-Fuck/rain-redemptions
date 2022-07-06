@@ -4,7 +4,8 @@ import {
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddress,
 
-} from "../node_modules/@solana/spl-token";
+} from "@solana/spl-token";
+import { AnchorProvider } from '@project-serum/anchor';
 
 import { Redemption } from "@raindrops-protocol/rain-redemptions";
 
@@ -13,7 +14,7 @@ import { Redemption } from "@raindrops-protocol/rain-redemptions";
 export const getOrCreateAssociatedTokenAccount = async (program: Redemption, mint: Web3.PublicKey) => {
   const associatedTokenAddress = await getAssociatedTokenAddress(
     mint,
-    program.client.provider.wallet.publicKey
+    (program.client.provider as AnchorProvider).wallet.publicKey
   );
 
   let accountInfo;
@@ -27,21 +28,21 @@ export const getOrCreateAssociatedTokenAccount = async (program: Redemption, min
   }
 
   let createInstruction = createAssociatedTokenAccountInstruction(
-    program.client.provider.wallet.publicKey,
+    (program.client.provider as AnchorProvider).wallet.publicKey,
     associatedTokenAddress,
-    program.client.provider.wallet.publicKey,
+    (program.client.provider as AnchorProvider).wallet.publicKey,
     mint,
   );
 
   const latestBlockhashAndContext = await program.client.provider.connection.getLatestBlockhashAndContext();
 
-  console.log(program.client.provider.wallet.publicKey.toBase58());
+  console.log((program.client.provider as AnchorProvider).wallet.publicKey.toBase58());
   let tx = new Web3.Transaction();
   tx.add(createInstruction);
-  tx.feePayer = program.client.provider.wallet.publicKey;
+  tx.feePayer = (program.client.provider as AnchorProvider).wallet.publicKey;
   tx.recentBlockhash = latestBlockhashAndContext.value.blockhash;
   console.log("Recent blockhash is: " + tx.recentBlockhash);
-  tx = await program.client.provider.wallet.signTransaction(tx);
+  tx = await (program.client.provider as AnchorProvider).wallet.signTransaction(tx);
   
   let txsig = await program.client.provider.connection.sendRawTransaction(tx.serialize());
   console.log("Submitted transaction " + txsig + ", awaiting confirmation");
