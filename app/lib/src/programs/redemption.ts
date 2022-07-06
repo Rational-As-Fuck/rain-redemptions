@@ -19,7 +19,7 @@ export class Redemption extends Program.Program {
   async initialize(
     args: RedemptionInstruction.InitializeArgs,
     accounts: RedemptionInstruction.InitializeAccounts,
-    options?: { commitment: web3.Commitment },
+    options?: { commitment: web3.Commitment, timeout?: number },
   ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.initialize(
       args,
@@ -35,7 +35,7 @@ export class Redemption extends Program.Program {
 
   async enableTreasury(
     accounts: RedemptionInstruction.TreasuryAuthorityAccounts,
-    options?: { commitment: web3.Commitment },
+    options?: { commitment: web3.Commitment, timeout?: number },
   ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.enableTreasury(
       accounts
@@ -50,7 +50,7 @@ export class Redemption extends Program.Program {
 
   async disableTreasury(
     accounts: RedemptionInstruction.TreasuryAuthorityAccounts,
-    options?: { commitment: web3.Commitment },
+    options?: { commitment: web3.Commitment, timeout?: number },
   ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.disableTreasury(
       accounts
@@ -112,7 +112,7 @@ export class Redemption extends Program.Program {
   async redeemPandaOwnershipRainTokens(
     args: RedemptionInstruction.RedeemNFTForRainArgs,
     accounts: RedemptionInstruction.RedeemNFTForRainAccounts,
-    options?: { commitment: web3.Commitment },
+    options?: { commitment: web3.Commitment, timeout?: number },
   ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.redeemPandaOwnershipRainTokens(
       args,
@@ -129,7 +129,7 @@ export class Redemption extends Program.Program {
   async redeemRugOwnershipRainTokens(
     args: RedemptionInstruction.RedeemNFTForRainArgs,
     accounts: RedemptionInstruction.RedeemNFTForRainAccounts,
-    options?: { commitment: web3.Commitment },
+    options?: { commitment: web3.Commitment, timeout?: number },
   ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.redeemRugOwnershipRainTokens(
       args,
@@ -146,7 +146,7 @@ export class Redemption extends Program.Program {
   async redeemRugSetOwnershipRainTokens(
     args: RedemptionInstruction.RedeemNFTSetForRainArgs,
     accounts: RedemptionInstruction.RedeemNFTSetForRainAccounts,
-    options?: { commitment: web3.Commitment },
+    options?: { commitment: web3.Commitment, timeout?: number },
   ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.redeemRugSetOwnershipRainTokens(
       args,

@@ -1,6 +1,6 @@
 {
   "name": "@raindrops-protocol/rain-redemptions",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -37,7 +37,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@raindrops-protocol/sol-kit": "^0.1.70",
+    "@raindrops-protocol/sol-kit": "^0.1.71",
     "borsh": "^0.4.0",
     "loglevel": "^1.8.0"
   }
