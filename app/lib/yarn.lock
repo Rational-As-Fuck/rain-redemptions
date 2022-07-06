@@ -998,10 +998,10 @@
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
-"@raindrops-protocol/sol-kit@^0.1.68":
-  version "0.1.68"
-  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/sol-kit/0.1.68/414b660d4a06e11a433a03434798efd9aa3837c525f9ab21fe6404c9318b80b0#7f2c6899de36f1c7ab2715f9741559df6ccb37b0"
-  integrity sha512-HU4kfKrzYU8Kux+DdCUBF2y7B+zI4nwimhF/MqQxSKBfZKwHk/XPvA7miH3VngAsfC5qFl5YAi0VgXUxQ+ApNw==
+"@raindrops-protocol/sol-kit@^0.1.69":
+  version "0.1.69"
+  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/sol-kit/0.1.69/c4b0e5593697e87622d9794d0821a83f4cac2a8492a29c2df4409490ee2746ab#955e0b7daf728bf1b491617effcfcc40e4ddf276"
+  integrity sha512-s4aTs3ZcUnjU/PeoEGb8z/KAKfGPcHnk/j0E/c7tZEVrjSxwXjglgRNIKoRqXK5tKF5naA8r4vIB9hMzB/0Kcg==
   dependencies:
     "@project-serum/anchor" "^0.24.2"
     borsh "^0.4.0"
