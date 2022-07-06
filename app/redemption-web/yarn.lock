@@ -1609,19 +1609,19 @@
     bs58 "^4.0.1"
     eventemitter3 "^4.0.7"
 
-"@raindrops-protocol/rain-redemptions@^0.1.5":
-  version "0.1.5"
-  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/rain-redemptions/0.1.5/4869f5fa60c1aea660a87dd36867e1f62c30d3e94d15bdce4cf677f0c8db80b0#40801b118003ee3de32ef575e325af76b00c2555"
-  integrity sha512-Jag5KSc/5Tv2w5ZKzQTVciYrk6LVRm0Kph73Bv0PtT6S9uDcox8yHihe8x4Wda4r6PwxYtFYqmnBlsaTfkvRhQ==
+"@raindrops-protocol/rain-redemptions@^0.1.6":
+  version "0.1.6"
+  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/rain-redemptions/0.1.6/361311a76d86f22037e3554410c21b84e67e04d5ae0e77909b09738fdcd50893#6110eb1ad9a9d6daa60808a5856e06b6996ef778"
+  integrity sha512-vfkaDLvKH9jZOBfN2/H2LpxW36iQ6U0W6BszDwNzbtCriDWcyGU5bh9GZs0lTCMrmzz72abrNH8F0csNVMsXnA==
   dependencies:
-    "@raindrops-protocol/sol-kit" "^0.1.68"
+    "@raindrops-protocol/sol-kit" "^0.1.69"
     borsh "^0.4.0"
     loglevel "^1.8.0"
 
-"@raindrops-protocol/sol-kit@^0.1.68":
-  version "0.1.68"
-  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/sol-kit/0.1.68/414b660d4a06e11a433a03434798efd9aa3837c525f9ab21fe6404c9318b80b0#7f2c6899de36f1c7ab2715f9741559df6ccb37b0"
-  integrity sha512-HU4kfKrzYU8Kux+DdCUBF2y7B+zI4nwimhF/MqQxSKBfZKwHk/XPvA7miH3VngAsfC5qFl5YAi0VgXUxQ+ApNw==
+"@raindrops-protocol/sol-kit@^0.1.69":
+  version "0.1.69"
+  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/sol-kit/0.1.69/c4b0e5593697e87622d9794d0821a83f4cac2a8492a29c2df4409490ee2746ab#955e0b7daf728bf1b491617effcfcc40e4ddf276"
+  integrity sha512-s4aTs3ZcUnjU/PeoEGb8z/KAKfGPcHnk/j0E/c7tZEVrjSxwXjglgRNIKoRqXK5tKF5naA8r4vIB9hMzB/0Kcg==
   dependencies:
     "@project-serum/anchor" "^0.24.2"
     borsh "^0.4.0"
