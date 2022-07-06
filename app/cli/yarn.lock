@@ -1012,12 +1012,12 @@
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
-"@raindrops-protocol/rain-redemptions@^0.1.3":
-  version "0.1.3"
-  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/rain-redemptions/0.1.3/59c1ca5f6174d2c465be5668d202ba9e6f7edda5e8766367ae1dd9189b1796be#ad10b76529812ac4beb51ac8976613f4ded68a12"
-  integrity sha512-bH86snMwWcyTaY7dzuft/xsEs+ybcF79MOsDCqlphJ/NEhSWciY1WjCupxKdVjUiVMFbTrIT9AzF6ehWJWbNpA==
+"@raindrops-protocol/rain-redemptions@^0.1.5":
+  version "0.1.5"
+  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/rain-redemptions/0.1.5/4869f5fa60c1aea660a87dd36867e1f62c30d3e94d15bdce4cf677f0c8db80b0#40801b118003ee3de32ef575e325af76b00c2555"
+  integrity sha512-Jag5KSc/5Tv2w5ZKzQTVciYrk6LVRm0Kph73Bv0PtT6S9uDcox8yHihe8x4Wda4r6PwxYtFYqmnBlsaTfkvRhQ==
   dependencies:
-    "@raindrops-protocol/sol-kit" "^0.1.67"
+    "@raindrops-protocol/sol-kit" "^0.1.68"
     borsh "^0.4.0"
     loglevel "^1.8.0"
 
@@ -1031,10 +1031,10 @@
     loglevel "^1.8.0"
     typescript "^4.3.5"
 
-"@raindrops-protocol/sol-kit@^0.1.67":
-  version "0.1.67"
-  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/sol-kit/0.1.67/f1890e9d78407935f7eb9d41f7b4bcc57f3b104ebb8916c23c4ffb68716fa747#c1458fc5741a40e2aede4d9b1d5bd07d36925712"
-  integrity sha512-nzERZhHt29SfIZhHItFkeU3SQoA4cjZDCUJ1L2EV8oDmqbMmaLtdxzzvahuKNPs4lxaUK5IM8nBo8ouJ4WZbsA==
+"@raindrops-protocol/sol-kit@^0.1.68":
+  version "0.1.68"
+  resolved "https://npm.pkg.github.com/download/@raindrops-protocol/sol-kit/0.1.68/414b660d4a06e11a433a03434798efd9aa3837c525f9ab21fe6404c9318b80b0#7f2c6899de36f1c7ab2715f9741559df6ccb37b0"
+  integrity sha512-HU4kfKrzYU8Kux+DdCUBF2y7B+zI4nwimhF/MqQxSKBfZKwHk/XPvA7miH3VngAsfC5qFl5YAi0VgXUxQ+ApNw==
   dependencies:
     "@project-serum/anchor" "^0.24.2"
     borsh "^0.4.0"
