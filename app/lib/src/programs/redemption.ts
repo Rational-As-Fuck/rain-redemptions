@@ -19,13 +19,13 @@ export class Redemption extends Program.Program {
   async initialize(
     args: RedemptionInstruction.InitializeArgs,
     accounts: RedemptionInstruction.InitializeAccounts,
-  ): Promise<void> {
+  ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.initialize(
       args,
       accounts
     );
 
-    await this.sendWithRetry(
+    return this.sendWithRetry(
       instruction,
       []
     );
@@ -33,12 +33,12 @@ export class Redemption extends Program.Program {
 
   async enableTreasury(
     accounts: RedemptionInstruction.TreasuryAuthorityAccounts,
-  ): Promise<void> {
+  ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.enableTreasury(
       accounts
     );
 
-    await this.sendWithRetry(
+    return this.sendWithRetry(
       instruction,
       [accounts.updateAuthority]
     );
@@ -46,12 +46,12 @@ export class Redemption extends Program.Program {
 
   async disableTreasury(
     accounts: RedemptionInstruction.TreasuryAuthorityAccounts,
-  ): Promise<void> {
+  ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.disableTreasury(
       accounts
     );
 
-    await this.sendWithRetry(
+    return this.sendWithRetry(
       instruction,
       [accounts.updateAuthority]
     );
@@ -102,13 +102,13 @@ export class Redemption extends Program.Program {
   async redeemPandaOwnershipRainTokens(
     args: RedemptionInstruction.RedeemNFTForRainArgs,
     accounts: RedemptionInstruction.RedeemNFTForRainAccounts,
-  ): Promise<void> {
+  ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.redeemPandaOwnershipRainTokens(
       args,
       accounts
     );
 
-    await this.sendWithRetry(
+    return this.sendWithRetry(
       instruction,
       []
     );
@@ -117,13 +117,13 @@ export class Redemption extends Program.Program {
   async redeemRugOwnershipRainTokens(
     args: RedemptionInstruction.RedeemNFTForRainArgs,
     accounts: RedemptionInstruction.RedeemNFTForRainAccounts,
-  ): Promise<void> {
+  ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.redeemRugOwnershipRainTokens(
       args,
       accounts
     );
 
-    await this.sendWithRetry(
+    return this.sendWithRetry(
       instruction,
       []
     );
@@ -132,13 +132,13 @@ export class Redemption extends Program.Program {
   async redeemRugSetOwnershipRainTokens(
     args: RedemptionInstruction.RedeemNFTSetForRainArgs,
     accounts: RedemptionInstruction.RedeemNFTSetForRainAccounts,
-  ): Promise<void> {
+  ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.redeemRugSetOwnershipRainTokens(
       args,
       accounts
     );
 
-    await this.sendWithRetry(
+    return this.sendWithRetry(
       instruction,
       []
     );
