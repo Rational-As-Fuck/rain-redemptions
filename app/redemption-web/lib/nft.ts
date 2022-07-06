@@ -100,10 +100,17 @@ export const redeemPandaOrRugNFT = async (nft: NFT, program: Redemption) => {
   console.log(`Calling redemption program to redeem: ${program.client.provider.connection.rpcEndpoint}`)
   try {
     if (nft.dtpType === DTP_TYPE.PANDA) {
-      await program.redeemPandaOwnershipRainTokens({
-      }, redemptionAccounts);
+      await program.redeemPandaOwnershipRainTokens(
+        {},
+        redemptionAccounts,
+        { commitment: "finalized", timeout: 60_000 }
+      );
     } else if (nft.dtpType === DTP_TYPE.RUG) {
-      await program.redeemRugOwnershipRainTokens({}, redemptionAccounts);
+      await program.redeemRugOwnershipRainTokens(
+        {},
+        redemptionAccounts,
+        { commitment: "finalized", timeout: 60_000 }
+      );
     } else {
       throw new Error("Unknown DTP nft type");
     }

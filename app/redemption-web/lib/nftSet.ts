@@ -108,7 +108,11 @@ export const redeemRugSet = async (nftSet: NFT[], program: Redemption) => {
 
   console.log(`Calling redemption program to redeem: ${program.client.provider.connection.rpcEndpoint}`)
   try {
-    await program.redeemRugSetOwnershipRainTokens({}, redemptionAccounts);
+    await program.redeemRugSetOwnershipRainTokens(
+      {},
+      redemptionAccounts,
+      { commitment: "finalized", timeout: 60_000 }
+    );
   } catch (e) {
     console.error("Error redeeming nft set", e);
   }
