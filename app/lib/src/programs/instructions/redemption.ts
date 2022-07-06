@@ -1,4 +1,4 @@
-import { web3, BN, AnchorProvider } from "@project-serum/anchor";
+import { web3, AnchorProvider } from "@project-serum/anchor";
 import { SystemProgram } from "@solana/web3.js";
 import { Program, Instruction as SolKitInstruction, InstructionUtils } from "@raindrops-protocol/sol-kit";
 
