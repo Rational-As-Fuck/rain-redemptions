@@ -63,19 +63,22 @@ export class Redemption extends Program.Program {
     );
   }
 
-  async fetchTreasury(): Promise<Treasury> {
+  async fetchTreasury(
+    options: { commitment: web3.Commitment } = { commitment: "finalized" },
+  ): Promise<Treasury> {
     const redemptionTreasuryPDA = (await getTreasuryPDA())[0];
-    let treasuryObj = await this.client.account.treasury.fetch(redemptionTreasuryPDA);
+    let treasuryObj = await this.client.account.treasury.fetch(redemptionTreasuryPDA, options.commitment);
     return new Treasury(redemptionTreasuryPDA, treasuryObj);
   }
 
   async isNFTRedeemed(
     nftMint: web3.PublicKey,
+    options: { commitment: web3.Commitment } = { commitment: "finalized" },
   ): Promise<boolean> {
     const [nftRedeemedPDA, _nftRedeemedBump] = await getNFTRedeemedPDA(nftMint);
     let nftRedeemed;
     try {
-      nftRedeemed = await this.client.account.nftRedeemed.getAccountInfo(nftRedeemedPDA);
+      nftRedeemed = await this.client.account.nftRedeemed.getAccountInfo(nftRedeemedPDA, options.commitment);
     } catch (error) {
       nftRedeemed = false;
     }
@@ -89,12 +92,13 @@ export class Redemption extends Program.Program {
 
   async isRugSetNFTRedeemed(
     nftMint: web3.PublicKey,
+    options: { commitment: web3.Commitment } = { commitment: "finalized" },
   ): Promise<boolean> {
     const [nftRedeemedPDA, _nftRedeemedBump] = await getNFTSetRedeemedPDA(nftMint);
     let nftRedeemed;
 
     try {
-      nftRedeemed = await this.client.account.nftRedeemed.getAccountInfo(nftRedeemedPDA);
+      nftRedeemed = await this.client.account.nftRedeemed.getAccountInfo(nftRedeemedPDA, options.commitment);
     } catch (e) {
       nftRedeemed = false;
     }
