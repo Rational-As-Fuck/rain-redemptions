@@ -76,4 +76,5 @@
   background-color: initial;
   @apply rounded-2xl;
   @apply bg-violet-600;
+  @apply p-6;
 }
