@@ -6,6 +6,7 @@ import { RAIN_MINT } from "../lib/constants";
 import { getOrCreateAssociatedTokenAccount } from '../lib/token';
 import { NFTSet, redeemRugSet } from "../lib/nftSet";
 import { NFT, DTP_TYPE, redeemPandaOrRugNFT } from '../lib/nft';
+import Loading from "./Loading";
 import NFTGridItem from "./NFTGridItem";
 import NFTSetGridItem from "./NFTSetGridItem";
 import NoNFTS from './NoNFTs';
@@ -41,18 +42,6 @@ function updateCreatingRainAccountText(creatingText: string, setCreatingText: an
 }
 let timerType: ReturnType<typeof setInterval> | undefined;
 
-function updateLoadingText(loadingText: string, setLoadingText: any, setTimerId: any) {
-  console.log("updating loading");
-  if (loadingText.includes("...")) {
-    loadingText = "LOADING";
-    setLoadingText(loadingText);
-  } else {
-    loadingText += ".";
-    setLoadingText(loadingText);
-  }
-  setTimerId(setTimeout(() => updateLoadingText(loadingText, setLoadingText, setTimerId), 1000));
-}
-
 type NFTGridProps = { program: Redemption, loading: boolean, nfts: NFT[], hasRainATA: boolean };
 // type NFTGridState = { isRedeeming: boolean };
 
@@ -64,28 +53,18 @@ export default function NFTGrid(props: NFTGridProps) {
 
   const [creatingText, setCreatingText] = useState("Create $RAIN token account");
   const [creatingTimerId, setCreatingTimerId] = useState(timerType);
-  const [loadingText, setLoadingText] = useState("LOADING");
-  const [loadingTimerId, setLoadingTimerId] = useState(timerType);
 
   useEffect(() => {
     if (creatingRainATA)
       updateCreatingRainAccountText("CREATING", setCreatingText, setCreatingTimerId);
   }, [creatingRainATA]);
 
-  useEffect(() => {
-    if (props.loading)
-      updateLoadingText("LOADING", setLoadingText, setLoadingTimerId);
-  }, [props.loading]);
-
   console.log("props.loading", props.loading);
   if (props.loading) {
     return (
-      <span className="mt-auto mb-auto text-5xl">{loadingText}</span>
+      <Loading />
     )
-  } else if (loadingTimerId) {
-    clearTimeout(loadingTimerId);
-    setLoadingTimerId(undefined);
-  }
+  } 
 
   console.log("props.nft.length", props.nfts.length);
   if (props.nfts.length === 0) {

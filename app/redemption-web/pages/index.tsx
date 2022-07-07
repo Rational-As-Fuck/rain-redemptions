@@ -12,6 +12,7 @@ import { getAssociatedTokenAddress } from "@solana/spl-token";
 import NFTGrid from "../components/NFTGrid";
 import Header from "../components/Header";
 import Footer from '../components/Footer';
+import Loading from "../components/Loading";
 import WebWallet from "../lib/WebWallet";
 import { fetchNFTs, updateIfNftsAreRedeemed } from "../lib/nftFetcher";
 import { NFT } from '../lib/nft';
@@ -125,6 +126,7 @@ const Home: NextPage = () => {
 
 
         {/* // BODY */}
+        { wallet_connected && !redemptionProgram && (<Loading />)}
         { wallet_connected && redemptionProgram && (<NFTGrid nfts={nfts} hasRainATA={hasRainATA} loading={!fetchedNFTs} program={redemptionProgram} />) }
         {/* //////////////////////////////////////////////////////////////////////////////////////////////// */}
 
