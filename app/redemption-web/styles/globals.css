@@ -69,10 +69,10 @@
 .wallet-adapter-button {
   /* background-color: unset; */
   background-color: initial;
-  font-family: 'Splatter_Kings';
 }
 
 .wallet-adapter-button-trigger {
+  font-family: 'Splatter_Kings';
   background-color: initial;
   @apply rounded-2xl;
   @apply bg-violet-600;
