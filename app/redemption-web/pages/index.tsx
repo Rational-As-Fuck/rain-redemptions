@@ -7,17 +7,56 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head'
 
 import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { getAssociatedTokenAddress } from "@solana/spl-token";
 
-import { NFTGrid } from "../components/NFTGrid";
+import NFTGrid from "../components/NFTGrid";
 import Header from "../components/Header";
 import Footer from '../components/Footer';
 import WebWallet from "../lib/WebWallet";
 import { fetchNFTs, updateIfNftsAreRedeemed } from "../lib/nftFetcher";
 import { NFT } from '../lib/nft';
-import { WALLET_PUBKEY, PROGRAM_CONNECTION } from '../lib/constants';
+import { WALLET_PUBKEY, PROGRAM_CONNECTION, RAIN_MINT } from '../lib/constants';
 
 const setRedemptionProgramWrapper = async (program: Promise<any>, setRedemptionProgram: any) => {
   setRedemptionProgram(await program);
+};
+
+const fetchNFTsAndCheckForRainATA = async (
+  connection: any,
+  publicKey: any,
+  setNFTS: any,
+  setFetchedNFTs: any,
+  setHasRainATA: any
+) => {
+  console.log("fetchNFTsAndCheckForRainATA");
+  const nfts = await fetchNFTs(connection, WALLET_PUBKEY || publicKey);
+  console.log("nfts", nfts);
+  if (nfts && nfts.length > 0) {
+    console.log("getting ATA");
+    const associatedTokenAddress = await getAssociatedTokenAddress(
+      RAIN_MINT,
+      publicKey
+    );
+
+    let accountInfo;
+    if (associatedTokenAddress) {
+      accountInfo = await connection.getAccountInfo(associatedTokenAddress);
+    }
+
+    if (accountInfo) {
+      console.log(`Rain token account already exists ${associatedTokenAddress}`)
+    }
+
+    console.log("setNFTS");
+    setNFTS(nfts);
+    console.log("setHasRainATA", !!associatedTokenAddress);
+    setHasRainATA(!!accountInfo);
+    setFetchedNFTs(true);
+    return;
+  }
+
+  setNFTS(nfts);
+  setFetchedNFTs(true);
 };
 
 const Home: NextPage = () => {
@@ -28,11 +67,14 @@ const Home: NextPage = () => {
   let _nfts: NFT[] = [];
   const [nfts, setNFTs] = useState(_nfts);
   const [fetchedNFTs, setFetchedNFTs] = useState(false);
+  const [hasRainATA, setHasRainATA] = useState(false);
   const [redemptionProgram, setRedemptionProgram] = useState();
 
   // Initialize program connection and fetch NFTs from connected wallet
   useEffect(() => {
+    console.log("public key", publicKey);
     if (publicKey && signTransaction && signAllTransactions) {
+      console.log("public key top");
       const provider = new Anchor.AnchorProvider(
         PROGRAM_CONNECTION, 
         new WebWallet(publicKey, signTransaction, signAllTransactions, sendTransaction), {
@@ -49,9 +91,11 @@ const Home: NextPage = () => {
      }
 
      if (publicKey) {
-      fetchNFTs(connection, WALLET_PUBKEY || publicKey, setNFTs, setFetchedNFTs)
+      console.log("public key fetch");
+      fetchNFTsAndCheckForRainATA(connection, WALLET_PUBKEY || publicKey, setNFTs, setFetchedNFTs, setHasRainATA);
      }
   }, [connection, publicKey]);
+  // }, [publicKey]);
 
   // Check if NFTS have been redeemed after fetching
   useEffect(() => {
@@ -81,7 +125,7 @@ const Home: NextPage = () => {
 
 
         {/* // BODY */}
-        { wallet_connected && redemptionProgram && (<NFTGrid nfts={nfts} loading={!fetchedNFTs} program={redemptionProgram} />) }
+        { wallet_connected && redemptionProgram && (<NFTGrid nfts={nfts} hasRainATA={hasRainATA} loading={!fetchedNFTs} program={redemptionProgram} />) }
         {/* //////////////////////////////////////////////////////////////////////////////////////////////// */}
 
         

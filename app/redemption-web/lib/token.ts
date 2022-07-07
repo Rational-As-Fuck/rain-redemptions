@@ -52,4 +52,18 @@ export const getOrCreateAssociatedTokenAccount = async (program: Redemption, min
   //   tx,
   //   program.program.provider.connection
   // ));
+  const newAssociatedTokenAddress = await getAssociatedTokenAddress(
+    mint,
+    (program.client.provider as AnchorProvider).wallet.publicKey
+  );
+  if (newAssociatedTokenAddress) {
+    accountInfo = await program.client.provider.connection.getAccountInfo(associatedTokenAddress);
+  }
+
+  if (accountInfo) {
+    console.log(`Rain token account already exists ${associatedTokenAddress}`)
+    return { address: newAssociatedTokenAddress, account: accountInfo };
+  } else {
+    return null;
+  }
 };

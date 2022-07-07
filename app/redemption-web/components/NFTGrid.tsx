@@ -1,111 +1,225 @@
-import React from "react";
+import { useCallback, useState, useEffect } from 'react';
 
 import { Redemption } from "@raindrops-protocol/rain-redemptions";
 
+import { RAIN_MINT } from "../lib/constants";
+import { getOrCreateAssociatedTokenAccount } from '../lib/token';
 import { NFTSet, redeemRugSet } from "../lib/nftSet";
 import { NFT, DTP_TYPE, redeemPandaOrRugNFT } from '../lib/nft';
 import NFTGridItem from "./NFTGridItem";
 import NFTSetGridItem from "./NFTSetGridItem";
 import NoNFTS from './NoNFTs';
 
-type NFTGridProps = { program: Redemption, loading: boolean, nfts: NFT[] };
-type NFTGridState = { isRedeeming: boolean };
-export class NFTGrid extends React.Component<NFTGridProps, NFTGridState> {
-  constructor(props: NFTGridProps) {
-    super(props);
+const createRainATA = async (program: any, setCreatingRainATA: any, setCreatedRainATASuccess: any, update: any) => {
+  setCreatingRainATA(true);
+  update();
+  const destRainTokenAccount = await getOrCreateAssociatedTokenAccount(
+    program,
+    RAIN_MINT
+  );
+  console.log("getOrCreateAssociatedTokenAccount");
 
-    this.state = {
-      isRedeeming: false,
-    }
+  setCreatingRainATA(false);
+  setCreatedRainATASuccess(!!destRainTokenAccount);
+  update();
+  if (!destRainTokenAccount) {
+    console.error("There was an error creating/getting the rain token account");
+    return;
+  }
+}
+
+function updateCreatingRainAccountText(creatingText: string, setCreatingText: any, setTimerId: any) {
+  console.log("updating creating");
+  if (creatingText.includes("...")) {
+    creatingText = "CREATING";
+    setCreatingText(creatingText);
+  } else {
+    creatingText += ".";
+    setCreatingText(creatingText);
+  }
+  setTimerId(setTimeout(() => updateCreatingRainAccountText(creatingText, setCreatingText, setTimerId), 1000));
+}
+let timerType: ReturnType<typeof setInterval> | undefined;
+
+function updateLoadingText(loadingText: string, setLoadingText: any, setTimerId: any) {
+  console.log("updating loading");
+  if (loadingText.includes("...")) {
+    loadingText = "LOADING";
+    setLoadingText(loadingText);
+  } else {
+    loadingText += ".";
+    setLoadingText(loadingText);
+  }
+  setTimerId(setTimeout(() => updateLoadingText(loadingText, setLoadingText, setTimerId), 1000));
+}
+
+type NFTGridProps = { program: Redemption, loading: boolean, nfts: NFT[], hasRainATA: boolean };
+// type NFTGridState = { isRedeeming: boolean };
+
+export default function NFTGrid(props: NFTGridProps) {
+  const [creatingRainATA, setCreatingRainATA] = useState(false);
+  const [createdRainATASuccess, setCreatedRainATASuccess] = useState(false);
+  const [, updateState] = useState({});
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+  const [creatingText, setCreatingText] = useState("Create $RAIN token account");
+  const [creatingTimerId, setCreatingTimerId] = useState(timerType);
+  const [loadingText, setLoadingText] = useState("LOADING");
+  const [loadingTimerId, setLoadingTimerId] = useState(timerType);
+
+  useEffect(() => {
+    if (creatingRainATA)
+      updateCreatingRainAccountText("CREATING", setCreatingText, setCreatingTimerId);
+  }, [creatingRainATA]);
+
+  useEffect(() => {
+    if (props.loading)
+      updateLoadingText("LOADING", setLoadingText, setLoadingTimerId);
+  }, [props.loading]);
+
+  console.log("props.loading", props.loading);
+  if (props.loading) {
+    return (
+      <span className="mt-auto mb-auto text-5xl">{loadingText}</span>
+    )
+  } else if (loadingTimerId) {
+    clearTimeout(loadingTimerId);
+    setLoadingTimerId(undefined);
   }
 
-  render() {
-    const pandas = this.props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.PANDA);
-    console.log("pandas", pandas.length);
-    const rugs = this.props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.RUG);
-    const rugsNotSetRedeemed = this.props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.RUG && !e.isRedeemedForSet)
-    console.log("rugsNotSetRedeemed", rugsNotSetRedeemed)
-    const rugSets = new NFTSet(DTP_TYPE.RUG, rugsNotSetRedeemed);
+  console.log("props.nft.length", props.nfts.length);
+  if (props.nfts.length === 0) {
+    return (
+      <NoNFTS />
+    )
+  }
 
-    const redemptionFn = async (nft: NFT, program: Redemption) => {
-      nft.isRedeeming = true;
-      this.setState({ isRedeeming: true });
-      try {
-        await redeemPandaOrRugNFT(nft, program);
-      } catch (e) {
-        console.error(e);
-      }
-      nft.isRedeeming = false;
-      this.setState({ isRedeeming: false });
-    };
+  console.log("props.hasRainATA", props.hasRainATA)
+  console.log("creatingRainATA", creatingRainATA)
+  console.log("createdRainATASuccess", createdRainATASuccess)
+  if ((!createdRainATASuccess && !props.hasRainATA)) {
+    console.log("rendering button");
+    let buttonClassName = [
+      "rounded-2xl",
+      "bg-violet-600",
+      "mt-20",
+      "p-6",
+      "w-52",
+    ];
 
-    const setRedemptionFn = async (nfts: NFT[], program: Redemption) => {
-      nfts.forEach((e: NFT) => { e.isRedeemingSet = true; });
-      this.setState({ isRedeeming: true });
-      try {
-        await redeemRugSet(nfts, program);
-      } catch (e) {
-        console.error(e);
-      }
-      nfts.forEach((e: NFT) => { e.isRedeemingSet = false; });
-      this.setState({ isRedeeming: false });
-    };
-
-    if (this.props.loading) {
-      return (
-        <span className="mt-auto mb-auto text-5xl">LOADING...</span>
-      )
+    if (creatingRainATA) {
+      buttonClassName = [
+        ...buttonClassName,
+        "bg-slate-300",
+        "text-black",
+        "opacity-50",
+      ];
+    } else {
+      buttonClassName = [
+        ...buttonClassName,
+        "hover:ring",
+        "hover:ring-white",
+        "hover:bg-violet-600",
+        "focus:ring",
+        "focus:ring-white",
+        "focus:bg-violet-600",
+        "active:bg-slate-300",
+        "active:text-black",
+      ];
     }
 
-    if (this.props.nfts.length === 0) {
-      return (
-        <NoNFTS />
-      )
-    }
 
     return (
-      <div className='mt-12'>
+      <button
+        disabled={creatingRainATA}
+        onClick={
+          () => createRainATA(props.program, setCreatingRainATA, setCreatedRainATASuccess, forceUpdate)
+        } className={buttonClassName.join(" ")}
+      >{creatingText}</button>
+    )
+  } else if (creatingTimerId) {
+    clearTimeout(creatingTimerId);
+    setCreatingTimerId(undefined);
+  }
+
+
+  const pandas = props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.PANDA);
+  console.log("pandas", pandas.length);
+  const rugs = props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.RUG);
+  const rugsNotSetRedeemed = props.nfts.filter((e: NFT) => e.dtpType === DTP_TYPE.RUG && !e.isRedeemedForSet)
+  console.log("rugsNotSetRedeemed", rugsNotSetRedeemed)
+  const rugSets = new NFTSet(DTP_TYPE.RUG, rugsNotSetRedeemed);
+
+  const redemptionFn = async (nft: NFT, program: Redemption) => {
+    console.log("nft.isRedeeming = true");
+    nft.isRedeeming = true;
+    forceUpdate();
+    // this.setState({ isRedeeming: true });
+    try {
+      await redeemPandaOrRugNFT(nft, program);
+    } catch (e) {
+      console.error(e);
+    }
+    console.log("nft.isRedeeming = false");
+    nft.isRedeeming = false;
+    forceUpdate();
+    // this.setState({ isRedeeming: false });
+  };
+
+  const setRedemptionFn = async (nfts: NFT[], program: Redemption) => {
+    nfts.forEach((e: NFT) => { e.isRedeemingSet = true; });
+    // this.setState({ isRedeeming: true });
+    try {
+      await redeemRugSet(nfts, program);
+    } catch (e) {
+      console.error(e);
+    }
+    nfts.forEach((e: NFT) => { e.isRedeemingSet = false; });
+    // this.setState({ isRedeeming: false });
+  };
+
+  return (
+    <div className='mt-12'>
+      <div>
+        <div className='mt-14 mb-8 text-5xl'>Pandas</div>
+        <div className="grid  grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-4 sm:gap-x-16 lg:gap-x-20">
+          {pandas.length > 0 && pandas.map((nft: NFT, index: number) => (
+            <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={"panda-" + index} program={props.program} redemptionFn={redemptionFn} />
+          ))}
+        </div>
+      </div>
+      { rugs.length > 0 && (
         <div>
-          <div className='mt-14 mb-8 text-5xl'>Pandas</div>
-          <div className="grid  grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-4 sm:gap-x-16 lg:gap-x-20">
-            {pandas.length > 0 && pandas.map((nft: NFT, index: number) => (
-              <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={"panda-" + index} program={this.props.program} redemptionFn={redemptionFn} />
-            ))}
+          <div>
+            <div className='mt-14 mb-8 text-5xl'>Rugs</div>
+            <div className="grid  grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-4 sm:gap-x-16 lg:gap-x-20">
+              {rugs.map((nft: NFT, index: number) => (
+                <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={"rug-" + index} program={props.program} redemptionFn={redemptionFn} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className='mt-14 mb-8 text-5xl'>Rug Sets</div>
+            { rugSets.sets.length === 0 && (<div>{rugSets.numberRemainingToFinishSet} Rug{rugSets.numberRemainingToFinishSet === 1 ? "" : "s" } left to finish set</div>)}
+            <div className="">
+              {rugSets.sets.map((set: NFT[], index: number) => (
+                <div>
+                  <div className='mt-14 mb-8 text-5xl'>Set {index + 1}</div>
+                  <button className="group hover:rounded-xl hover:ring hover:ring-white " onClick={() => setRedemptionFn(set, props.program)}>
+                    <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-y-4 sm:gap-y-12 lg:gap-y-16 gap-x-4 sm:gap-x-16 lg:gap-x-20">
+                      {set.map((nft: NFT, index: number) => (
+                        <NFTSetGridItem nfts={set} nft={nft} index={"rugset-" + index} program={props.program} redemptionFn={() => setRedemptionFn(set, props.program)} />
+                      ))}
+                    </div>
+                    <div className="group-hover:bg-violet-600 w-full rounded-b-xl py-4 lg:py-6 group-active:bg-slate-300 group-active:text-black">Redeem Set</div>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        { rugs.length > 0 && (
-          <div>
-            <div>
-              <div className='mt-14 mb-8 text-5xl'>Rugs</div>
-              <div className="grid  grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-4 sm:gap-x-16 lg:gap-x-20">
-                {rugs.map((nft: NFT, index: number) => (
-                  <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={"rug-" + index} program={this.props.program} redemptionFn={redemptionFn} />
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className='mt-14 mb-8 text-5xl'>Rug Sets</div>
-              { rugSets.sets.length === 0 && (<div>{rugSets.numberRemainingToFinishSet} Rug{rugSets.numberRemainingToFinishSet === 1 ? "" : "s" } left to finish set</div>)}
-              <div className="">
-                {rugSets.sets.map((set: NFT[], index: number) => (
-                  <div>
-                    <div className='mt-14 mb-8 text-5xl'>Set {index + 1}</div>
-                    <button className="group hover:rounded-xl hover:ring hover:ring-white " onClick={() => setRedemptionFn(set, this.props.program)}>
-                      <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-y-4 sm:gap-y-12 lg:gap-y-16 gap-x-4 sm:gap-x-16 lg:gap-x-20">
-                        {set.map((nft: NFT, index: number) => (
-                          <NFTSetGridItem nfts={set} nft={nft} index={"rugset-" + index} program={this.props.program} redemptionFn={() => setRedemptionFn(set, this.props.program)} />
-                        ))}
-                      </div>
-                      <div className="group-hover:bg-violet-600 w-full rounded-b-xl py-4 lg:py-6 group-active:bg-slate-300 group-active:text-black">Redeem Set</div>
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 }
 

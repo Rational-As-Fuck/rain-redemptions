@@ -1,9 +1,29 @@
 import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { useState, useEffect } from 'react';
 
 import { NFT } from '../lib/nft';
 
+function updateRedeemingText(redeemingText: string, setRedeemingText: any, setTimerId: any) {
+  console.log("updating redeeming");
+  if (redeemingText.includes("...")) {
+    redeemingText = "Redeeming";
+    setRedeemingText(redeemingText);
+  } else {
+    redeemingText += ".";
+    setRedeemingText(redeemingText);
+  }
+  setTimerId(setTimeout(() => updateRedeemingText(redeemingText, setRedeemingText, setTimerId), 1000));
+}
+let timerType: ReturnType<typeof setInterval> | undefined;
+
 export default function NFTGridItem(props: { nft: NFT, isRedeemed: boolean, index: string, program: Redemption, redemptionFn: (nft: NFT, program: Redemption) => Promise<void> }) {
   const { nft, isRedeemed, index, program, redemptionFn } = props;
+  const [redeemingText, setRedeemingText] = useState("Redeeming");
+  const [timerId, setTimerId] = useState(timerType);
+  useEffect(() => {
+    if (nft.isRedeeming)
+      updateRedeemingText(redeemingText, setRedeemingText, setTimerId);
+  }, [nft.isRedeeming]);
 
   console.log("Rendering grid item, redeemed", isRedeemed)
   console.log(nft.imageUrl)
@@ -68,7 +88,14 @@ export default function NFTGridItem(props: { nft: NFT, isRedeemed: boolean, inde
   }
 
   if (nft.isRedeeming) {
-    buttonText = "Redeeming...";
+    buttonText = redeemingText;
+  }
+
+  if (!nft.isRedeeming) {
+    if (timerId) {
+      clearTimeout(timerId);
+      setTimerId(undefined);
+    }
   }
 
   //TODO: Handle the case where you are clicked on an item and hover off it and then back. The bottom rounded edges will become visible.

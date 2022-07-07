@@ -81,20 +81,23 @@ export const redeemPandaOrRugNFT = async (nft: NFT, program: Redemption) => {
   let destRainTokenAccount;
   try {
     if (RAIN_MINT)
-      destRainTokenAccount = await getOrCreateAssociatedTokenAccount(program, RAIN_MINT);
+      destRainTokenAccount = await getAssociatedTokenAddress(
+        RAIN_MINT,
+        (program.client.provider as AnchorProvider).wallet.publicKey
+      );
   } catch (e) {
-    console.error("Error creating rain token account", e);
+    console.error("Error getting rain token account", e);
   }
   
-  console.log(`Dest rain token account ${destRainTokenAccount?.address}`)
+  console.log(`Dest rain token account ${destRainTokenAccount}`)
   if (!destRainTokenAccount) {
-    console.error("Error creating rain account");
+    console.error("Error getting rain token account");
     return;
   }
   const redemptionAccounts = {
     nftMint: nft.mint,
     nftTokenAccount: nftTokenAccountAddress,
-    destRainTokenAccount: destRainTokenAccount.address
+    destRainTokenAccount: destRainTokenAccount
   }
 
   console.log(`Calling redemption program to redeem: ${program.client.provider.connection.rpcEndpoint}`)

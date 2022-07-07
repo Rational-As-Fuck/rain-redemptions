@@ -11,7 +11,7 @@ import { Redemption } from "@raindrops-protocol/rain-redemptions";
 import { DTP_TYPE, getDTPType, NFT } from './nft';
 import { CREATORS } from './constants';
 
-export const fetchNFTs = async (connection: Web3.Connection, publicKey: Web3.PublicKey, setNFTS: any, setFetchedNFTs: any) => {
+export const fetchNFTs = async (connection: Web3.Connection, publicKey: Web3.PublicKey): Promise<(NFT|null)[] | null> => {
   if (publicKey) {
     // let tokenAccounts = await connection.getTokenAccountsByOwner(publicKey, { programId: new Web3.PublicKey(TOKEN_PROGRAM_ID) });
     const metaplex = new Metaplex(connection);
@@ -31,9 +31,11 @@ export const fetchNFTs = async (connection: Web3.Connection, publicKey: Web3.Pub
     const fetchedNfts = await Promise.all(nfts.map((nft) => verifyCreatorIsDTP(nft)))
     const filteredNfts = fetchedNfts.filter((e) => !!e);
     console.log(filteredNfts);
-    setNFTS(filteredNfts);
-    setFetchedNFTs(true)
+    // setNFTS(filteredNfts);
+    // setFetchedNFTs(true)
+    return filteredNfts;
   }
+  return null;
 };
 
 export const verifyCreatorIsDTP = async (nft: Nft) => {
