@@ -46,7 +46,7 @@ export default function Header(props : { showWalletConnect: boolean }) {
       {showWalletConnect && (
         <div className='flex flex-col items-center justify-center'>
           <div className="mt-6 mb-4">
-            <WalletMultiButton/>
+            <WalletMultiButton />
           </div>
           OR
           <div>
