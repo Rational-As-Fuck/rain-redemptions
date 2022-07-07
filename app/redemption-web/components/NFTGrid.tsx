@@ -98,7 +98,7 @@ export default function NFTGrid(props: NFTGridProps) {
         ...buttonClassName,
         "hover:ring",
         "hover:ring-white",
-        "hover:bg-violet-600",
+        "hover:bg-violet-400",
         "focus:ring",
         "focus:ring-white",
         "focus:bg-violet-600",

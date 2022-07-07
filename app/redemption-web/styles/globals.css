@@ -81,4 +81,12 @@
   @apply flex;
   @apply justify-center;
   @apply items-center;
+  @apply hover:ring;
+  @apply hover:ring-white;
+  @apply hover:bg-violet-400;
+  @apply focus:ring;
+  @apply focus:ring-white;
+  @apply focus:bg-violet-600;
+  @apply active:bg-slate-300;
+  @apply active:text-black;
 }

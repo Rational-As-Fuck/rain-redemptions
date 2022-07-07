@@ -64,7 +64,7 @@ export default function NFTGridItem(props: { nft: NFT, isRedeemed: boolean, inde
       "focus:ring-white",
       "focus:bg-violet-600",
 
-      "hover:bg-violet-600",
+      "hover:bg-violet-400",
       "hover:ring",
       "hover:ring-white",
 
