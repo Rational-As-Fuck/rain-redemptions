@@ -8,6 +8,15 @@ export default class WebWallet implements Anchor.Wallet {
   _publicKey: Web3.PublicKey;
   payer: Anchor.web3.Keypair;
 
+  static fakeWallet() {
+    return new WebWallet(
+      Anchor.web3.PublicKey.default,
+      (transaction: Web3.Transaction) => {return Promise.resolve(new Web3.Transaction())},
+      (transaction: Web3.Transaction[]) => {return Promise.resolve([new Web3.Transaction()])},
+      () => {},
+    )
+  }
+
   constructor(
     publicKey: Web3.PublicKey,
     signTransaction: (transaction: Web3.Transaction) => Promise<Web3.Transaction>,
