@@ -77,4 +77,8 @@
   @apply rounded-2xl;
   @apply bg-violet-600;
   @apply p-6;
+  @apply w-52;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
 }

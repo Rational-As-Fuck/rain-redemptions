@@ -44,9 +44,9 @@ export default function Header(props : { showWalletConnect: boolean }) {
         $RAIN Redemption
       </div>
       {showWalletConnect && (
-        <div>
-          <div className="mt-6 mb-4 ml-7 rounded-2xl">
-            <WalletMultiButton />
+        <div className='flex flex-col items-center justify-center'>
+          <div className="mt-6 mb-4">
+            <WalletMultiButton/>
           </div>
           OR
           <div>
