@@ -64,3 +64,16 @@
     grid-column-start: 4;
   }
 }
+
+
+[type=button], [type=reset], [type=submit], button {
+  -webkit-appearance: button;
+  background-color: unset;
+  background-image: none;
+}
+
+/* .wallet-adapter-button-trigger {
+  border-radius: 1rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity));
+} */
