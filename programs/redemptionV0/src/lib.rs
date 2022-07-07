@@ -89,6 +89,41 @@ const RUG_VERIFIED_CREATOR: &[&str] = &[
 //
 // Simplified (r = .5, y = .3, z = .2):
 // X = 96.16679168 ~= 96
+//
+// xalt_level_multipliers
+// 2,3,4,5,6,7,8
+//
+// rug_level_multipliers
+// 1, 3, 5, 8, 12, 20
+//
+// Panda
+// amount = 96.16679168 * .3
+// Panda xalt
+// amount = 96.16679168 * .2 * xalt_level_multiplier
+// Rug
+// amount = 96.16679168 * .5 * rug_level_multiplier
+// Rug Set
+// amount = 96.16679168 * .5 * 50 
+// 
+//////////////////////////////////////////////////////////////////
+// Final calculations
+//////////////////////
+// Panda = 28.85003
+// Panda (XALT - RUGGED_COUNT: 2) = 38.46671
+// Panda (XALT - PSYCHOLOGICAL_TRAUMA_LEVEL: Medium) = 57.70007
+// Panda (XALT - WEN: 2 hours) = 76.93343
+// Panda (XALT - TELL_ME_A_JOKE: Mint Date) = 96.16679
+// Panda (XALT - EXILED: Just kidding.) = 115.40015
+// Panda (XALT - MONOLIFF?: Mono-LEAF!) = 134.63350
+// Panda (XALT - B_AND_J: â™¥) = 153.86686
+// Rug (Black) = 48.08339
+// Rug (Blue) = 144.25018
+// Rug (Green) = 240.41697
+// Rug (Purple) = 384.66716
+// Rug (Red) = 577.00075
+// Rug (Gold) = 961.66791
+// Rug Set = 2404.16977
+//////////////////////////////////////////////////////////////////
 const REDEMPTION_MULTIPLIER: f64 = 96.166791; 
 const RUG_SHARE: f64 = 0.5;
 const XALT_SHARE: f64 = 0.2;
