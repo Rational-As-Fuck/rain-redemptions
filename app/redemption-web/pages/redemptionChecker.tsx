@@ -185,7 +185,7 @@ const RedemptionChecker: NextPage = () => {
         )}
 
         <label className="mt-28 ml-10 mr-10 text-2xl">
-          Mint address of the NFT
+          Token address of the NFT
           <input 
             id="mintInput"
             value={mintAddress}

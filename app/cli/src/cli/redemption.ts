@@ -40,7 +40,7 @@ CLI.programCommand("show_treasury", false)
       rpcUrl,
     );
 
-    const treasury = await redemptionProgram.fetchTreasury();
+    const treasury = await redemptionProgram.fetchTreasury({ commitment: "finalized" });
     log.setLevel("info");
     log.info("Treasury:", treasury.key.toString());
     log.info("  Update Authority:", treasury.updateAuthority.toString());
@@ -69,6 +69,9 @@ CLI.programCommandWithArgs("enable_treasury", enableDisableTreasury, async (upda
 
     await redemptionProgram.enableTreasury({
       updateAuthority: updateAuthority,
+    }, {
+      commitment: "finalized",
+      timeout: 60_000
     });
     console.log("Enabled treasury");
   });
