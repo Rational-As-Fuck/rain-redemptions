@@ -45,6 +45,12 @@ let timerType: ReturnType<typeof setInterval> | undefined;
 type NFTGridProps = { program: Redemption, loading: boolean, nfts: NFT[], hasRainATA: boolean };
 // type NFTGridState = { isRedeeming: boolean };
 
+const HOVER_SET_CLASSES_GRID = [
+  "bg-slate-100",
+  "text-black",
+  "rounded-2xl",
+]
+
 export default function NFTGrid(props: NFTGridProps) {
   const [creatingRainATA, setCreatingRainATA] = useState(false);
   const [createdRainATASuccess, setCreatedRainATASuccess] = useState(false);
@@ -147,13 +153,16 @@ export default function NFTGrid(props: NFTGridProps) {
 
   const setRedemptionFn = async (nfts: NFT[], program: Redemption) => {
     nfts.forEach((e: NFT) => { e.isRedeemingSet = true; });
+    forceUpdate();
     // this.setState({ isRedeeming: true });
     try {
       await redeemRugSet(nfts, program);
+      nfts.forEach((e: NFT) => { e.isRedeemedForSet = true; });
     } catch (e) {
       console.error(e);
     }
     nfts.forEach((e: NFT) => { e.isRedeemingSet = false; });
+    forceUpdate();
     // this.setState({ isRedeeming: false });
   };
 
@@ -184,13 +193,13 @@ export default function NFTGrid(props: NFTGridProps) {
               {rugSets.sets.map((set: NFT[], index: number) => (
                 <div>
                   <div className='mt-14 mb-8 text-5xl'>Set {index + 1}</div>
-                  <button className="group hover:rounded-xl hover:ring hover:ring-white " onClick={() => setRedemptionFn(set, props.program)}>
+                  <button className={`group hover:rounded-xl hover:ring hover:ring-white ${set[0].isRedeemingSet || set[0].isRedeemedForSet ? HOVER_SET_CLASSES_GRID.join(" ") : ""}`} onClick={() => setRedemptionFn(set, props.program)}>
                     <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-y-4 sm:gap-y-12 lg:gap-y-16 gap-x-4 sm:gap-x-16 lg:gap-x-20">
                       {set.map((nft: NFT, index: number) => (
                         <NFTSetGridItem nfts={set} nft={nft} index={"rugset-" + index} program={props.program} redemptionFn={() => setRedemptionFn(set, props.program)} />
                       ))}
                     </div>
-                    <div className="group-hover:bg-violet-600 w-full rounded-b-xl py-4 lg:py-6 group-active:bg-slate-300 group-active:text-black">Redeem Set</div>
+                    <div className={`group-hover:bg-violet-600 w-full rounded-b-xl py-4 lg:py-6 group-active:bg-slate-300 group-active:text-black ${set[0].isRedeemingSet || set[0].isRedeemedForSet ? "mt-4 bg-slate-300 text-black" : "" }`}>{set[0].isRedeemingSet ? "Redeeming..." : "Redeem Set"}</div>
                   </button>
                 </div>
               ))}
