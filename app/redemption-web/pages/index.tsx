@@ -73,6 +73,8 @@ const Home: NextPage = () => {
 
   // Initialize program connection and fetch NFTs from connected wallet
   useEffect(() => {
+    setNFTs(_nfts);
+    setFetchedNFTs(false);
     console.log("public key", publicKey);
     if (publicKey && signTransaction && signAllTransactions) {
       console.log("public key top");
