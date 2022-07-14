@@ -13,10 +13,10 @@ import {
 import { web3 } from '@project-serum/anchor';
 import {
   CLI,
-} from '@raindrops-protocol/sol-command';
+} from '@raindrop-studios/sol-command';
 
-import { Redemption, PDA } from '@raindrops-protocol/rain-redemptions';
-import { Connection as SolKitConnection } from "@raindrops-protocol/sol-kit";
+import { Redemption, PDA } from '@raindrop-studios/rain-redemptions';
+import { Connection as SolKitConnection } from "@raindrop-studios/sol-kit";
 
 const { Clusters } = SolKitConnection;
 const { Connection, Transaction, SystemProgram } = web3;

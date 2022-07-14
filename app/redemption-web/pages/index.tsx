@@ -6,7 +6,7 @@ import * as Anchor from "@project-serum/anchor";
 import { useEffect, useState } from 'react';
 import Head from 'next/head'
 
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { Redemption } from "@raindrop-studios/rain-redemptions";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 
 import NFTGrid from "../components/NFTGrid";

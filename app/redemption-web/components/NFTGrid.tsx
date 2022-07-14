@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from 'react';
 
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { Redemption } from "@raindrop-studios/rain-redemptions";
 
 import { RAIN_MINT } from "../lib/constants";
 import { getOrCreateAssociatedTokenAccount } from '../lib/token';

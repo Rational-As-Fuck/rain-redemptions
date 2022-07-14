@@ -1,6 +1,6 @@
 import { web3, AnchorProvider } from "@project-serum/anchor";
 import { SystemProgram } from "@solana/web3.js";
-import { Program, Instruction as SolKitInstruction, InstructionUtils } from "@raindrops-protocol/sol-kit";
+import { Program, Instruction as SolKitInstruction, InstructionUtils } from "@raindrop-studios/sol-kit";
 
 import { getTreasuryPDA, getRainVaultPDA, getNFTRedeemedPDA, getNFTSetRedeemedPDA, getNFTMetadataPDA, getNFTMasterEditionPDA } from "../../pda/redemption";
 import { TOKEN_PROGRAM_ID, TOKEN_METADATA_PROGRAM_ID } from "../../constants/programIds";

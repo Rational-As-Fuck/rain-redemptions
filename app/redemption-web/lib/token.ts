@@ -7,7 +7,7 @@ import {
 } from "@solana/spl-token";
 import { AnchorProvider } from '@project-serum/anchor';
 
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { Redemption } from "@raindrop-studios/rain-redemptions";
 
 // import { RAIN_MINT } from './constants';
 

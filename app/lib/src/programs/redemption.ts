@@ -1,5 +1,5 @@
 import { web3 } from "@project-serum/anchor";
-import { Program } from "@raindrops-protocol/sol-kit";
+import { Program } from "@raindrop-studios/sol-kit";
 
 import * as RedemptionInstruction from "./instructions/redemption";
 import { Treasury } from "../state/redemption";

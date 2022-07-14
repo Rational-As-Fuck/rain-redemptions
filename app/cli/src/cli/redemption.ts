@@ -2,8 +2,8 @@
 import log from "loglevel";
 import { web3 } from "@project-serum/anchor";
 
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
-import { Wallet, CLI } from "@raindrops-protocol/sol-command";
+import { Redemption } from "@raindrop-studios/rain-redemptions";
+import { Wallet, CLI } from "@raindrop-studios/sol-command";
 
 CLI.programCommandWithConfig("initialize", async (config, options, _files) => {
   const { keypair, env, rpcUrl } = options;

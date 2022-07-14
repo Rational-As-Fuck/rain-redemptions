@@ -5,7 +5,7 @@ import * as Anchor from "@project-serum/anchor";
 import { useEffect, useState } from 'react';
 import { Metaplex, Nft } from "@metaplex-foundation/js";
 
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { Redemption } from "@raindrop-studios/rain-redemptions";
 
 import pandaLogo from '../public/LogoTransp.png';
 import wordLogo from '../public/WordLogo.png';

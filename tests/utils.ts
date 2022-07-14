@@ -12,7 +12,7 @@ import {
   getMinimumBalanceForRentExemptMint,
 // } from "../node_modules/@solana/spl-token";
 } from "../node_modules/@solana/spl-token/lib/cjs";
-import { Transaction } from "@raindrops-protocol/sol-kit";
+import { Transaction } from "@raindrop-studios/sol-kit";
 import { programs as MetaplexPrograms } from '@metaplex/js';
 const { metadata: { Metadata, CreateMetadataV2, DataV2, Creator, CreateMasterEditionV3 } } =  MetaplexPrograms;
 import { Keypair } from '@solana/web3.js';

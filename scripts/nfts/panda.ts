@@ -11,7 +11,7 @@ import {
 } from '@metaplex-foundation/mpl-token-metadata';
 import {
   CLI,
-} from '@raindrops-protocol/sol-command';
+} from '@raindrop-studios/sol-command';
 
 const { Connection } = web3;
 

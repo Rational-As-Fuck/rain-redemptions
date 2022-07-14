@@ -1,7 +1,7 @@
 // import * as Web3 from '@solana/web3.js';
 // import { programs as MetaplexPrograms } from '@metaplex/js';
 
-import { Redemption, Instructions } from "@raindrops-protocol/rain-redemptions";
+import { Redemption, Instructions } from "@raindrop-studios/rain-redemptions";
 
 import { NFT, DTP_TYPE } from './nft';
 import { RUG_LEVEL_URIS, RAIN_MINT } from './constants';

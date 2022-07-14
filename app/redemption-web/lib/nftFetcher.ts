@@ -6,7 +6,7 @@ import {
   AccountLayout,
 } from "../node_modules/@solana/spl-token";
 
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { Redemption } from "@raindrop-studios/rain-redemptions";
 
 import { DTP_TYPE, getDTPType, NFT } from './nft';
 import { CREATORS } from './constants';

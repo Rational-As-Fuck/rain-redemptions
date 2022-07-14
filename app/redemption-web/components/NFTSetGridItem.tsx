@@ -1,4 +1,4 @@
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { Redemption } from "@raindrop-studios/rain-redemptions";
 
 import { NFT } from '../lib/nft';
 

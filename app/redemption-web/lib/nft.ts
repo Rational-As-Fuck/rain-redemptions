@@ -1,7 +1,7 @@
 import * as Web3 from '@solana/web3.js';
 import { JsonMetadata } from "@metaplex-foundation/js";
 
-import { Redemption } from "@raindrops-protocol/rain-redemptions";
+import { Redemption } from "@raindrop-studios/rain-redemptions";
 
 import { PANDA_CREATORS, RUG_CREATOR, RAIN_MINT } from './constants';
 import { getOrCreateAssociatedTokenAccount } from './token';
@@ -70,6 +70,10 @@ export const getDTPType = (creator: string) => {
 export const redeemPandaOrRugNFT = async (nft: NFT, program: Redemption) => {
   // await sleep(5000);
 
+  // TODO:
+  // MagicEden are dicks and moved ATA accounts in the past when an NFT
+  // was bought. Need to find a different way to derive the ATA to handle
+  // that dumbass move.
   const nftTokenAccountAddress = await getAssociatedTokenAddress(
     nft.mint,
     (program.client.provider as AnchorProvider).wallet.publicKey

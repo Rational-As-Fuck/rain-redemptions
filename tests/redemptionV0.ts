@@ -1,6 +1,6 @@
 import assert from 'assert';
 import * as anchor from "@project-serum/anchor";
-import { Program } from '@raindrops-protocol/sol-kit';
+import { Program } from '@raindrop-studios/sol-kit';
 
 import { Redemption, PDA } from "../app/lib/src/index";
 import { newMint } from '../app/cli/src/cli/utils';
