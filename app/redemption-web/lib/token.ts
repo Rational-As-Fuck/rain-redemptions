@@ -48,10 +48,6 @@ export const getOrCreateAssociatedTokenAccount = async (program: Redemption, min
   console.log("Submitted transaction " + txsig + ", awaiting confirmation");
   await program.client.provider.connection.confirmTransaction(txsig);
   console.log("Transaction " + txsig + " confirmed");
-  // console.log(await (program.program.provider.wallet as WebWallet).sendTransaction(
-  //   tx,
-  //   program.program.provider.connection
-  // ));
   const newAssociatedTokenAddress = await getAssociatedTokenAddress(
     mint,
     (program.client.provider as AnchorProvider).wallet.publicKey

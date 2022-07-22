@@ -1000,10 +1000,10 @@
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
-"@raindrop-studios/sol-kit@^0.1.71":
-  version "0.1.71"
-  resolved "https://registry.yarnpkg.com/@raindrop-studios/sol-kit/-/sol-kit-0.1.71.tgz#63ae7ffdeb5877593144b497a5f4ec19bf849878"
-  integrity sha512-bcUo8aB/ZGqtM+XRuP4B3qrGiXKO099l2DIMIkkBBTZbvlowcabBzzMOnwnCodnyXiElIYEImqdGZuR93PnKkw==
+"@raindrop-studios/sol-kit@^0.1.79":
+  version "0.1.79"
+  resolved "https://registry.yarnpkg.com/@raindrop-studios/sol-kit/-/sol-kit-0.1.79.tgz#6794e4a060bab7926898f7c2a2463037e772682d"
+  integrity sha512-d5zBj90mNkmyp9+Pe2q/yHkKC5kfZIlifp1o6uCUSLbr4rZ/WPsP4Pr4g8oSslcrL8MwcRBzrxjVFROriw4J1Q==
   dependencies:
     "@project-serum/anchor" "^0.24.2"
     borsh "^0.4.0"
