@@ -34,18 +34,14 @@ export const getNFTSetRedeemedPDA = async (nftMint: web3.PublicKey): Promise<[we
 };
 
 export const getNFTSetRedeemedStatePDA = async (
-  nftMints: web3.PublicKey[],
+  nftMint: web3.PublicKey,
   owner: web3.PublicKey
 ): Promise<[web3.PublicKey, number]> => {
-  // const shortenedNFTMints = nftMints.map(nftMint => nftMint.toBytes().slice(0, 2));
-  // const sortedNFTMints = shortenedNFTMints.sort();//(a, b) => a.(b));
-  // console.log(Buffer.from(sortedNFTMints.join("")));
   return await web3.PublicKey.findProgramAddress([
       Buffer.from(Redemption.PREFIX),
       Buffer.from("set_redeemed_state"),
       owner.toBuffer(),
-      nftMints[0].toBuffer(),
-      // Buffer.from(sortedNFTMints.join(""))//Buffer.from(sortedNFTMints.join(""))
+      nftMint.toBuffer(),
     ],
     REDEMPTION_PROGRAM_ID
   );

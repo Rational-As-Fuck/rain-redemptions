@@ -22,6 +22,7 @@ export class Treasury {
 
 export enum NFTSetRedemptionStateStatus {
     INIT,
+    VERIFYING,
     VERIFIED,
     REDEEMED,
 }
@@ -31,6 +32,8 @@ export namespace NFTSetRedemptionStateStatus {
     switch (statusKey) {
       case "init":
         return NFTSetRedemptionStateStatus.INIT;
+      case "verifying":
+        return NFTSetRedemptionStateStatus.VERIFYING;
       case "verified":
         return NFTSetRedemptionStateStatus.VERIFIED;
       case "redeemed":

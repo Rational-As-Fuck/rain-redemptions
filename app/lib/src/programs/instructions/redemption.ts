@@ -61,7 +61,7 @@ export interface RedeemNFTSetForRainAccounts {
   destRainTokenAccount: web3.PublicKey,
 };
 
-export interface RedeemMultiTransactionNFTSetFirstAccounts {
+export interface RedeemMultiTransactionNFTSetVerifyAccounts {
   nftMint1: web3.PublicKey,
   nftMint2: web3.PublicKey,
   nftMint3: web3.PublicKey,
@@ -281,19 +281,13 @@ export class Instruction extends SolKitInstruction {
   }
 
   async redeemMultiTransactionRugSetOwnershipRainTokensFirst(
-    accounts: RedeemMultiTransactionNFTSetFirstAccounts,
+    accounts: RedeemMultiTransactionNFTSetVerifyAccounts,
   ): Promise<web3.TransactionInstruction[]> {
     const owner = (this.program.client.provider as AnchorProvider).wallet.publicKey;
     const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
 
-    const [nftSetRedeemedStatePDA, _nftSetRedeemedStateBump] = await getNFTSetRedeemedStatePDA([
-        accounts.nftMint1,
-        accounts.nftMint2,
-        accounts.nftMint3,
-        accounts.nftMint4,
-        accounts.nftMint5,
-        accounts.nftMint6
-      ],
+    const [nftSetRedeemedStatePDA, _nftSetRedeemedStateBump] = await getNFTSetRedeemedStatePDA(
+      accounts.nftMint1,
       owner
     );
 
@@ -332,7 +326,7 @@ export class Instruction extends SolKitInstruction {
       rent: web3.SYSVAR_RENT_PUBKEY,
     };
 
-    printAccounts(instructionAccounts);
+    // printAccounts(instructionAccounts);
 
     return [
       await this.program.client.methods
@@ -343,19 +337,69 @@ export class Instruction extends SolKitInstruction {
   }
 
   async redeemMultiTransactionRugSetOwnershipRainTokensSecond(
+    accounts: RedeemMultiTransactionNFTSetVerifyAccounts,
+  ): Promise<web3.TransactionInstruction[]> {
+    const owner = (this.program.client.provider as AnchorProvider).wallet.publicKey;
+    const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
+
+    const [nftSetRedeemedStatePDA, _nftSetRedeemedStateBump] = await getNFTSetRedeemedStatePDA(
+      accounts.nftMint1,
+      owner
+    );
+
+    const [nftMetadataPDA1, _nftMetataPDA1Bump] = await getNFTMetadataPDA(accounts.nftMint1);
+    const [nftMetadataPDA2, _nftMetataPDA2Bump] = await getNFTMetadataPDA(accounts.nftMint2);
+    const [nftMetadataPDA3, _nftMetataPDA3Bump] = await getNFTMetadataPDA(accounts.nftMint3);
+    const [nftMetadataPDA4, _nftMetataPDA4Bump] = await getNFTMetadataPDA(accounts.nftMint4);
+    const [nftMetadataPDA5, _nftMetataPDA5Bump] = await getNFTMetadataPDA(accounts.nftMint5);
+    const [nftMetadataPDA6, _nftMetataPDA6Bump] = await getNFTMetadataPDA(accounts.nftMint6);
+
+    const instructionAccounts = {
+      treasury: treasuryPDA,
+      nftSetRedeemedState: nftSetRedeemedStatePDA,
+      nftMint1: accounts.nftMint1,
+      nftTokenAccount1: accounts.nftTokenAccount1,
+      nftMetadataAccount1: nftMetadataPDA1,
+      nftMint2: accounts.nftMint2,
+      nftTokenAccount2: accounts.nftTokenAccount2,
+      nftMetadataAccount2: nftMetadataPDA2,
+      nftMint3: accounts.nftMint3,
+      nftTokenAccount3: accounts.nftTokenAccount3,
+      nftMetadataAccount3: nftMetadataPDA3,
+      nftMint4: accounts.nftMint4,
+      nftTokenAccount4: accounts.nftTokenAccount4,
+      nftMetadataAccount4: nftMetadataPDA4,
+      nftMint5: accounts.nftMint5,
+      nftTokenAccount5: accounts.nftTokenAccount5,
+      nftMetadataAccount5: nftMetadataPDA5,
+      nftMint6: accounts.nftMint6,
+      nftTokenAccount6: accounts.nftTokenAccount6,
+      nftMetadataAccount6: nftMetadataPDA6,
+      owner,
+      tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
+      tokenProgram: TOKEN_PROGRAM_ID,
+      systemProgram: SystemProgram.programId,
+      rent: web3.SYSVAR_RENT_PUBKEY,
+    };
+
+    // printAccounts(instructionAccounts);
+
+    return [
+      await this.program.client.methods
+        .redeemMultiTransactionRugSetOwnershipRainTokensSecond()
+        .accounts(instructionAccounts)
+        .instruction(),
+    ];
+  }
+
+  async redeemMultiTransactionRugSetOwnershipRainTokensFinal(
     accounts: RedeemNFTSetForRainAccounts,
   ): Promise<web3.TransactionInstruction[]> {
     const owner = (this.program.client.provider as AnchorProvider).wallet.publicKey;
     const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
 
-    const [nftSetRedeemedStatePDA, _nftSetRedeemedStateBump] = await getNFTSetRedeemedStatePDA([
-        accounts.nftMint1,
-        accounts.nftMint2,
-        accounts.nftMint3,
-        accounts.nftMint4,
-        accounts.nftMint5,
-        accounts.nftMint6
-      ],
+    const [nftSetRedeemedStatePDA, _nftSetRedeemedStateBump] = await getNFTSetRedeemedStatePDA(
+      accounts.nftMint1,
       owner
     );
 
@@ -407,7 +451,6 @@ export class Instruction extends SolKitInstruction {
       nftTokenAccount6: accounts.nftTokenAccount6,
       nftMetadataAccount6: nftMetadataPDA6,
       owner,
-      // tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
       rainVault: rainVaultPDA,
       destRainTokenAccount: accounts.destRainTokenAccount,
       tokenProgram: TOKEN_PROGRAM_ID,
@@ -417,7 +460,7 @@ export class Instruction extends SolKitInstruction {
 
     return [
       await this.program.client.methods
-        .redeemMultiTransactionRugSetOwnershipRainTokensSecond()
+        .redeemMultiTransactionRugSetOwnershipRainTokensFinal()
         .accounts(instructionAccounts)
         .instruction(),
     ];

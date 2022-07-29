@@ -636,15 +636,29 @@ describe("redemptionV0", () => {
             });
             const updatedReedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
             assert.equal(updatedReedemerRainTokenAccountAmount, reedemerRainTokenAccountAmount);
-            const nftSetRedeemedState = await redemptionProgram.fetchNFTSetRedeemedState([
-              nftMint1,
-              nftMint2,
-              nftMint3,
-              nftMint4,
-              nftMint5,
-              nftMint6,
-            ]);
-            assert.equal(nftSetRedeemedState.status, NFTSetRedemptionStateStatus.VERIFIED);
+            const nftSetRedeemedState = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+            assert.equal(nftSetRedeemedState.status, NFTSetRedemptionStateStatus.VERIFYING);
+            // Ensure the first half is verified
+            assert.ok(nftSetRedeemedState.nft1.isVerified)
+            assert.ok(nftSetRedeemedState.nft1.key.equals(nftMint1))
+            assert.ok(nftSetRedeemedState.nft1.tokenKey.equals(nftTokenAccount1))
+            assert.ok(nftSetRedeemedState.nft2.isVerified)
+            assert.ok(nftSetRedeemedState.nft2.key.equals(nftMint2))
+            assert.ok(nftSetRedeemedState.nft2.tokenKey.equals(nftTokenAccount2))
+            assert.ok(nftSetRedeemedState.nft3.isVerified)
+            assert.ok(nftSetRedeemedState.nft3.key.equals(nftMint3))
+            assert.ok(nftSetRedeemedState.nft3.tokenKey.equals(nftTokenAccount3))
+
+            // Ensure the second half is not verified
+            assert.ok(!nftSetRedeemedState.nft4.isVerified)
+            assert.ok(nftSetRedeemedState.nft4.key.equals(nftMint4))
+            assert.ok(nftSetRedeemedState.nft4.tokenKey.equals(nftTokenAccount4))
+            assert.ok(!nftSetRedeemedState.nft5.isVerified)
+            assert.ok(nftSetRedeemedState.nft5.key.equals(nftMint5))
+            assert.ok(nftSetRedeemedState.nft5.tokenKey.equals(nftTokenAccount5))
+            assert.ok(!nftSetRedeemedState.nft6.isVerified)
+            assert.ok(nftSetRedeemedState.nft6.key.equals(nftMint6))
+            assert.ok(nftSetRedeemedState.nft6.tokenKey.equals(nftTokenAccount6))
           });
 
           it("redeemMultiTransactionRugSetOwnershipRainTokensSecond", async () => {
@@ -663,26 +677,311 @@ describe("redemptionV0", () => {
               nftTokenAccount5,
               nftMint6,
               nftTokenAccount6,
+            });
+            const updatedReedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+            assert.equal(updatedReedemerRainTokenAccountAmount, reedemerRainTokenAccountAmount);
+            const nftSetRedeemedState = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+            assert.equal(nftSetRedeemedState.status, NFTSetRedemptionStateStatus.VERIFIED);
+            // Ensure the first half is still verified
+            assert.ok(nftSetRedeemedState.nft1.isVerified)
+            assert.ok(nftSetRedeemedState.nft1.key.equals(nftMint1))
+            assert.ok(nftSetRedeemedState.nft1.tokenKey.equals(nftTokenAccount1))
+            assert.ok(nftSetRedeemedState.nft2.isVerified)
+            assert.ok(nftSetRedeemedState.nft2.key.equals(nftMint2))
+            assert.ok(nftSetRedeemedState.nft2.tokenKey.equals(nftTokenAccount2))
+            assert.ok(nftSetRedeemedState.nft3.isVerified)
+            assert.ok(nftSetRedeemedState.nft3.key.equals(nftMint3))
+            assert.ok(nftSetRedeemedState.nft3.tokenKey.equals(nftTokenAccount3))
+
+            // Ensure the second half is now verified
+            assert.ok(nftSetRedeemedState.nft4.isVerified)
+            assert.ok(nftSetRedeemedState.nft4.key.equals(nftMint4))
+            assert.ok(nftSetRedeemedState.nft4.tokenKey.equals(nftTokenAccount4))
+            assert.ok(nftSetRedeemedState.nft5.isVerified)
+            assert.ok(nftSetRedeemedState.nft5.key.equals(nftMint5))
+            assert.ok(nftSetRedeemedState.nft5.tokenKey.equals(nftTokenAccount5))
+            assert.ok(nftSetRedeemedState.nft6.isVerified)
+            assert.ok(nftSetRedeemedState.nft6.key.equals(nftMint6))
+            assert.ok(nftSetRedeemedState.nft6.tokenKey.equals(nftTokenAccount6))
+          });
+
+          it("redeemMultiTransactionRugSetOwnershipRainTokensFinal", async () => {
+            const reedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+
+            await redemptionProgram.redeemMultiTransactionRugSetOwnershipRainTokensFinal({
+              nftMint1,
+              nftTokenAccount1,
+              nftMint2,
+              nftTokenAccount2,
+              nftMint3,
+              nftTokenAccount3,
+              nftMint4,
+              nftTokenAccount4,
+              nftMint5,
+              nftTokenAccount5,
+              nftMint6,
+              nftTokenAccount6,
               destRainTokenAccount: redeemerRainTokenAccount.address,
             });
             const updatedReedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
             assert.equal(updatedReedemerRainTokenAccountAmount - reedemerRainTokenAccountAmount, 240416977);
-            const nftSetRedeemedState = await redemptionProgram.fetchNFTSetRedeemedState([
-              nftMint1,
-              nftMint2,
-              nftMint3,
-              nftMint4,
-              nftMint5,
-              nftMint6,
-            ]);
+            const nftSetRedeemedState = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1, { commitment: "confirmed" });
             assert.equal(nftSetRedeemedState.status, NFTSetRedemptionStateStatus.REDEEMED);
-            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint1));
-            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint2));
-            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint3));
-            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint4));
-            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint5));
-            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint6));
+
+            // Ensure the rugs are now marked as being redeemed in a set
+            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint1, { commitment: "confirmed" }));
+            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint2, { commitment: "confirmed" }));
+            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint3, { commitment: "confirmed" }));
+            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint4, { commitment: "confirmed" }));
+            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint5, { commitment: "confirmed" }));
+            assert.ok(await redemptionProgram.isRugSetNFTRedeemed(nftMint6, { commitment: "confirmed" }));
           });
+
+          it("redeemMultiTransactionRugSetOwnershipRainTokensFinal fails after redeemed", async () => {
+            const nftSetRedeemedStateBefore = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+            assert.equal(nftSetRedeemedStateBefore.status, NFTSetRedemptionStateStatus.REDEEMED);
+            const reedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+
+            assert.rejects(async () => await redemptionProgram.redeemMultiTransactionRugSetOwnershipRainTokensFinal({
+              nftMint1,
+              nftTokenAccount1,
+              nftMint2,
+              nftTokenAccount2,
+              nftMint3,
+              nftTokenAccount3,
+              nftMint4,
+              nftTokenAccount4,
+              nftMint5,
+              nftTokenAccount5,
+              nftMint6,
+              nftTokenAccount6,
+              destRainTokenAccount: redeemerRainTokenAccount.address,
+            }));
+
+            const updatedReedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+            assert.equal(updatedReedemerRainTokenAccountAmount, reedemerRainTokenAccountAmount);
+            const nftSetRedeemedStateAfter = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+            assert.equal(nftSetRedeemedStateAfter.status, NFTSetRedemptionStateStatus.REDEEMED);
+          });
+
+          it("redeemMultiTransactionRugSetOwnershipRainTokensFirst fails after redeemed", async () => {
+            const reedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+
+            const nftSetRedeemedStateBefore = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+            assert.equal(nftSetRedeemedStateBefore.status, NFTSetRedemptionStateStatus.REDEEMED);
+
+            assert.rejects(async () => await redemptionProgram.redeemMultiTransactionRugSetOwnershipRainTokensFirst({
+              nftMint1,
+              nftTokenAccount1,
+              nftMint2,
+              nftTokenAccount2,
+              nftMint3,
+              nftTokenAccount3,
+              nftMint4,
+              nftTokenAccount4,
+              nftMint5,
+              nftTokenAccount5,
+              nftMint6,
+              nftTokenAccount6,
+            }));
+            const updatedReedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+            assert.equal(updatedReedemerRainTokenAccountAmount, reedemerRainTokenAccountAmount);
+
+            const nftSetRedeemedStateAfter = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+            assert.equal(nftSetRedeemedStateAfter.status, NFTSetRedemptionStateStatus.REDEEMED);
+          });
+
+          it("redeemMultiTransactionRugSetOwnershipRainTokensSecond fails after redeemed", async () => {
+            const reedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+
+            const nftSetRedeemedStateBefore = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+            assert.equal(nftSetRedeemedStateBefore.status, NFTSetRedemptionStateStatus.REDEEMED);
+
+            assert.rejects(async () => await redemptionProgram.redeemMultiTransactionRugSetOwnershipRainTokensSecond({
+              nftMint1,
+              nftTokenAccount1,
+              nftMint2,
+              nftTokenAccount2,
+              nftMint3,
+              nftTokenAccount3,
+              nftMint4,
+              nftTokenAccount4,
+              nftMint5,
+              nftTokenAccount5,
+              nftMint6,
+              nftTokenAccount6,
+            }));
+            const updatedReedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+            assert.equal(updatedReedemerRainTokenAccountAmount, reedemerRainTokenAccountAmount);
+
+            const nftSetRedeemedStateAfter = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+            assert.equal(nftSetRedeemedStateAfter.status, NFTSetRedemptionStateStatus.REDEEMED);
+          });
+
+          it("single transaction rug set redemption fails after multi-transaction redeem", async () => {
+            const reedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+            assert.rejects(async () => await redemptionProgram.redeemRugSetOwnershipRainTokens({}, {
+              nftMint1,
+              nftTokenAccount1,
+              nftMint2,
+              nftTokenAccount2,
+              nftMint3,
+              nftTokenAccount3,
+              nftMint4,
+              nftTokenAccount4,
+              nftMint5,
+              nftTokenAccount5,
+              nftMint6,
+              nftTokenAccount6,
+              destRainTokenAccount: redeemerRainTokenAccount.address,
+            }));
+            const updatedReedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+            assert.equal(updatedReedemerRainTokenAccountAmount, reedemerRainTokenAccountAmount);
+          });
+
+          describe("mid_multi_transaction_switch_fails", () => {
+            let nftMint1: anchor.web3.PublicKey,
+              nftTokenAccount1: anchor.web3.PublicKey,
+              nftMint2: anchor.web3.PublicKey,
+              nftTokenAccount2: anchor.web3.PublicKey,
+              nftMint3: anchor.web3.PublicKey,
+              nftTokenAccount3: anchor.web3.PublicKey,
+              nftMint4: anchor.web3.PublicKey,
+              nftTokenAccount4: anchor.web3.PublicKey,
+              nftMint5: anchor.web3.PublicKey,
+              nftTokenAccount5: anchor.web3.PublicKey,
+              nftMint6: anchor.web3.PublicKey,
+              nftTokenAccount6: anchor.web3.PublicKey;
+            before(async () => {
+              [nftMint1, nftTokenAccount1] = await createNFT(
+                connection,
+                rugsMintKeypair,
+                wallet.publicKey,
+                "https://www.arweave.net/V9r7mWhLaLxDFh0nAAlZ5Vm_TTKNW9AVLGTtKKez-VM/"
+              );
+              [nftMint2, nftTokenAccount2] = await createNFT(
+                connection,
+                rugsMintKeypair,
+                wallet.publicKey,
+                "https://arweave.net/3iifbniGU50dQBTh-hg8hgKlaXDLYmOmp553DBNnVVQ"
+              );
+              [nftMint3, nftTokenAccount3] = await createNFT(
+                connection,
+                rugsMintKeypair,
+                wallet.publicKey,
+                "https://arweave.net/Aq8BIBtKN1gLvlqwoi-xM1EyrNUCxOhYbhY05Z_rwys"
+              );
+              [nftMint4, nftTokenAccount4] = await createNFT(
+                connection,
+                rugsMintKeypair,
+                wallet.publicKey,
+                "https://arweave.net/gjjF6VquwpQeMpHQ0w0NuaVlOvuOx6sDNLMqiSQ-qT0"
+              );
+              [nftMint5, nftTokenAccount5] = await createNFT(
+                connection,
+                rugsMintKeypair,
+                wallet.publicKey,
+                "https://arweave.net/khqPV34uTWnrIHH95RVemBX-71rb8JXunlYqLbRWEOM"
+              );
+              [nftMint6, nftTokenAccount6] = await createNFT(
+                connection,
+                rugsMintKeypair,
+                wallet.publicKey,
+                "https://arweave.net/vg4TYQDkB8hAOM79yk9si4J8JC1iv7B_JiMItzvSKm4"
+              );
+            });
+
+            it("only redeems once when switching from multi-transaction to single, mid verification", async () => {
+              const reedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+
+              await redemptionProgram.redeemMultiTransactionRugSetOwnershipRainTokensFirst({
+                nftMint1,
+                nftTokenAccount1,
+                nftMint2,
+                nftTokenAccount2,
+                nftMint3,
+                nftTokenAccount3,
+                nftMint4,
+                nftTokenAccount4,
+                nftMint5,
+                nftTokenAccount5,
+                nftMint6,
+                nftTokenAccount6,
+              });
+              const updatedReedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+              assert.equal(updatedReedemerRainTokenAccountAmount, reedemerRainTokenAccountAmount);
+              const nftSetRedeemedState = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+              assert.equal(nftSetRedeemedState.status, NFTSetRedemptionStateStatus.VERIFYING);
+
+              const reedemerRainTokenAccountAmount2 = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+              await redemptionProgram.redeemMultiTransactionRugSetOwnershipRainTokensSecond({
+                nftMint1,
+                nftTokenAccount1,
+                nftMint2,
+                nftTokenAccount2,
+                nftMint3,
+                nftTokenAccount3,
+                nftMint4,
+                nftTokenAccount4,
+                nftMint5,
+                nftTokenAccount5,
+                nftMint6,
+                nftTokenAccount6,
+              });
+              const updatedReedemerRainTokenAccountAmount2 = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+              assert.equal(updatedReedemerRainTokenAccountAmount2, reedemerRainTokenAccountAmount2);
+              const nftSetRedeemedState2 = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+              assert.equal(nftSetRedeemedState2.status, NFTSetRedemptionStateStatus.VERIFIED);
+
+              // SWITCH Mid multi transaction to single transaction
+              const reedemerRainTokenAccountAmount3 = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+              await redemptionProgram.redeemRugSetOwnershipRainTokens({}, {
+                nftMint1,
+                nftTokenAccount1,
+                nftMint2,
+                nftTokenAccount2,
+                nftMint3,
+                nftTokenAccount3,
+                nftMint4,
+                nftTokenAccount4,
+                nftMint5,
+                nftTokenAccount5,
+                nftMint6,
+                nftTokenAccount6,
+                destRainTokenAccount: redeemerRainTokenAccount.address,
+              });
+              const updatedReedemerRainTokenAccountAmount3 = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+              assert.equal(updatedReedemerRainTokenAccountAmount3 - reedemerRainTokenAccountAmount3, 240416977);
+              //////////////////////////////////////////////////////////////////////////////////////////
+
+
+              // SWITCHING back to mult-transaction after single transaction success should no longer redeem
+              const nftSetRedeemedStateBefore = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+              assert.equal(nftSetRedeemedStateBefore.status, NFTSetRedemptionStateStatus.VERIFIED);
+              const reedemerRainTokenAccountAmount4 = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+              assert.rejects(async () => await redemptionProgram.redeemMultiTransactionRugSetOwnershipRainTokensFinal({
+                nftMint1,
+                nftTokenAccount1,
+                nftMint2,
+                nftTokenAccount2,
+                nftMint3,
+                nftTokenAccount3,
+                nftMint4,
+                nftTokenAccount4,
+                nftMint5,
+                nftTokenAccount5,
+                nftMint6,
+                nftTokenAccount6,
+                destRainTokenAccount: redeemerRainTokenAccount.address,
+              }));
+
+              const updatedReedemerRainTokenAccountAmount4 = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;
+              assert.equal(updatedReedemerRainTokenAccountAmount4, reedemerRainTokenAccountAmount4);
+              const nftSetRedeemedStateAfter = await redemptionProgram.fetchNFTSetRedeemedState(nftMint1);
+              assert.equal(nftSetRedeemedStateAfter.status, NFTSetRedemptionStateStatus.VERIFIED);
+              //////////////////////////////////////////////////////////////////////////////////////////
+            });
+          })
         });
       });
     });
