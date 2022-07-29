@@ -344,6 +344,8 @@ pub mod redemption_v0 {
     pub fn redeem_multi_transaction_rug_set_ownership_rain_tokens_first<'info>(
         ctx: Context<RedeemMultiTransactionNFTSetForRainTXFirst<'info>>
     ) -> Result<()> {
+        msg!("Start");
+        msg!(&ctx.accounts.nft_set_redeemed_state.key().to_string());
         treasury_enabled_or_error(&ctx.accounts.treasury).unwrap();
         let token_metadata_program_key = &ctx.accounts.token_metadata_program.key();
 
@@ -714,14 +716,6 @@ fn get_slothash(
     Ok(u64::from_le_bytes(*most_recent))
 }
 
-fn sort_uniq_array_for_pda(
-    array: &mut [String],
-) -> String {
-    assert!(has_unique_elements(array.iter()));
-    array.sort();
-    array.concat()
-}
-
 #[derive(Accounts)]
 pub struct InitializeTreasury<'info> {
     #[account(
@@ -950,17 +944,9 @@ pub struct RedeemMultiTransactionNFTSetForRainTXFirst<'info> {
         init,
         seeds = [
             PREFIX,
-            b"redemption",
             b"set_redeemed_state",
             owner.key().as_ref(),
-            sort_uniq_array_for_pda(&mut [
-                nft_mint_1.key().to_string(),
-                nft_mint_2.key().to_string(),
-                nft_mint_3.key().to_string(),
-                nft_mint_4.key().to_string(),
-                nft_mint_5.key().to_string(),
-                nft_mint_6.key().to_string(),
-            ]).as_bytes()
+            nft_mint_1.key().as_ref(),
         ],
         space = NFTSetRedemptionState::SPACE,
         payer = owner,
@@ -1026,17 +1012,9 @@ pub struct RedeemMultiTransactionNFTSetForRainTXSecond<'info> {
         mut,
         seeds = [
             PREFIX,
-            b"redemption",
             b"set_redeemed_state",
             owner.key().as_ref(),
-            sort_uniq_array_for_pda(&mut [
-                nft_mint_1.key().to_string(),
-                nft_mint_2.key().to_string(),
-                nft_mint_3.key().to_string(),
-                nft_mint_4.key().to_string(),
-                nft_mint_5.key().to_string(),
-                nft_mint_6.key().to_string(),
-            ]).as_bytes()
+            nft_mint_1.key().as_ref(),
         ],
         bump,
     )]
@@ -1130,9 +1108,9 @@ pub struct RedeemMultiTransactionNFTSetForRainTXSecond<'info> {
     #[account(mut)]
     owner: Signer<'info>,
 
-    #[account(address = Pubkey::new(metaplex_token_metadata::id().as_ref()))]
-    /// CHECK: account is checked that the address matches metaplex_token_metadata::id crate
-    token_metadata_program: AccountInfo<'info>,
+    // #[account(address = Pubkey::new(metaplex_token_metadata::id().as_ref()))]
+    // /// CHECK: account is checked that the address matches metaplex_token_metadata::id crate
+    // token_metadata_program: AccountInfo<'info>,
 
     #[account(
         mut,
@@ -1189,7 +1167,7 @@ pub struct NFTSetRedemptionState {
     pub nft_6: NFTRedemptionState,
 }
 impl NFTSetRedemptionState {
-    const SPACE: usize = (NFTRedemptionState::SPACE * 6) + 2 + DISCRIMINATOR_SIZE;
+    const SPACE: usize = (NFTRedemptionState::SPACE * 6) + 1 + DISCRIMINATOR_SIZE + 8;
 }
 
 #[derive(AnchorDeserialize, AnchorSerialize, Copy, Clone, Debug, PartialEq, Eq)]
