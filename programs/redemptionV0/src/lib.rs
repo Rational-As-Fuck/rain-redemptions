@@ -407,7 +407,7 @@ pub mod redemption_v0 {
         nft_set_redemption_state.nft_3.metadata_key = ctx.accounts.nft_metadata_account_3.key();
         nft_set_redemption_state.nft_3.is_verified = true;
 
-        nft_set_redemption_state.status = NFTSetRedemptionStateStatus::VERIFYING;
+        nft_set_redemption_state.status = NftSetRedemptionStateStatus::VERIFYING;
         Ok(())
     }
 
@@ -420,7 +420,7 @@ pub mod redemption_v0 {
         let token_metadata_program_key = &ctx.accounts.token_metadata_program.key();
 
         let nft_set_redemption_state = &mut ctx.accounts.nft_set_redeemed_state;
-        assert_eq!(nft_set_redemption_state.status, NFTSetRedemptionStateStatus::VERIFYING);
+        assert_eq!(nft_set_redemption_state.status, NftSetRedemptionStateStatus::VERIFYING);
 
         // Check the first half of the set of token accounts are still owned by the signer.
         // The second half will be verified in calls to `verify_nft_ownership` below.
@@ -491,7 +491,7 @@ pub mod redemption_v0 {
         nft_set_redemption_state.nft_6.token_key = ctx.accounts.nft_token_account_6.key();
         nft_set_redemption_state.nft_6.is_verified = true;
 
-        nft_set_redemption_state.status = NFTSetRedemptionStateStatus::VERIFIED;
+        nft_set_redemption_state.status = NftSetRedemptionStateStatus::VERIFIED;
         Ok(())
     }
 
@@ -499,7 +499,7 @@ pub mod redemption_v0 {
         ctx: Context<RedeemMultiTransactionNFTSetForRainTXFinal<'info>>
     ) -> Result<()> {
         let nft_set_redemption_state = &mut ctx.accounts.nft_set_redeemed_state;
-        assert_eq!(nft_set_redemption_state.status, NFTSetRedemptionStateStatus::VERIFIED);
+        assert_eq!(nft_set_redemption_state.status, NftSetRedemptionStateStatus::VERIFIED);
 
         // Check the token accounts are still owned by the signer.
         assert!(&ctx.accounts.nft_token_account_1.owner.eq(&ctx.accounts.owner.key()));
@@ -594,7 +594,7 @@ pub mod redemption_v0 {
         nft_redeemed_6.bump = *ctx.bumps.get("nft_redeemed_6").unwrap();
         /////////////////////////////////////////////////////////////////////////////////////
 
-        nft_set_redemption_state.status = NFTSetRedemptionStateStatus::REDEEMED;
+        nft_set_redemption_state.status = NftSetRedemptionStateStatus::REDEEMED;
         Ok(())
     }
 }
@@ -1002,11 +1002,11 @@ pub struct RedeemMultiTransactionNFTSetForRainTXFirst<'info> {
             owner.key().as_ref(),
             nft_mint_1.key().as_ref(),
         ],
-        space = NFTSetRedemptionState::SPACE,
+        space = NftSetRedemptionState::SPACE,
         payer = owner,
         bump,
     )]
-    nft_set_redeemed_state: Box<Account<'info, NFTSetRedemptionState>>,
+    nft_set_redeemed_state: Box<Account<'info, NftSetRedemptionState>>,
 
     nft_mint_1: Box<Account<'info, Mint>>,
     nft_token_account_1: Box<Account<'info, TokenAccount>>,
@@ -1072,7 +1072,7 @@ pub struct RedeemMultiTransactionNFTSetForRainTXSecond<'info> {
         ],
         bump,
     )]
-    nft_set_redeemed_state: Box<Account<'info, NFTSetRedemptionState>>,
+    nft_set_redeemed_state: Box<Account<'info, NftSetRedemptionState>>,
 
     nft_mint_1: Box<Account<'info, Mint>>,
     nft_token_account_1: Box<Account<'info, TokenAccount>>,
@@ -1138,7 +1138,7 @@ pub struct RedeemMultiTransactionNFTSetForRainTXFinal<'info> {
         ],
         bump,
     )]
-    nft_set_redeemed_state: Box<Account<'info, NFTSetRedemptionState>>,
+    nft_set_redeemed_state: Box<Account<'info, NftSetRedemptionState>>,
     #[account(
         init,
         seeds = [PREFIX, b"redemption", b"rug_set", nft_mint_1.key().as_ref()],
@@ -1277,38 +1277,38 @@ impl NFTRedeemed {
 
 #[account]
 #[derive(Default)]
-pub struct NFTSetRedemptionState {
-    pub status: NFTSetRedemptionStateStatus,
-    pub nft_1: NFTRedemptionState,
-    pub nft_2: NFTRedemptionState,
-    pub nft_3: NFTRedemptionState,
-    pub nft_4: NFTRedemptionState,
-    pub nft_5: NFTRedemptionState,
-    pub nft_6: NFTRedemptionState,
+pub struct NftSetRedemptionState {
+    pub status: NftSetRedemptionStateStatus,
+    pub nft_1: NftRedemptionState,
+    pub nft_2: NftRedemptionState,
+    pub nft_3: NftRedemptionState,
+    pub nft_4: NftRedemptionState,
+    pub nft_5: NftRedemptionState,
+    pub nft_6: NftRedemptionState,
 }
-impl NFTSetRedemptionState {
-    const SPACE: usize = (NFTRedemptionState::SPACE * 6) + 1 + DISCRIMINATOR_SIZE + 8;
+impl NftSetRedemptionState {
+    const SPACE: usize = (NftRedemptionState::SPACE * 6) + 1 + DISCRIMINATOR_SIZE + 8;
 }
 
 #[derive(AnchorDeserialize, AnchorSerialize, Copy, Clone, Debug, PartialEq, Eq)]
-pub enum NFTSetRedemptionStateStatus {
+pub enum NftSetRedemptionStateStatus {
     INIT,
     VERIFYING,
     VERIFIED,
     REDEEMED,
 }
-impl Default for NFTSetRedemptionStateStatus {
-    fn default() -> Self { NFTSetRedemptionStateStatus::INIT }
+impl Default for NftSetRedemptionStateStatus {
+    fn default() -> Self { NftSetRedemptionStateStatus::INIT }
 }
 
 #[derive(AnchorDeserialize, AnchorSerialize, Copy, Clone, Debug, Default)]
-pub struct NFTRedemptionState {
+pub struct NftRedemptionState {
     pub key: Pubkey,
     pub token_key: Pubkey,
     pub metadata_key: Pubkey,
     pub is_verified: bool,
 }
-impl NFTRedemptionState {
+impl NftRedemptionState {
     const SPACE: usize = (32 * 3) + 1;
 }
 
