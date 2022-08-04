@@ -1,9 +1,14 @@
-import { web3 } from "@project-serum/anchor";
-import { Program } from "@raindrop-studios/sol-kit";
+import { AnchorProvider, web3 } from "@project-serum/anchor";
+import { Program, SendOptions, Transaction } from "@raindrop-studios/sol-kit";
 
 import * as RedemptionInstruction from "./instructions/redemption";
-import { Treasury } from "../state/redemption";
-import { getTreasuryPDA, getNFTRedeemedPDA, getNFTSetRedeemedPDA } from "../pda/redemption";
+import { Treasury, NFTSetRedemptionState } from "../state/redemption";
+import {
+  getTreasuryPDA,
+  getNFTRedeemedPDA,
+  getNFTSetRedeemedPDA,
+  getNFTSetRedeemedStatePDA
+} from "../pda/redemption";
 import { REDEMPTION_PROGRAM_ID } from "../constants/programIds";
 
 export class Redemption extends Program.Program {
@@ -150,6 +155,70 @@ export class Redemption extends Program.Program {
   ): Promise<{ txid: string; slot: number }> {
     const instruction = await this.instruction.redeemRugSetOwnershipRainTokens(
       args,
+      accounts
+    );
+
+    return this.sendWithRetry(
+      instruction,
+      [],
+      options
+    );
+  }
+
+  async fetchNFTSetRedeemedState(
+    nftMint: web3.PublicKey,
+    options: { commitment: web3.Commitment } = { commitment: "confirmed" },
+  ): Promise<NFTSetRedemptionState> {
+    const owner = (this.client.provider as AnchorProvider).wallet.publicKey;
+    const [nftSetRedeemedStatePDA, _nftSetRedeemedStateBump] = await getNFTSetRedeemedStatePDA(
+      nftMint,
+      owner
+    );
+
+    console.log(nftSetRedeemedStatePDA.toString());
+    try {
+      const nftSetRedeemedState = await this.client.account.nftSetRedemptionState.fetch(nftSetRedeemedStatePDA, options.commitment);
+      return new NFTSetRedemptionState(nftSetRedeemedState);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async redeemMultiTransactionRugSetOwnershipRainTokensFirst(
+    accounts: RedemptionInstruction.RedeemMultiTransactionNFTSetVerifyAccounts,
+    options?: SendOptions,
+  ): Promise<Transaction.SendTransactionResult> {
+    const instruction = await this.instruction.redeemMultiTransactionRugSetOwnershipRainTokensFirst(
+      accounts
+    );
+
+    return this.sendWithRetry(
+      instruction,
+      [],
+      options
+    );
+  }
+
+  async redeemMultiTransactionRugSetOwnershipRainTokensSecond(
+    accounts: RedemptionInstruction.RedeemMultiTransactionNFTSetVerifyAccounts,
+    options?: SendOptions,
+  ): Promise<Transaction.SendTransactionResult> {
+    const instruction = await this.instruction.redeemMultiTransactionRugSetOwnershipRainTokensSecond(
+      accounts
+    );
+
+    return this.sendWithRetry(
+      instruction,
+      [],
+      options
+    );
+  }
+
+  async redeemMultiTransactionRugSetOwnershipRainTokensFinal(
+    accounts: RedemptionInstruction.RedeemNFTSetForRainAccounts,
+    options?: SendOptions,
+  ) {
+    const instruction = await this.instruction.redeemMultiTransactionRugSetOwnershipRainTokensFinal(
       accounts
     );
 

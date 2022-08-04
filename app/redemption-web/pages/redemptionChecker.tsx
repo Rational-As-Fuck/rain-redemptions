@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react';
 import { Metaplex, Nft } from "@metaplex-foundation/js";
 
 import { Redemption } from "@raindrop-studios/rain-redemptions";
+import { Wallet } from "@raindrop-studios/sol-kit";
 
 import pandaLogo from '../public/LogoTransp.png';
 import wordLogo from '../public/WordLogo.png';
 
 import { PROGRAM_CONNECTION, CREATORS } from '../lib/constants';
 import { getDTPType, DTP_TYPE } from '../lib/nft';
-import WebWallet from "../lib/WebWallet";
 
 const lookupNFT = async (program: Redemption | undefined, mintAddress: string, setResults: any) => {
   console.log("lookupNFT");
@@ -82,7 +82,7 @@ const RedemptionChecker: NextPage = () => {
   useEffect(() => {
       const provider = new Anchor.AnchorProvider(
         PROGRAM_CONNECTION, 
-        WebWallet.fakeWallet(),
+        Wallet.WebWallet.fakeWallet(),
         {},
       );
       const config = {
@@ -101,7 +101,7 @@ const RedemptionChecker: NextPage = () => {
     "w-56",
   ];
 
-  if (mintAddress.length !== 44) {
+  if (mintAddress.length <= 42) {
     buttonClassName = [
       ...buttonClassName,
       "bg-slate-300",
@@ -192,7 +192,7 @@ const RedemptionChecker: NextPage = () => {
             onChange={(event) => setMintAddress(event.target.value)
             }
             onKeyUp={(event) => {
-              if (event.key === "Enter" && mintAddress.length === 44) {
+              if (event.key === "Enter" && mintAddress.length >= 43) {
                 lookupNFT(redemptionProgram, mintAddress, setRedemptionResult)
               }
             }}
@@ -200,7 +200,7 @@ const RedemptionChecker: NextPage = () => {
           ></input>
         </label>
         <button 
-          disabled={mintAddress.length !== 44}
+          disabled={mintAddress.length <= 42}
           className={buttonClassName.join(" ")}
           onClick={() => lookupNFT(redemptionProgram, mintAddress, setRedemptionResult)}
         >Check NFT</button>

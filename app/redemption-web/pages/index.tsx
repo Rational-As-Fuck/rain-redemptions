@@ -6,6 +6,7 @@ import * as Anchor from "@project-serum/anchor";
 import { useEffect, useState } from 'react';
 import Head from 'next/head'
 
+import { Wallet } from "@raindrop-studios/sol-kit";
 import { Redemption } from "@raindrop-studios/rain-redemptions";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 
@@ -13,7 +14,6 @@ import NFTGrid from "../components/NFTGrid";
 import Header from "../components/Header";
 import Footer from '../components/Footer';
 import Loading from "../components/Loading";
-import WebWallet from "../lib/WebWallet";
 import { fetchNFTs, updateIfNftsAreRedeemed } from "../lib/nftFetcher";
 import { NFT } from '../lib/nft';
 import { WALLET_PUBKEY, PROGRAM_CONNECTION, RAIN_MINT } from '../lib/constants';
@@ -80,7 +80,7 @@ const Home: NextPage = () => {
       console.log("public key top");
       const provider = new Anchor.AnchorProvider(
         PROGRAM_CONNECTION, 
-        new WebWallet(publicKey, signTransaction, signAllTransactions, sendTransaction), {
+        new Wallet.WebWallet(publicKey, signTransaction, signAllTransactions, sendTransaction), {
           preflightCommitment: "processed",
           commitment: "processed",
         }

@@ -340,6 +340,263 @@ pub mod redemption_v0 {
 
         Ok(())
     }
+
+    pub fn redeem_multi_transaction_rug_set_ownership_rain_tokens_first<'info>(
+        ctx: Context<RedeemMultiTransactionNFTSetForRainTXFirst<'info>>
+    ) -> Result<()> {
+        msg!("Start");
+        msg!(&ctx.accounts.nft_set_redeemed_state.key().to_string());
+        treasury_enabled_or_error(&ctx.accounts.treasury).unwrap();
+        let token_metadata_program_key = &ctx.accounts.token_metadata_program.key();
+
+        let nft_set_redemption_state = &mut ctx.accounts.nft_set_redeemed_state;
+
+        nft_set_redemption_state.nft_1.key = ctx.accounts.nft_mint_1.key();
+        nft_set_redemption_state.nft_2.key = ctx.accounts.nft_mint_2.key();
+        nft_set_redemption_state.nft_3.key = ctx.accounts.nft_mint_3.key();
+        nft_set_redemption_state.nft_4.key = ctx.accounts.nft_mint_4.key();
+        nft_set_redemption_state.nft_5.key = ctx.accounts.nft_mint_5.key();
+        nft_set_redemption_state.nft_6.key = ctx.accounts.nft_mint_6.key();
+
+        nft_set_redemption_state.nft_1.token_key = ctx.accounts.nft_token_account_1.key();
+        nft_set_redemption_state.nft_2.token_key = ctx.accounts.nft_token_account_2.key();
+        nft_set_redemption_state.nft_3.token_key = ctx.accounts.nft_token_account_3.key();
+        nft_set_redemption_state.nft_4.token_key = ctx.accounts.nft_token_account_4.key();
+        nft_set_redemption_state.nft_5.token_key = ctx.accounts.nft_token_account_5.key();
+        nft_set_redemption_state.nft_6.token_key = ctx.accounts.nft_token_account_6.key();
+
+        // Only need to verify the owner of the nft token accounts for the second half of the set.
+        // The first half is verified in the calls to `verify_nft_ownership` below.
+        assert!(&ctx.accounts.nft_token_account_4.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_5.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_6.owner.eq(&ctx.accounts.owner.key()));
+
+        verify_nft_ownership(
+            &ctx.accounts.nft_token_account_1,
+            &ctx.accounts.nft_mint_1.key(),
+            &ctx.accounts.owner,
+            &token_metadata_program_key,
+            None,
+            &ctx.accounts.nft_metadata_account_1,
+            RUG_VERIFIED_CREATOR
+        ).unwrap();
+        nft_set_redemption_state.nft_1.metadata_key = ctx.accounts.nft_metadata_account_1.key();
+        nft_set_redemption_state.nft_1.is_verified = true;
+
+        verify_nft_ownership(
+            &ctx.accounts.nft_token_account_2,
+            &ctx.accounts.nft_mint_2.key(),
+            &ctx.accounts.owner,
+            &token_metadata_program_key,
+            None,
+            &ctx.accounts.nft_metadata_account_2,
+            RUG_VERIFIED_CREATOR
+        ).unwrap();
+        nft_set_redemption_state.nft_2.metadata_key = ctx.accounts.nft_metadata_account_2.key();
+        nft_set_redemption_state.nft_2.is_verified = true;
+
+        verify_nft_ownership(
+            &ctx.accounts.nft_token_account_3,
+            &ctx.accounts.nft_mint_3.key(),
+            &ctx.accounts.owner,
+            &token_metadata_program_key,
+            None,
+            &ctx.accounts.nft_metadata_account_3,
+            RUG_VERIFIED_CREATOR
+        ).unwrap();
+        nft_set_redemption_state.nft_3.metadata_key = ctx.accounts.nft_metadata_account_3.key();
+        nft_set_redemption_state.nft_3.is_verified = true;
+
+        nft_set_redemption_state.status = NftSetRedemptionStateStatus::VERIFYING;
+        Ok(())
+    }
+
+    pub fn redeem_multi_transaction_rug_set_ownership_rain_tokens_second<'info>(
+        ctx: Context<RedeemMultiTransactionNFTSetForRainTXSecond<'info>>
+    ) -> Result<()> {
+        msg!("Start");
+        msg!(&ctx.accounts.nft_set_redeemed_state.key().to_string());
+        treasury_enabled_or_error(&ctx.accounts.treasury).unwrap();
+        let token_metadata_program_key = &ctx.accounts.token_metadata_program.key();
+
+        let nft_set_redemption_state = &mut ctx.accounts.nft_set_redeemed_state;
+        assert_eq!(nft_set_redemption_state.status, NftSetRedemptionStateStatus::VERIFYING);
+
+        // Check the first half of the set of token accounts are still owned by the signer.
+        // The second half will be verified in calls to `verify_nft_ownership` below.
+        assert!(&ctx.accounts.nft_token_account_1.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_2.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_3.owner.eq(&ctx.accounts.owner.key()));
+
+        // Verify the same first half of the set of nft accounts match from the first verification step.
+        assert!(nft_set_redemption_state.nft_1.key.eq(&ctx.accounts.nft_mint_1.key()));
+        assert!(nft_set_redemption_state.nft_1.metadata_key.eq(&ctx.accounts.nft_metadata_account_1.key()));
+        assert!(nft_set_redemption_state.nft_1.token_key.eq(&ctx.accounts.nft_token_account_1.key()));
+        assert!(nft_set_redemption_state.nft_1.is_verified);
+
+        assert!(nft_set_redemption_state.nft_2.key.eq(&ctx.accounts.nft_mint_2.key()));
+        assert!(nft_set_redemption_state.nft_2.metadata_key.eq(&ctx.accounts.nft_metadata_account_2.key()));
+        assert!(nft_set_redemption_state.nft_2.token_key.eq(&ctx.accounts.nft_token_account_2.key()));
+        assert!(nft_set_redemption_state.nft_2.is_verified);
+
+        assert!(nft_set_redemption_state.nft_3.key.eq(&ctx.accounts.nft_mint_3.key()));
+        assert!(nft_set_redemption_state.nft_3.metadata_key.eq(&ctx.accounts.nft_metadata_account_3.key()));
+        assert!(nft_set_redemption_state.nft_3.token_key.eq(&ctx.accounts.nft_token_account_3.key()));
+        assert!(nft_set_redemption_state.nft_3.is_verified);
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        // Verify the same second half of the set of nft accounts match from the first verification step.
+        // We will verify the rest of the second half of the accounts are valid below.
+        assert!(nft_set_redemption_state.nft_4.key.eq(&ctx.accounts.nft_mint_4.key()));
+        assert!(nft_set_redemption_state.nft_5.key.eq(&ctx.accounts.nft_mint_5.key()));
+        assert!(nft_set_redemption_state.nft_6.key.eq(&ctx.accounts.nft_mint_6.key()));
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        verify_nft_ownership(
+            &ctx.accounts.nft_token_account_4,
+            &ctx.accounts.nft_mint_4.key(),
+            &ctx.accounts.owner,
+            &token_metadata_program_key,
+            None,
+            &ctx.accounts.nft_metadata_account_4,
+            RUG_VERIFIED_CREATOR
+        ).unwrap();
+        nft_set_redemption_state.nft_4.metadata_key = ctx.accounts.nft_metadata_account_4.key();
+        nft_set_redemption_state.nft_4.token_key = ctx.accounts.nft_token_account_4.key();
+        nft_set_redemption_state.nft_4.is_verified = true;
+
+        verify_nft_ownership(
+            &ctx.accounts.nft_token_account_5,
+            &ctx.accounts.nft_mint_5.key(),
+            &ctx.accounts.owner,
+            &token_metadata_program_key,
+            None,
+            &ctx.accounts.nft_metadata_account_5,
+            RUG_VERIFIED_CREATOR
+        ).unwrap();
+        nft_set_redemption_state.nft_5.metadata_key = ctx.accounts.nft_metadata_account_5.key();
+        nft_set_redemption_state.nft_5.token_key = ctx.accounts.nft_token_account_5.key();
+        nft_set_redemption_state.nft_5.is_verified = true;
+
+        verify_nft_ownership(
+            &ctx.accounts.nft_token_account_6,
+            &ctx.accounts.nft_mint_6.key(),
+            &ctx.accounts.owner,
+            &token_metadata_program_key,
+            None,
+            &ctx.accounts.nft_metadata_account_6,
+            RUG_VERIFIED_CREATOR
+        ).unwrap();
+        nft_set_redemption_state.nft_6.metadata_key = ctx.accounts.nft_metadata_account_6.key();
+        nft_set_redemption_state.nft_6.token_key = ctx.accounts.nft_token_account_6.key();
+        nft_set_redemption_state.nft_6.is_verified = true;
+
+        nft_set_redemption_state.status = NftSetRedemptionStateStatus::VERIFIED;
+        Ok(())
+    }
+
+    pub fn redeem_multi_transaction_rug_set_ownership_rain_tokens_final<'info>(
+        ctx: Context<RedeemMultiTransactionNFTSetForRainTXFinal<'info>>
+    ) -> Result<()> {
+        let nft_set_redemption_state = &mut ctx.accounts.nft_set_redeemed_state;
+        assert_eq!(nft_set_redemption_state.status, NftSetRedemptionStateStatus::VERIFIED);
+
+        // Check the token accounts are still owned by the signer.
+        assert!(&ctx.accounts.nft_token_account_1.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_2.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_3.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_4.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_5.owner.eq(&ctx.accounts.owner.key()));
+        assert!(&ctx.accounts.nft_token_account_6.owner.eq(&ctx.accounts.owner.key()));
+        /////////////////////////////////////////////////////////////////////
+
+        // Check the nft accounts match the redemption state that has been verified
+        assert!(nft_set_redemption_state.nft_1.key.eq(&ctx.accounts.nft_mint_1.key()));
+        assert!(nft_set_redemption_state.nft_1.metadata_key.eq(&ctx.accounts.nft_metadata_account_1.key()));
+        assert!(nft_set_redemption_state.nft_1.token_key.eq(&ctx.accounts.nft_token_account_1.key()));
+        assert!(nft_set_redemption_state.nft_1.is_verified);
+
+        assert!(nft_set_redemption_state.nft_2.key.eq(&ctx.accounts.nft_mint_2.key()));
+        assert!(nft_set_redemption_state.nft_2.metadata_key.eq(&ctx.accounts.nft_metadata_account_2.key()));
+        assert!(nft_set_redemption_state.nft_2.token_key.eq(&ctx.accounts.nft_token_account_2.key()));
+        assert!(nft_set_redemption_state.nft_2.is_verified);
+
+        assert!(nft_set_redemption_state.nft_3.key.eq(&ctx.accounts.nft_mint_3.key()));
+        assert!(nft_set_redemption_state.nft_3.metadata_key.eq(&ctx.accounts.nft_metadata_account_3.key()));
+        assert!(nft_set_redemption_state.nft_3.token_key.eq(&ctx.accounts.nft_token_account_3.key()));
+        assert!(nft_set_redemption_state.nft_3.is_verified);
+
+        assert!(nft_set_redemption_state.nft_4.key.eq(&ctx.accounts.nft_mint_4.key()));
+        assert!(nft_set_redemption_state.nft_4.metadata_key.eq(&ctx.accounts.nft_metadata_account_4.key()));
+        assert!(nft_set_redemption_state.nft_4.token_key.eq(&ctx.accounts.nft_token_account_4.key()));
+        assert!(nft_set_redemption_state.nft_4.is_verified);
+
+        assert!(nft_set_redemption_state.nft_5.key.eq(&ctx.accounts.nft_mint_5.key()));
+        assert!(nft_set_redemption_state.nft_5.metadata_key.eq(&ctx.accounts.nft_metadata_account_5.key()));
+        assert!(nft_set_redemption_state.nft_5.token_key.eq(&ctx.accounts.nft_token_account_5.key()));
+        assert!(nft_set_redemption_state.nft_5.is_verified);
+
+        assert!(nft_set_redemption_state.nft_6.key.eq(&ctx.accounts.nft_mint_6.key()));
+        assert!(nft_set_redemption_state.nft_6.metadata_key.eq(&ctx.accounts.nft_metadata_account_6.key()));
+        assert!(nft_set_redemption_state.nft_6.token_key.eq(&ctx.accounts.nft_token_account_6.key()));
+        assert!(nft_set_redemption_state.nft_6.is_verified);
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        // Validate all rugs in a set have been accounted for and are unique
+        let nft_1_data = Metadata::from_account_info(&ctx.accounts.nft_metadata_account_1).unwrap();
+        let nft_2_data = Metadata::from_account_info(&ctx.accounts.nft_metadata_account_2).unwrap();
+        let nft_3_data = Metadata::from_account_info(&ctx.accounts.nft_metadata_account_3).unwrap();
+        let nft_4_data = Metadata::from_account_info(&ctx.accounts.nft_metadata_account_4).unwrap();
+        let nft_5_data = Metadata::from_account_info(&ctx.accounts.nft_metadata_account_5).unwrap();
+        let nft_6_data = Metadata::from_account_info(&ctx.accounts.nft_metadata_account_6).unwrap();
+
+        let rug_level_1 = RugLevel::uri_to_level(nft_1_data.data.uri.trim_matches(char::from(0))).unwrap();   
+        let rug_level_2 = RugLevel::uri_to_level(nft_2_data.data.uri.trim_matches(char::from(0))).unwrap();   
+        let rug_level_3 = RugLevel::uri_to_level(nft_3_data.data.uri.trim_matches(char::from(0))).unwrap();   
+        let rug_level_4 = RugLevel::uri_to_level(nft_4_data.data.uri.trim_matches(char::from(0))).unwrap();   
+        let rug_level_5 = RugLevel::uri_to_level(nft_5_data.data.uri.trim_matches(char::from(0))).unwrap();   
+        let rug_level_6 = RugLevel::uri_to_level(nft_6_data.data.uri.trim_matches(char::from(0))).unwrap();   
+
+        assert!(has_unique_elements(vec![
+            rug_level_1,
+            rug_level_2,
+            rug_level_3,
+            rug_level_4,
+            rug_level_5,
+            rug_level_6,
+        ]));
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        // Transfer RAIN to owner account
+        let redemption_multipler = ctx.accounts.treasury.redemption_multiplier;
+        let amount = (redemption_multipler * RUG_SHARE) * RugLevel::complete_set_multiplier() as f64;
+        transfer_rain(
+            &ctx.accounts.rain_vault,
+            &ctx.accounts.dest_rain_token_account,
+            &ctx.accounts.token_program,
+            &ctx.bumps.get("rain_vault").unwrap().to_le_bytes(),
+            amount,
+        ).unwrap();
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        // Mark all rugs as redeemed in a set
+        let nft_redeemed_1 = &mut ctx.accounts.nft_redeemed_1;
+        nft_redeemed_1.bump = *ctx.bumps.get("nft_redeemed_1").unwrap();
+        let nft_redeemed_2 = &mut ctx.accounts.nft_redeemed_2;
+        nft_redeemed_2.bump = *ctx.bumps.get("nft_redeemed_2").unwrap();
+        let nft_redeemed_3 = &mut ctx.accounts.nft_redeemed_3;
+        nft_redeemed_3.bump = *ctx.bumps.get("nft_redeemed_3").unwrap();
+        let nft_redeemed_4 = &mut ctx.accounts.nft_redeemed_4;
+        nft_redeemed_4.bump = *ctx.bumps.get("nft_redeemed_4").unwrap();
+        let nft_redeemed_5 = &mut ctx.accounts.nft_redeemed_5;
+        nft_redeemed_5.bump = *ctx.bumps.get("nft_redeemed_5").unwrap();
+        let nft_redeemed_6 = &mut ctx.accounts.nft_redeemed_6;
+        nft_redeemed_6.bump = *ctx.bumps.get("nft_redeemed_6").unwrap();
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        nft_set_redemption_state.status = NftSetRedemptionStateStatus::REDEEMED;
+        Ok(())
+    }
 }
 
 fn has_unique_elements<T>(iter: T) -> bool
@@ -730,6 +987,270 @@ pub struct RedeemNFTSetForRain<'info> {
     rent: Sysvar<'info, Rent>,
 }
 
+#[derive(Accounts)]
+pub struct RedeemMultiTransactionNFTSetForRainTXFirst<'info> {
+    #[account(
+        seeds = [PREFIX, b"treasury"],
+        bump = treasury.bump
+    )]
+    treasury: Box<Account<'info, Treasury>>,
+    #[account(
+        init,
+        seeds = [
+            PREFIX,
+            b"set_redeemed_state",
+            owner.key().as_ref(),
+            nft_mint_1.key().as_ref(),
+        ],
+        space = NftSetRedemptionState::SPACE,
+        payer = owner,
+        bump,
+    )]
+    nft_set_redeemed_state: Box<Account<'info, NftSetRedemptionState>>,
+
+    nft_mint_1: Box<Account<'info, Mint>>,
+    nft_token_account_1: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_1: AccountInfo<'info>,
+
+    nft_mint_2: Box<Account<'info, Mint>>,
+    nft_token_account_2: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_2: AccountInfo<'info>,
+
+    nft_mint_3: Box<Account<'info, Mint>>,
+    nft_token_account_3: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_3: AccountInfo<'info>,
+
+    nft_mint_4: Box<Account<'info, Mint>>,
+    nft_token_account_4: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_4: AccountInfo<'info>,
+
+    nft_mint_5: Box<Account<'info, Mint>>,
+    nft_token_account_5: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_5: AccountInfo<'info>,
+
+    nft_mint_6: Box<Account<'info, Mint>>,
+    nft_token_account_6: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_6: AccountInfo<'info>,
+
+    #[account(mut)]
+    owner: Signer<'info>,
+
+    #[account(address = Pubkey::new(metaplex_token_metadata::id().as_ref()))]
+    /// CHECK: account is checked that the address matches metaplex_token_metadata::id crate
+    token_metadata_program: AccountInfo<'info>,
+    token_program: Program<'info, Token>,
+    system_program: Program<'info, System>,
+    rent: Sysvar<'info, Rent>,
+}
+
+#[derive(Accounts)]
+pub struct RedeemMultiTransactionNFTSetForRainTXSecond<'info> {
+    #[account(
+        seeds = [PREFIX, b"treasury"],
+        bump = treasury.bump
+    )]
+    treasury: Box<Account<'info, Treasury>>,
+    #[account(
+        mut,
+        seeds = [
+            PREFIX,
+            b"set_redeemed_state",
+            owner.key().as_ref(),
+            nft_mint_1.key().as_ref(),
+        ],
+        bump,
+    )]
+    nft_set_redeemed_state: Box<Account<'info, NftSetRedemptionState>>,
+
+    nft_mint_1: Box<Account<'info, Mint>>,
+    nft_token_account_1: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_1: AccountInfo<'info>,
+
+    nft_mint_2: Box<Account<'info, Mint>>,
+    nft_token_account_2: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_2: AccountInfo<'info>,
+
+    nft_mint_3: Box<Account<'info, Mint>>,
+    nft_token_account_3: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_3: AccountInfo<'info>,
+
+    nft_mint_4: Box<Account<'info, Mint>>,
+    nft_token_account_4: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_4: AccountInfo<'info>,
+
+    nft_mint_5: Box<Account<'info, Mint>>,
+    nft_token_account_5: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_5: AccountInfo<'info>,
+
+    nft_mint_6: Box<Account<'info, Mint>>,
+    nft_token_account_6: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_6: AccountInfo<'info>,
+
+    #[account(mut)]
+    owner: Signer<'info>,
+
+    #[account(address = Pubkey::new(metaplex_token_metadata::id().as_ref()))]
+    /// CHECK: account is checked that the address matches metaplex_token_metadata::id crate
+    token_metadata_program: AccountInfo<'info>,
+    token_program: Program<'info, Token>,
+    system_program: Program<'info, System>,
+    rent: Sysvar<'info, Rent>,
+}
+
+#[derive(Accounts)]
+pub struct RedeemMultiTransactionNFTSetForRainTXFinal<'info> {
+    #[account(
+        seeds = [PREFIX, b"treasury"],
+        bump = treasury.bump
+    )]
+    treasury: Box<Account<'info, Treasury>>,
+    #[account(
+        mut,
+        seeds = [
+            PREFIX,
+            b"set_redeemed_state",
+            owner.key().as_ref(),
+            nft_mint_1.key().as_ref(),
+        ],
+        bump,
+    )]
+    nft_set_redeemed_state: Box<Account<'info, NftSetRedemptionState>>,
+    #[account(
+        init,
+        seeds = [PREFIX, b"redemption", b"rug_set", nft_mint_1.key().as_ref()],
+        payer = owner,
+        bump,
+        space = NFTRedeemed::SPACE,
+    )]
+    nft_redeemed_1: Box<Account<'info, NFTRedeemed>>,
+    #[account(
+        init,
+        seeds = [PREFIX, b"redemption", b"rug_set", nft_mint_2.key().as_ref()],
+        payer = owner,
+        bump,
+        space = NFTRedeemed::SPACE,
+    )]
+    nft_redeemed_2: Box<Account<'info, NFTRedeemed>>,
+    #[account(
+        init,
+        seeds = [PREFIX, b"redemption", b"rug_set", nft_mint_3.key().as_ref()],
+        payer = owner,
+        bump,
+        space = NFTRedeemed::SPACE,
+    )]
+    nft_redeemed_3: Box<Account<'info, NFTRedeemed>>,
+    #[account(
+        init,
+        seeds = [PREFIX, b"redemption", b"rug_set", nft_mint_4.key().as_ref()],
+        payer = owner,
+        bump,
+        space = NFTRedeemed::SPACE,
+    )]
+    nft_redeemed_4: Box<Account<'info, NFTRedeemed>>,
+    #[account(
+        init,
+        seeds = [PREFIX, b"redemption", b"rug_set", nft_mint_5.key().as_ref()],
+        payer = owner,
+        bump,
+        space = NFTRedeemed::SPACE,
+    )]
+    nft_redeemed_5: Box<Account<'info, NFTRedeemed>>,
+    #[account(
+        init,
+        seeds = [PREFIX, b"redemption", b"rug_set", nft_mint_6.key().as_ref()],
+        payer = owner,
+        bump,
+        space = NFTRedeemed::SPACE,
+    )]
+    nft_redeemed_6: Box<Account<'info, NFTRedeemed>>,
+
+
+    nft_mint_1: Box<Account<'info, Mint>>,
+    nft_token_account_1: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_1: AccountInfo<'info>,
+
+    nft_mint_2: Box<Account<'info, Mint>>,
+    nft_token_account_2: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_2: AccountInfo<'info>,
+
+    nft_mint_3: Box<Account<'info, Mint>>,
+    nft_token_account_3: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_3: AccountInfo<'info>,
+
+    nft_mint_4: Box<Account<'info, Mint>>,
+    nft_token_account_4: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_4: AccountInfo<'info>,
+
+    nft_mint_5: Box<Account<'info, Mint>>,
+    nft_token_account_5: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_5: AccountInfo<'info>,
+
+    nft_mint_6: Box<Account<'info, Mint>>,
+    nft_token_account_6: Box<Account<'info, TokenAccount>>,
+    /// CHECK: account checked against PDA generated from the token_metadata_account
+    /// in instruction processor which in turn verifies this account
+    nft_metadata_account_6: AccountInfo<'info>,
+
+    #[account(mut)]
+    owner: Signer<'info>,
+
+    // #[account(address = Pubkey::new(metaplex_token_metadata::id().as_ref()))]
+    // /// CHECK: account is checked that the address matches metaplex_token_metadata::id crate
+    // token_metadata_program: AccountInfo<'info>,
+
+    #[account(
+        mut,
+        address = treasury.rain_vault.key(),
+        seeds = [PREFIX, b"rain_vault"],
+        bump,
+    )]
+    rain_vault: Box<Account<'info, TokenAccount>>,
+    #[account(
+        mut,
+        constraint = dest_rain_token_account.owner == owner.key(),
+        constraint = dest_rain_token_account.mint == treasury.rain_mint.key()
+    )]
+    dest_rain_token_account: Box<Account<'info, TokenAccount>>,
+
+    token_program: Program<'info, Token>,
+    system_program: Program<'info, System>,
+    rent: Sysvar<'info, Rent>,
+}
+
 #[account]
 #[derive(Default)]
 pub struct Treasury {
@@ -752,6 +1273,43 @@ pub struct NFTRedeemed {
 }
 impl NFTRedeemed {
     const SPACE: usize = 8 + 1 + DISCRIMINATOR_SIZE;
+}
+
+#[account]
+#[derive(Default)]
+pub struct NftSetRedemptionState {
+    pub status: NftSetRedemptionStateStatus,
+    pub nft_1: NftRedemptionState,
+    pub nft_2: NftRedemptionState,
+    pub nft_3: NftRedemptionState,
+    pub nft_4: NftRedemptionState,
+    pub nft_5: NftRedemptionState,
+    pub nft_6: NftRedemptionState,
+}
+impl NftSetRedemptionState {
+    const SPACE: usize = (NftRedemptionState::SPACE * 6) + 1 + DISCRIMINATOR_SIZE + 8;
+}
+
+#[derive(AnchorDeserialize, AnchorSerialize, Copy, Clone, Debug, PartialEq, Eq)]
+pub enum NftSetRedemptionStateStatus {
+    INIT,
+    VERIFYING,
+    VERIFIED,
+    REDEEMED,
+}
+impl Default for NftSetRedemptionStateStatus {
+    fn default() -> Self { NftSetRedemptionStateStatus::INIT }
+}
+
+#[derive(AnchorDeserialize, AnchorSerialize, Copy, Clone, Debug, Default)]
+pub struct NftRedemptionState {
+    pub key: Pubkey,
+    pub token_key: Pubkey,
+    pub metadata_key: Pubkey,
+    pub is_verified: bool,
+}
+impl NftRedemptionState {
+    const SPACE: usize = (32 * 3) + 1;
 }
 
 #[error_code]
