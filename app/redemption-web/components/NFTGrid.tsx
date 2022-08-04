@@ -4,7 +4,7 @@ import { Redemption } from "@raindrop-studios/rain-redemptions";
 
 import { RAIN_MINT } from "../lib/constants";
 import { getOrCreateAssociatedTokenAccount } from '../lib/token';
-import { NFTSet, redeemRugSet } from "../lib/nftSet";
+import { NFTSet, redeemRugSet, redeemRugSetMultiTransaction } from "../lib/nftSet";
 import { NFT, DTP_TYPE, redeemPandaOrRugNFT } from '../lib/nft';
 import Loading from "./Loading";
 import NFTGridItem from "./NFTGridItem";
@@ -156,7 +156,7 @@ export default function NFTGrid(props: NFTGridProps) {
     forceUpdate();
     // this.setState({ isRedeeming: true });
     try {
-      await redeemRugSet(nfts, program);
+      await redeemRugSetMultiTransaction(nfts, program);
       nfts.forEach((e: NFT) => { e.isRedeemedForSet = true; });
     } catch (e) {
       console.error(e);
@@ -193,7 +193,7 @@ export default function NFTGrid(props: NFTGridProps) {
               {rugSets.sets.map((set: NFT[], index: number) => (
                 <div>
                   <div className='mt-14 mb-8 text-5xl'>Set {index + 1}</div>
-                  <button className={`group hover:rounded-xl hover:ring hover:ring-white ${set[0].isRedeemingSet || set[0].isRedeemedForSet ? HOVER_SET_CLASSES_GRID.join(" ") : ""}`} onClick={() => setRedemptionFn(set, props.program)}>
+                  <button disabled={set[0].isRedeemingSet || set[0].isRedeemedForSet} className={`group hover:rounded-xl hover:ring hover:ring-white ${set[0].isRedeemingSet || set[0].isRedeemedForSet ? HOVER_SET_CLASSES_GRID.join(" ") : ""}`} onClick={() => setRedemptionFn(set, props.program)}>
                     <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-y-4 sm:gap-y-12 lg:gap-y-16 gap-x-4 sm:gap-x-16 lg:gap-x-20">
                       {set.map((nft: NFT, index: number) => (
                         <NFTSetGridItem nfts={set} nft={nft} index={"rugset-" + index} program={props.program} redemptionFn={() => setRedemptionFn(set, props.program)} />

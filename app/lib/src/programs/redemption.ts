@@ -176,8 +176,12 @@ export class Redemption extends Program.Program {
     );
 
     console.log(nftSetRedeemedStatePDA.toString());
-    let nftSetRedeemedState = await this.client.account.nftSetRedemptionState.fetch(nftSetRedeemedStatePDA, options.commitment);
-    return new NFTSetRedemptionState(nftSetRedeemedState);
+    try {
+      const nftSetRedeemedState = await this.client.account.nftSetRedemptionState.fetch(nftSetRedeemedStatePDA, options.commitment);
+      return new NFTSetRedemptionState(nftSetRedeemedState);
+    } catch (error) {
+      return null;
+    }
   }
 
   async redeemMultiTransactionRugSetOwnershipRainTokensFirst(
