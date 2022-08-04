@@ -579,21 +579,6 @@ pub mod redemption_v0 {
         ).unwrap();
         /////////////////////////////////////////////////////////////////////////////////////
 
-        // Mark all rugs as redeemed in a set
-        let nft_redeemed_1 = &mut ctx.accounts.nft_redeemed_1;
-        nft_redeemed_1.bump = *ctx.bumps.get("nft_redeemed_1").unwrap();
-        let nft_redeemed_2 = &mut ctx.accounts.nft_redeemed_2;
-        nft_redeemed_2.bump = *ctx.bumps.get("nft_redeemed_2").unwrap();
-        let nft_redeemed_3 = &mut ctx.accounts.nft_redeemed_3;
-        nft_redeemed_3.bump = *ctx.bumps.get("nft_redeemed_3").unwrap();
-        let nft_redeemed_4 = &mut ctx.accounts.nft_redeemed_4;
-        nft_redeemed_4.bump = *ctx.bumps.get("nft_redeemed_4").unwrap();
-        let nft_redeemed_5 = &mut ctx.accounts.nft_redeemed_5;
-        nft_redeemed_5.bump = *ctx.bumps.get("nft_redeemed_5").unwrap();
-        let nft_redeemed_6 = &mut ctx.accounts.nft_redeemed_6;
-        nft_redeemed_6.bump = *ctx.bumps.get("nft_redeemed_6").unwrap();
-        /////////////////////////////////////////////////////////////////////////////////////
-
         nft_set_redemption_state.status = NftSetRedemptionStateStatus::REDEEMED;
         Ok(())
     }
