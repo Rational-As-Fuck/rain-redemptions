@@ -6,7 +6,7 @@ enum Environment {
   Mainnet = "mainnet",
 }
 
-let environment: string = Environment.Localnet;
+let environment: string = Environment.Devnet;
 
 switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
   case "production":
@@ -41,7 +41,7 @@ switch(environment) {
     }
     break;
   case Environment.Devnet:
-    endpoint = "https://ssc-dao.genesysgo.net/";
+    endpoint = "https://solana-devnet.g.alchemy.com/v2/t0-XFKw5rFAafXfyWRmjzgm_ygXilUk4";
   default:
     break;
 };
@@ -59,6 +59,7 @@ export const ENVIRONMENT = environment;
 export const PANDA_CREATORS = [
   "CLErvyrMpi66RAxNV2wveSi25NxHb8G383MSVuGDgZzp",
   "HHGsTSzwPpYMYDGgUqssgAsMZMsYbshgrhMge8Ypgsjx",
+  "4k21XuJGiDSgdb9w7zMEcobJgnnPkiMpH3nM4uiQzao9",
 ];
 export const RUG_CREATOR = "BHRFPSHHtLqjbcvVCmGrCjgbUagwnKDxp4CbUgoED3tT";
 
