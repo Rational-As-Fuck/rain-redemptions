@@ -2,8 +2,8 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import pandaLogo from '../public/LogoTransp.png';
-import wordLogo from '../public/WordLogo.png';
+// import pandaLogo from '../public/LogoTransp.png';
+// import wordLogo from '../public/WordLogo.png';
 import CheddarBlock from '../public/CheddarBlock.png';
 import metaHunters from '../public/meta_hunters.png';
 import imso from '../public/imso.png';
@@ -30,12 +30,6 @@ export default function Header(props : { showWalletConnect: boolean }) {
   return (
     <div className="flex flex-col items-center justify-center py-2 mx-5">
       <div className="w-96 mb-8">
-        <Image
-          src={pandaLogo}
-          alt="Trash Panda Logo"
-          height={120}
-          width={142}
-        />
         <Image
           src={metaHunters}
           alt="Meta Hunters"
