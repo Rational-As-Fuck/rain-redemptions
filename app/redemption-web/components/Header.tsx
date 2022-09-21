@@ -4,6 +4,9 @@ import Link from 'next/link';
 
 import pandaLogo from '../public/LogoTransp.png';
 import wordLogo from '../public/WordLogo.png';
+import CheddarBlock from '../public/CheddarBlock.png';
+import metaHunters from '../public/meta_hunters.png';
+import imso from '../public/imso.png';
 
 export default function Header(props : { showWalletConnect: boolean }) {
   const { showWalletConnect } = props;
@@ -25,7 +28,7 @@ export default function Header(props : { showWalletConnect: boolean }) {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center py-2">
+    <div className="flex flex-col items-center justify-center py-2 mx-5">
       <div className="w-96">
         <Image
           src={pandaLogo}
@@ -34,10 +37,20 @@ export default function Header(props : { showWalletConnect: boolean }) {
           width={142}
         />
         <Image
-          src={wordLogo}
+          src={metaHunters}
+          alt="Meta Hunters"
+        />
+        <Image
+          src={CheddarBlock}
           alt="Trash Pandas"
-          height={351}
-          width={700}
+          height={250}
+          width={250}
+        />
+        <Image
+          src={imso}
+          alt="Trash Pandas"
+          height={250}
+          width={250}
         />
       </div>
       <div className="text-3xl max-w-lg leading-relaxed">

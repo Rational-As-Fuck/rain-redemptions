@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'space': "url('../public/bg.jpg')",
+      },
       animation: {
         "pulse": "pulse 8s cubic-bezier(.1, 0.3, 0.5, 1) infinite"
       },
