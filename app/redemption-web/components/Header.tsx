@@ -29,7 +29,7 @@ export default function Header(props : { showWalletConnect: boolean }) {
 
   return (
     <div className="flex flex-col items-center justify-center py-2 mx-5">
-      <div className="w-96">
+      <div className="w-96 mb-8">
         <Image
           src={pandaLogo}
           alt="Trash Panda Logo"
@@ -40,18 +40,20 @@ export default function Header(props : { showWalletConnect: boolean }) {
           src={metaHunters}
           alt="Meta Hunters"
         />
-        <Image
-          src={CheddarBlock}
-          alt="Trash Pandas"
-          height={250}
-          width={250}
-        />
-        <Image
-          src={imso}
-          alt="Trash Pandas"
-          height={250}
-          width={250}
-        />
+        <div className="flex flex-row items-center justify-center py-2 mx-15">
+          <Image
+            src={CheddarBlock}
+            alt="Trash Pandas"
+            height={250}
+            width={250}
+          />
+          <Image
+            src={imso}
+            alt="Trash Pandas"
+            height={250}
+            width={250}
+          />
+        </div>
       </div>
       <div className="text-3xl max-w-lg leading-relaxed">
         $RAIN Redemption
