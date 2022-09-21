@@ -42,7 +42,8 @@ switch(environment) {
     }
     break;
   case Environment.Devnet:
-    endpoint = "https://ssc-dao.genesysgo.net/";
+    //endpoint = "https://ssc-dao.genesysgo.net/";
+    endpoint = "https://solana-devnet.g.alchemy.com/v2/t0-XFKw5rFAafXfyWRmjzgm_ygXilUk4";
   default:
     break;
 };
