@@ -26,7 +26,8 @@ console.log(environment)
 
 let walletPubKey, programConnection;
 let endpoint = "https://trashpandas.rpcpool.com";
-let rainMint = new web3.PublicKey("rainH85N1vCoerCi4cQ3w6mCf7oYUdrsTFtFzpaRwjL");
+// let rainMint = new web3.PublicKey("rainH85N1vCoerCi4cQ3w6mCf7oYUdrsTFtFzpaRwjL");
+let rainMint = new web3.PublicKey("J8oPSr8PSBEm5BA6o4fou1q4UiHLWAqqSZxs88jiwmHp");
 
 switch(environment) {
   case Environment.Localnet:
@@ -41,7 +42,7 @@ switch(environment) {
     }
     break;
   case Environment.Devnet:
-    endpoint = "https://solana-devnet.g.alchemy.com/v2/t0-XFKw5rFAafXfyWRmjzgm_ygXilUk4";
+    endpoint = "https://ssc-dao.genesysgo.net/";
   default:
     break;
 };
