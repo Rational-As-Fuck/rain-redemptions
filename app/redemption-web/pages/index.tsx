@@ -108,7 +108,7 @@ const Home: NextPage = () => {
   }, [fetchedNFTs, redemptionProgram]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2 bg-space min-h-screen">
+    <div className="flex min-h-screen flex-col items-center justify-center pt-2 bg-space min-h-screen">
       <Head>
         <title>DTP $RAIN Redemption</title>
         <link rel="icon" sizes="32x32" href="/favicon-32x32.png" />

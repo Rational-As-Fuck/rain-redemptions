@@ -5,10 +5,10 @@ import { BsPlusLg } from 'react-icons/bs';
 
 export default function Footer(_props: any) {
   return (
-    <div className="mt-auto">
+    <div className="mt-auto bg-black w-screen border-light-100 border-t-2">
       <div>
         <div className="flex flex-row items-center justify-center">
-          <p className="pr-5 mt-5">Brought to you by</p>
+          <p className="pr-5 mt-2">Brought to you by</p>
           <Image
               src={imsoSmall}
               alt="ImsoNFT"
@@ -20,8 +20,8 @@ export default function Footer(_props: any) {
             <Image
               src={pandaHead}
               alt="DTP"
-              height={55}
-              width={80}
+              height={50}
+              width={72}
               objectFit="scale-down"
             />
         </div>
