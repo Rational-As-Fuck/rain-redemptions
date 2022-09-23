@@ -25,27 +25,28 @@ export default function Header(props : { showWalletConnect: boolean }) {
     "focus:bg-violet-600",
     "active:bg-slate-300",
     "active:text-black",
+    "font-semibold"
   ];
 
   return (
     <div className="flex flex-col items-center justify-center py-2 mx-5">
-      <div className="w-96 mb-8">
+      <div className="w-72 md:w-96 mb-8">
         <Image
           src={metaHunters}
           alt="Meta Hunters"
         />
-        <div className="flex flex-row items-center justify-center py-2 mx-15">
+        <div className="projects flex flex-row items-center justify-center py-2 mx-15">
           <Image
             src={CheddarBlock}
             alt="Trash Pandas"
-            height={250}
-            width={250}
+            height={200}
+            width={200}
           />
           <Image
             src={imso}
             alt="Trash Pandas"
-            height={250}
-            width={250}
+            height={200}
+            width={200}
           />
         </div>
       </div>

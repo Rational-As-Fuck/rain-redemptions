@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@200;300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -364,7 +367,7 @@
 }
 
 .wallet-adapter-button-trigger {
-  font-family: 'Splatter_Kings';
+  font-family: 'Goldman';
   background-color: initial;
   @apply rounded-2xl;
   @apply bg-violet-600;

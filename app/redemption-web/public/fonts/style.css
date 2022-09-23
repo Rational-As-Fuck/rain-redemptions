@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
   font-family: 'Splatter_Kings';
   src: url('Splatter_Kings.otf');
   font-weight: 900;
@@ -13,4 +13,28 @@ body {
 button {
   font-family: 'Splatter_Kings';
   color: white;
+} */
+
+body {
+  font-family: 'Goldman';
+  font-style: normal;
+  color: white;
 }
+
+button {
+  font-family: 'Goldman';
+  color: white;
+}
+
+@font-face {
+  font-family: 'Splatter_Kings';
+  src: url('Splatter_Kings.otf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+.footer {
+  font-family: 'Splatter_Kings';
+  color: white;
+}
+
