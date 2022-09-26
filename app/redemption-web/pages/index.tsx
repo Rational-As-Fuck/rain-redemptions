@@ -11,6 +11,7 @@ import { Redemption } from "@raindrop-studios/rain-redemptions";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 
 import NFTGrid from "../components/NFTGrid";
+import { Navbar } from '../components/NavBar';
 import Header from "../components/Header";
 import Footer from '../components/Footer';
 import Loading from "../components/Loading";
@@ -116,6 +117,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center px-6 text-center">
+        <Navbar />
         {/* // HEADER
         // Wallet not connected yet, show the header with the wallet connect button */}
         { !wallet_connected && (<Header showWalletConnect={true} /> )}

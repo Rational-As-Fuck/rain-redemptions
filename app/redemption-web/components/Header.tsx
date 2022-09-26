@@ -50,7 +50,7 @@ export default function Header(props : { showWalletConnect: boolean }) {
           />
         </div>
       </div>
-      <div className="text-3xl max-w-lg leading-relaxed">
+      <div className="text-5xl max-w-lg leading-relaxed">
         $RAIN Redemption
       </div>
       {showWalletConnect && (
