@@ -53,7 +53,7 @@ export default function Header(props : { showWalletConnect: boolean }) {
       <div className="text-5xl max-w-lg leading-relaxed">
         $RAIN Redemption
       </div>
-      {showWalletConnect && (
+      {/* {showWalletConnect && (
         <div className='flex flex-col items-center justify-center'>
           <div className="mt-6 mb-4">
             <WalletMultiButton>
@@ -67,7 +67,7 @@ export default function Header(props : { showWalletConnect: boolean }) {
             </Link>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 };
