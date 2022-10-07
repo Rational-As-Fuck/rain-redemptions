@@ -109,7 +109,7 @@ const Home: NextPage = () => {
   }, [fetchedNFTs, redemptionProgram]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center pt-2 bg-space min-h-screen">
+    <div className="flex min-h-screen flex-col items-center justify-center pt-2 bg-space">
       <Head>
         <title>DTP $RAIN Redemption</title>
         <link rel="icon" sizes="32x32" href="/favicon-32x32.png" />
@@ -123,7 +123,7 @@ const Home: NextPage = () => {
         { !wallet_connected && (<Header showWalletConnect={true} /> )}
 
         {/* // Wallet connected, show wallet menu button */}
-        { wallet_connected && (<div className="m-6 md:ml-auto"><WalletMultiButton /></div>)}
+        {/* { wallet_connected && (<div className="m-6 md:ml-auto"><WalletMultiButton /></div>)} */}
         {/* // Wallet connected, and we haven't fetched NFTS, or we have fetched NFTS and the wallet has some */}
         { (wallet_connected && !fetchedNFTs) || (wallet_connected && fetchedNFTs && nfts.length > 0) && (<Header showWalletConnect={false} /> ) }
         {/* //////////////////////////////////////////////////////////////////////////////////////////////// */}

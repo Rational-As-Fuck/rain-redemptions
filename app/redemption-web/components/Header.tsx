@@ -29,8 +29,8 @@ export default function Header(props : { showWalletConnect: boolean }) {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center py-2 mx-5">
-      <div className="w-72 md:w-96 mb-8">
+    <div className="flex flex-col items-center justify-center pt-12 mx-5">
+      <div className="w-72 md:w-96 mb-4">
         <Image
           src={metaHunters}
           alt="Meta Hunters"
@@ -50,9 +50,11 @@ export default function Header(props : { showWalletConnect: boolean }) {
           />
         </div>
       </div>
+      { !showWalletConnect && (
       <div className="text-5xl max-w-lg leading-relaxed">
         $RAIN Redemption
       </div>
+      )}
       {/* {showWalletConnect && (
         <div className='flex flex-col items-center justify-center'>
           <div className="mt-6 mb-4">

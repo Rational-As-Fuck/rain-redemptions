@@ -169,7 +169,7 @@ export default function NFTGrid(props: NFTGridProps) {
   return (
     <div className='mt-12'>
       <div>
-        <div className='mt-14 mb-8 text-5xl'>Pandas</div>
+        <div className='mt-14 mb-8 text-4xl'>Your Pandas</div>
         <div className="grid  grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-4 sm:gap-x-16 lg:gap-x-20">
           {pandas.length > 0 && pandas.map((nft: NFT, index: number) => (
             <NFTGridItem nft={nft} isRedeemed={nft.isRedeemed} index={"panda-" + index} program={props.program} redemptionFn={redemptionFn} />
