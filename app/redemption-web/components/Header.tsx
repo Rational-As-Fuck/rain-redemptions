@@ -7,6 +7,7 @@ import Link from 'next/link';
 import CheddarBlock from '../public/CheddarBlock.png';
 import metaHunters from '../public/meta_hunters.png';
 import imso from '../public/imso.png';
+import MainCard from "../components/MainCard";
 
 export default function Header(props : { showWalletConnect: boolean }) {
   const { showWalletConnect } = props;
@@ -55,21 +56,22 @@ export default function Header(props : { showWalletConnect: boolean }) {
         $RAIN Redemption
       </div>
       )}
-      {/* {showWalletConnect && (
-        <div className='flex flex-col items-center justify-center'>
-          <div className="mt-6 mb-4">
-            <WalletMultiButton>
-              Select Wallet (redeem $RAIN)
-            </WalletMultiButton>
-          </div>
-          OR
-          <div>
-            <Link href="/redemptionChecker" passHref>
-              <button className={buttonClassName.join(" ")}>Check a Trash Panda NFT</button>
-            </Link>
-          </div>
-        </div>
-      )} */}
+      {showWalletConnect && (
+        <MainCard />
+        // <div className='flex flex-col items-center justify-center'>
+        //   <div className="mt-6 mb-4">
+        //     <WalletMultiButton>
+        //       Select Wallet (redeem $RAIN)
+        //     </WalletMultiButton>
+        //   </div>
+        //   OR
+        //   <div>
+        //     <Link href="/redemptionChecker" passHref>
+        //       <button className={buttonClassName.join(" ")}>Check a Trash Panda NFT</button>
+        //     </Link>
+        //   </div>
+        // </div>
+      )}
     </div>
   )
 };
