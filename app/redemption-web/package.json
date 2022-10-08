@@ -16,6 +16,8 @@
     "@solana/wallet-adapter-react-ui": "^0.9.6",
     "@solana/wallet-adapter-wallets": "^0.15.5",
     "@solana/web3.js": "^1.37.1",
+    "flowbite": "^1.5.3",
+    "flowbite-react": "^0.1.12",
     "next": "latest",
     "next-themes": "^0.2.1",
     "react": "^17.0.2",
