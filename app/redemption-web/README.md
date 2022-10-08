@@ -28,7 +28,7 @@
        - ~~let environment: string = Environment.Localnet;~~ 
        - `let environment: string = Environment.Devnet;`
 
-     - Change the devnet RPC from genesysgo to private Alchemu RPC node
+     - Change the devnet RPC from genesysgo to private Alchemy RPC node
 
        - ~~case Environment.Devnet:~~
 

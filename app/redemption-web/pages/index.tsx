@@ -1,5 +1,4 @@
 import type { NextPage } from 'next'
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import * as Anchor from "@project-serum/anchor";
 

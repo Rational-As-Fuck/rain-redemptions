@@ -5,6 +5,11 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    fontFamily: {
+      sans: ['Rubik Marker Hatch', 'sans-serif'],
+      serif: ['Merriweather', 'serif'],
+      display: ['Poppins', 'sans-serif'],
+    },
     extend: {
       backgroundImage: {
         'space': "url('../public/bg.jpg')",
