@@ -22,12 +22,12 @@ const PANDA_CREATORS = [
   {
     address: new web3.PublicKey("CLErvyrMpi66RAxNV2wveSi25NxHb8G383MSVuGDgZzp"),
     verified: true,
-    share: 1
+    share: 100
   } as Creator,
   {
     address: new web3.PublicKey("HHGsTSzwPpYMYDGgUqssgAsMZMsYbshgrhMge8Ypgsjx"),
     verified: true,
-    share: 1
+    share: 100
   } as Creator,
 ];
 const PANDA_IMAGES = [

@@ -1310,6 +1310,20 @@
     socket.io-client "^4.4.1"
     tweetnacl "^1.0.3"
 
+"@metaplex-foundation/amman-client@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/amman-client/-/amman-client-0.2.2.tgz#ca5517f0349ea35ae4f4299bd09e885760570728"
+  integrity sha512-EmqC93u6icVenOh3/j5srKgUTldNYb6GDsXLhfA0UB3O7XEU1Yu0/wYpbU/yy9Pg6Mc8/z9Z0oYghnsZQKkqwg==
+  dependencies:
+    "@metaplex-foundation/cusper" "^0.0.2"
+    "@solana/spl-token-registry" "^0.2.2405"
+    "@solana/web3.js" "^1.55.0"
+    bn.js "^5.2.1"
+    debug "^4.3.3"
+    js-sha3 "^0.8.0"
+    socket.io-client "^4.4.1"
+    tweetnacl "^1.0.3"
+
 "@metaplex-foundation/amman@^0.10.0":
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@metaplex-foundation/amman/-/amman-0.10.0.tgz#b91cd9e2d258561704422f0d46089d4c4268583f"
@@ -1530,6 +1544,21 @@
     crypto-hash "^1.3.0"
     form-data "^4.0.0"
 
+"@noble/ed25519@^1.7.0":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@noble/ed25519/-/ed25519-1.7.1.tgz#6899660f6fbb97798a6fbd227227c4589a454724"
+  integrity sha512-Rk4SkJFaXZiznFyC/t77Q0NKS4FL7TLJJsVG2V2oiEq3kJVeTdxysEe/yRWSpnWMe808XRDJ+VFh5pt/FN5plw==
+
+"@noble/hashes@^1.1.2":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.1.3.tgz#360afc77610e0a61f3417e497dcf36862e4f8111"
+  integrity sha512-CE0FCR57H2acVI5UOzIGSSIYxZ6v/HOhDR0Ro9VLyhnzLwx0o8W1mmgaqlEUx4049qJDlIBRztv5k+MM8vbO3A==
+
+"@noble/secp256k1@^1.6.3":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@noble/secp256k1/-/secp256k1-1.7.0.tgz#d15357f7c227e751d90aa06b05a0e5cf993ba8c1"
+  integrity sha512-kbacwGSsH/CTout0ZnZWxnW1B+jH/7r/WAAKLBtrRJ/+CUH7lgmQzl3GTrQua3SGKWNSDsS6lmjnDpIJ5Dxyaw==
+
 "@project-serum/anchor@^0.24.2":
   version "0.24.2"
   resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.24.2.tgz#a3c52a99605c80735f446ca9b3a4885034731004"
@@ -1728,6 +1757,27 @@
     secp256k1 "^4.0.2"
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
+
+"@solana/web3.js@^1.55.0":
+  version "1.63.1"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.63.1.tgz#88a19a17f5f4aada73ad70a94044c1067cab2b4d"
+  integrity sha512-wgEdGVK5FTS2zENxbcGSvKpGZ0jDS6BUdGu8Gn6ns0CzgJkK83u4ip3THSnBPEQ5i/jrqukg998BwV1H67+qiQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@noble/ed25519" "^1.7.0"
+    "@noble/hashes" "^1.1.2"
+    "@noble/secp256k1" "^1.6.3"
+    "@solana/buffer-layout" "^4.0.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.0.0"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.1"
+    fast-stable-stringify "^1.0.0"
+    jayson "^3.4.4"
+    node-fetch "2"
+    rpc-websockets "^7.5.0"
+    superstruct "^0.14.2"
 
 "@supercharge/promise-pool@^2.1.0":
   version "2.3.0"
