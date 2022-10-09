@@ -14,6 +14,10 @@ import wordLogo from '../public/WordLogo.png';
 import { PROGRAM_CONNECTION, CREATORS } from '../lib/constants';
 import { getDTPType, DTP_TYPE } from '../lib/nft';
 
+import { Navbar } from '../components/NavBar';
+import Header from "../components/Header";
+import Footer from '../components/Footer';
+
 const lookupNFT = async (program: Redemption | undefined, mintAddress: string, setResults: any) => {
   console.log("lookupNFT");
   if (mintAddress && program) {
@@ -99,6 +103,9 @@ const RedemptionChecker: NextPage = () => {
     "mt-4",
     "p-6",
     "w-56",
+    "font-display",
+    "text-lg",
+    "font-semibold",
   ];
 
   if (mintAddress.length <= 42) {
@@ -107,6 +114,9 @@ const RedemptionChecker: NextPage = () => {
       "bg-slate-300",
       "text-black",
       "opacity-50",
+      "font-display",
+      "text-lg",
+      "font-semibold",
     ];
   } else {
     buttonClassName = [
@@ -119,94 +129,83 @@ const RedemptionChecker: NextPage = () => {
       "focus:bg-violet-600",
       "active:bg-slate-300",
       "active:text-black",
+      "font-display",
+      "text-lg",
+      "font-semibold",
     ];
   }
 
 
   return (
-    <main className="flex w-full flex-1 flex-col items-center px-6 text-center">
-      <div className="flex flex-col items-center justify-center py-2">
-        <div className="w-96">
-          <Image
-            src={pandaLogo}
-            alt="Trash Panda Logo"
-            height={120}
-            width={142}
-          />
-          <Image
-            src={wordLogo}
-            alt="Trash Pandas"
-            height={351}
-            width={700}
-          />
-        </div>
-        <div className="text-3xl max-w-lg leading-relaxed">
-          $RAIN Redemption Checker
-        </div>
+    <div className="flex min-h-screen flex-col items-center justify-center pt-2 bg-space">
+      <main className="flex w-full flex-1 flex-col items-center px-6 text-center">
+        <Navbar />
+        <Header showWalletConnect={false} />
+        <div className="flex flex-col items-center justify-center py-2">
 
-        {!redemptionResult.isDTPRedeemable && (
-          <div className='mt-32 text-6xl'>
-            Not a compatible NFT
-          </div>
-        )}
-
-        {redemptionResult.isDTPRedeemable && redemptionResult.image && (
-          <div className="mt-32 pt-4">
-            <div className="text-4xl">
-              { redemptionResult.dtpType }
+          {!redemptionResult.isDTPRedeemable && (
+            <div className='mt-32 text-6xl'>
+              Not a compatible NFT
             </div>
-            <div className="mt-4 text-white flex flex-col items-center">
-              {redemptionResult.image && (
-                <div style={{ height: 320, width: 320 }} className={`rounded-2xl ${redemptionResult.redeemed ? "bg-slate-300" : ""}` }>
-                  <Image
-                    src={redemptionResult.image}
-                    alt="NFT image"
-                    height={320}
-                    width={320}
-                    className={`rounded-2xl ${redemptionResult.redeemed ? "opacity-50" : ""}` }
-                  />
-                </div>
-              )}
-              <div className='mt-2 mb-12 text-2xl'>
-                <div className='mt-8'>
-                  {redemptionResult.redeemed ? "": "Not"} Redeemed
-                  <br />
-                  { redemptionResult.dtpType === DTP_TYPE.RUG && (
-                    <div>
-                      and
-                      <br/>
-                      {redemptionResult.redeemedInSet ? "": "Not"} Redeemed as part of set
-                    </div>
-                  )}
+          )}
+
+          {redemptionResult.isDTPRedeemable && redemptionResult.image && (
+            <div className="mt-32 pt-4">
+              <div className="text-4xl">
+                { redemptionResult.dtpType }
+              </div>
+              <div className="mt-4 text-white flex flex-col items-center">
+                {redemptionResult.image && (
+                  <div style={{ height: 320, width: 320 }} className={`rounded-2xl ${redemptionResult.redeemed ? "bg-slate-300" : ""}` }>
+                    <Image
+                      src={redemptionResult.image}
+                      alt="NFT image"
+                      height={320}
+                      width={320}
+                      className={`rounded-2xl ${redemptionResult.redeemed ? "opacity-50" : ""}` }
+                    />
+                  </div>
+                )}
+                <div className='mt-2 mb-12 text-2xl'>
+                  <div className='mt-8'>
+                    {redemptionResult.redeemed ? "": "Not"} Redeemed
+                    <br />
+                    { redemptionResult.dtpType === DTP_TYPE.RUG && (
+                      <div>
+                        and
+                        <br/>
+                        {redemptionResult.redeemedInSet ? "": "Not"} Redeemed as part of set
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
-        <label className="mt-28 ml-10 mr-10 text-2xl">
-          Mint address of the NFT
-          <input 
-            id="mintInput"
-            value={mintAddress}
-            onChange={(event) => setMintAddress(event.target.value)
-            }
-            onKeyUp={(event) => {
-              if (event.key === "Enter" && mintAddress.length >= 43) {
-                lookupNFT(redemptionProgram, mintAddress, setRedemptionResult)
+          )}
+          <label className="mt-28 ml-10 mr-10 text-2xl font-display">
+            Mint address of the NFT
+            <input 
+              id="mintInput"
+              value={mintAddress}
+              onChange={(event) => setMintAddress(event.target.value)
               }
-            }}
-            className="mt-4 p-5 w-full rounded-2xl text-black text-lg text-center font-serif"
-          ></input>
-        </label>
-        <button 
-          disabled={mintAddress.length <= 42}
-          className={buttonClassName.join(" ")}
-          onClick={() => lookupNFT(redemptionProgram, mintAddress, setRedemptionResult)}
-        >Check NFT</button>
+              onKeyUp={(event) => {
+                if (event.key === "Enter" && mintAddress.length >= 43) {
+                  lookupNFT(redemptionProgram, mintAddress, setRedemptionResult)
+                }
+              }}
+              className="mt-4 p-5 w-full rounded-2xl text-black text-lg text-center font-serif"
+            ></input>
+          </label>
+          <button 
+            disabled={mintAddress.length <= 42}
+            className={buttonClassName.join(" ")}
+            onClick={() => lookupNFT(redemptionProgram, mintAddress, setRedemptionResult)}
+          >Check NFT</button>
 
-      </div>
-    </main>
+        </div>
+      </main>
+    </div>
   )
 };
 
