@@ -10,10 +10,10 @@ module.exports = {
         programId: "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
         deployPath: localDeployPath('mpl_token_metadata')
       },
-      {
-        label: '$RAIN redemption Program',
-        programId: "tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP",
-        deployPath: localDeployPath('rain-redemption')
+      { 
+        label: 'IMSO Claim Program',
+        programId: "CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP",
+        deployPath: localDeployPath('imso-claim')
       },
     ],
     jsonRpcUrl: LOCALHOST,
@@ -39,8 +39,8 @@ function localDeployPath(program) {
   switch(program) {
     case 'mpl_token_metadata':
       return "../metaplex-program-library/token-metadata/target/deploy/mpl_token_metadata.so";
-    case 'rain-redemption':
-      return "target/deploy/redemption_v0.so";
+    case 'imso-claim':
+      return "target/deploy/imso_claim.so";
     default:
       throw new Error(`Unknown program ${program}`);
   }

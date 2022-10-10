@@ -2,20 +2,20 @@
 seeds = false
 
 [programs.localnet]
-redemption_v0 = "tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP"
+imso_claim = "CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "localnet"
-wallet = "~/.config/solana/id.json"
+wallet = "/Users/numisman/Documents/projects/imso/keypairs/imsoClaim/imRDfkDNhnaT5nbVZKLD5jjQQ5WZzedqxZtB2X6hUFW.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 
 [workspace]
-members = ["programs/redemptionV0"]
+members = ["programs/imso_claim"]
 
 [[test.genesis]]
 address = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"

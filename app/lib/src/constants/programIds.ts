@@ -1,7 +1,7 @@
 import { web3 } from "@project-serum/anchor";
 
 export const REDEMPTION_PROGRAM_ID = new web3.PublicKey(
-  "tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP"
+  "CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP"
 );
 
 export const ASSOCIATED_TOKEN_PROGRAM_ID = new web3.PublicKey(

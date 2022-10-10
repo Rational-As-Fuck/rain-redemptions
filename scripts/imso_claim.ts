@@ -15,7 +15,9 @@ import {
   CLI,
 } from '@raindrop-studios/sol-command';
 
-import { Redemption, PDA } from '@raindrop-studios/rain-redemptions';
+import {PDA, IMSOClaim } from '../app/lib/src';
+
+//import { IMSOClient, PDA } from '../app/lib/src';
 import { Connection as SolKitConnection } from "@raindrop-studios/sol-kit";
 
 const { Clusters } = SolKitConnection;
@@ -95,17 +97,17 @@ async function mintTokens(
 }
 
 CLI.programCommandWithArgs("deploy", [], async () => {
-  console.log("👷‍♂️ Building Redemption program");
+  console.log("👷‍♂️ Building the IMSOClient program");
   execSync('anchor build');
-  console.log("👷‍♂️ Uploading Redemption program");
-  execSync('anchor deploy --provider.wallet ../keypairs/tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP.json');
+  console.log("👷‍♂️ Uploading the IMSOClient program");
+  execSync('anchor deploy --provider.wallet ../keypairs/imsoClaim/imRDfkDNhnaT5nbVZKLD5jjQQ5WZzedqxZtB2X6hUFW.json');
   console.log("🎉 You can now call `idl`");
 }, false);
 
 CLI.programCommandWithArgs("idl", [], async () => {
   console.log("👷‍♂️ Uploading Redemption contract IDLs");
-  execSync('anchor idl init --provider.cluster localnet -f target/idl/redemption_v0.json tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP', { stdio: "ignore" });
-  execSync('anchor idl upgrade --provider.cluster localnet -f target/idl/redemption_v0.json tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP', { stdio: "ignore" });
+  execSync('anchor idl init --provider.cluster localnet -f target/idl/imso_claim.json CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP', { stdio: "ignore" });
+  execSync('anchor idl upgrade --provider.cluster localnet -f target/idl/imso_claim.json CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP', { stdio: "ignore" });
   console.log("🎉 You can now call `initialize`");
 }, false);
 
@@ -134,8 +136,8 @@ CLI.programCommandWithArgs("initialize", [], async () => {
 
   try {
     console.log("👷‍♂️ Initializing Redemption Program");
-    const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
-      Redemption,
+    const redemptionProgram = await IMSOClaim.getProgramWithWalletKeyPair(
+      IMSOClaim,
       redemptionAuthorityKeyPair,
       Clusters.Localnet,
     );
@@ -171,7 +173,7 @@ CLI.programCommandWithArgs("fill", [], async () => {
     rainAmount,
     'ata-rain-supply'
   );
-  const rainRedemptionTreasury = (await PDA.Redemption.getRainVaultPDA())[0];
+  const rainRedemptionTreasury = (await PDA.IMSOClaim.getRainVaultPDA())[0];
   console.log(`💸 Transferring ${rainAmount} $RAIN to redemption treasury ${rainRedemptionTreasury.toString()} from rain supply ${rainSupplyAtaPubKey.toString()}`);
   await transferChecked(
     connection,
@@ -191,8 +193,8 @@ CLI.programCommandWithArgs("enable", [], async () => {
   const amman = Amman.instance();
   const redemptionAuthority = await amman.loadKeypair('redemption-authority');
   const [_, redemptionAuthorityKeyPair] = redemptionAuthority;
-  const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
-    Redemption,
+  const redemptionProgram = await IMSOClaim.getProgramWithWalletKeyPair(
+    IMSOClaim,
     redemptionAuthorityKeyPair,
     Clusters.Localnet,
   );

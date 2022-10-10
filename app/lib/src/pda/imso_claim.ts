@@ -1,48 +1,27 @@
 import { web3 } from "@project-serum/anchor";
 import { REDEMPTION_PROGRAM_ID, TOKEN_METADATA_PROGRAM_ID } from "../constants/programIds";
 
-import { Redemption } from "../programs/redemption";
+import { IMSOClaim } from "../programs/imso_claim";
 
 const TOKEN_METADATA_PROGRAM_PREFIX = "metadata";
 
 export const getTreasuryPDA = async (): Promise<[web3.PublicKey, number]> => {
   return await web3.PublicKey.findProgramAddress(
-    [Buffer.from(Redemption.PREFIX), Buffer.from("treasury")],
+    [Buffer.from(IMSOClaim.PREFIX), Buffer.from("treasury")],
     REDEMPTION_PROGRAM_ID
   );
 };
 
 export const getRainVaultPDA = async (): Promise<[web3.PublicKey, number]> => {
   return await web3.PublicKey.findProgramAddress(
-    [Buffer.from(Redemption.PREFIX), Buffer.from("rain_vault")],
+    [Buffer.from(IMSOClaim.PREFIX), Buffer.from("rain_vault")],
     REDEMPTION_PROGRAM_ID
   );
 };
 
 export const getNFTRedeemedPDA = async (nftMint: web3.PublicKey): Promise<[web3.PublicKey, number]> => {
   return await web3.PublicKey.findProgramAddress(
-    [Buffer.from(Redemption.PREFIX), Buffer.from("redemption"), nftMint.toBuffer()],
-    REDEMPTION_PROGRAM_ID
-  );
-};
-
-export const getNFTSetRedeemedPDA = async (nftMint: web3.PublicKey): Promise<[web3.PublicKey, number]> => {
-  return await web3.PublicKey.findProgramAddress(
-    [Buffer.from(Redemption.PREFIX), Buffer.from("redemption"), Buffer.from("rug_set"), nftMint.toBuffer()],
-    REDEMPTION_PROGRAM_ID
-  );
-};
-
-export const getNFTSetRedeemedStatePDA = async (
-  nftMint: web3.PublicKey,
-  owner: web3.PublicKey
-): Promise<[web3.PublicKey, number]> => {
-  return await web3.PublicKey.findProgramAddress([
-      Buffer.from(Redemption.PREFIX),
-      Buffer.from("set_redeemed_state"),
-      owner.toBuffer(),
-      nftMint.toBuffer(),
-    ],
+    [Buffer.from(IMSOClaim.PREFIX), Buffer.from("imso_claim"), nftMint.toBuffer()],
     REDEMPTION_PROGRAM_ID
   );
 };
