@@ -8,3 +8,5 @@ zzz-do-not-commit/
 keypairs
 vendor
 yarn-error.log
+
+tmpLedgerDir()
