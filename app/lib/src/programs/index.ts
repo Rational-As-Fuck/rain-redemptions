@@ -1,2 +1,2 @@
-export * from "./redemption";
+export * from "./imso_claim";
 export * as Instructions from "./instructions";

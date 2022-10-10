@@ -36,7 +36,7 @@ Start the test validator and deploy the contracts:
 
 ```bash
 cd .anchor
-solana-test-validator --no-bpf-jit -r --mint (solana address -k test-ledger/validator-keypair.json) --bpf-program metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s ../vendor/metaplex-program-library/token-metadata/target/deploy/mpl_token_metadata.so --bpf-program tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP ../target/deploy/redemption.so
+solana-test-validator --no-bpf-jit -r --mint (solana address -k test-ledger/validator-keypair.json) --bpf-program metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s ../vendor/metaplex-program-library/token-metadata/target/deploy/mpl_token_metadata.so --bpf-program imRDfkDNhnaT5nbVZKLD5jjQQ5WZzedqxZtB2X6hUFW ../target/deploy/redemption.so
 ```
 
 This will start the local validator with a clean state because of the `-r` flag. The `--mint` flag will mint the genesis SOLs to the specified address, avoiding the need to airdrop to your signing wallet. The remaining `--bpf-program` arguments will deploy a contract to the passed in address.
@@ -46,8 +46,8 @@ This will start the local validator with a clean state because of the `-r` flag.
 Now we need to create and update the IDL files for the contract on the validator. From the root of the project run.
 
 ```bash
-anchor idl init --provider.cluster localnet -f target/idl/redemption.json tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP
-anchor idl upgrade -f target/idl/redemption.json tfre5zcihbycEcr1xo67saNvovdmXhQFXPM2obQqRjP 
+anchor idl init --provider.cluster localnet -f target/idl/redemption.json imRDfkDNhnaT5nbVZKLD5jjQQ5WZzedqxZtB2X6hUFW
+anchor idl upgrade -f target/idl/redemption.json imRDfkDNhnaT5nbVZKLD5jjQQ5WZzedqxZtB2X6hUFW 
 ```
 
 Upon success of those commands you will now have the contract and their interfaces fully deployed. You are now ready to interact with them using the client CLI/lib.

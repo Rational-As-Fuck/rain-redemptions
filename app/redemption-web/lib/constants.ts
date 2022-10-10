@@ -6,7 +6,7 @@ enum Environment {
   Mainnet = "mainnet",
 }
 
-let environment: string = Environment.Devnet;
+let environment: string = Environment.Localnet;
 
 switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
   case "production":
@@ -26,9 +26,11 @@ console.log(environment)
 
 let walletPubKey, programConnection;
 //let endpoint = "https://trashpandas.rpcpool.com";
-let endpoint = "https://solana-devnet.g.alchemy.com/v2/t0-XFKw5rFAafXfyWRmjzgm_ygXilUk4";
+let endpoint ="https://127.0.0.1:8899";
+//let endpoint = "https://solana-devnet.g.alchemy.com/v2/t0-XFKw5rFAafXfyWRmjzgm_ygXilUk4";
 // let rainMint = new web3.PublicKey("rainH85N1vCoerCi4cQ3w6mCf7oYUdrsTFtFzpaRwjL");
-let rainMint = new web3.PublicKey("J8oPSr8PSBEm5BA6o4fou1q4UiHLWAqqSZxs88jiwmHp");
+//let rainMint = new web3.PublicKey("J8oPSr8PSBEm5BA6o4fou1q4UiHLWAqqSZxs88jiwmHp");
+let rainMint = new web3.PublicKey("AaUycw4GNKk9shfHskVEbQXkovYggUgzUngHQvQVfDau");
 
 switch(environment) {
   case Environment.Localnet:
@@ -64,18 +66,7 @@ export const PANDA_CREATORS = [
   "HHGsTSzwPpYMYDGgUqssgAsMZMsYbshgrhMge8Ypgsjx",
   "4k21XuJGiDSgdb9w7zMEcobJgnnPkiMpH3nM4uiQzao9",
 ];
-export const RUG_CREATOR = "BHRFPSHHtLqjbcvVCmGrCjgbUagwnKDxp4CbUgoED3tT";
 
 export const CREATORS = [
-  ...PANDA_CREATORS,
-  RUG_CREATOR,
-]
-
-export const RUG_LEVEL_URIS = [
-  "https://www.arweave.net/V9r7mWhLaLxDFh0nAAlZ5Vm_TTKNW9AVLGTtKKez-VM/",
-  "https://arweave.net/3iifbniGU50dQBTh-hg8hgKlaXDLYmOmp553DBNnVVQ",
-  "https://arweave.net/Aq8BIBtKN1gLvlqwoi-xM1EyrNUCxOhYbhY05Z_rwys",
-  "https://arweave.net/gjjF6VquwpQeMpHQ0w0NuaVlOvuOx6sDNLMqiSQ-qT0",
-  "https://arweave.net/khqPV34uTWnrIHH95RVemBX-71rb8JXunlYqLbRWEOM",
-  "https://arweave.net/vg4TYQDkB8hAOM79yk9si4J8JC1iv7B_JiMItzvSKm4",
+  ...PANDA_CREATORS
 ]

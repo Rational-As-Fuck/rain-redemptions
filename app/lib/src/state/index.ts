@@ -1,1 +1,1 @@
-export * as Redemption from './redemption';
+export * as IMSOClaim from './imso_claim';
