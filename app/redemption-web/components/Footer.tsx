@@ -9,7 +9,7 @@ export default function Footer(_props: any) {
     <div className="footer mt-auto bg-black w-screen border-light-100 border-t-2">
       <div>
         <div className="flex flex-row items-center justify-center p-2">
-          <p className="pr-5 mt-2">Brought to you by</p>
+          <p className="hidden md:inline pr-5 mt-2">Brought to you by</p>
             <a href="https://imsonft.io/">
               <Image
                   src={imsoSmall}

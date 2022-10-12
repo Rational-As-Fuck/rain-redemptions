@@ -115,7 +115,7 @@ const Home: NextPage = () => {
         <link rel="icon" sizes="16x16" href="/favicon-16x16.png" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center px-6 text-center">
+      <main className="flex w-full flex-1 flex-col items-center px-2 md:px-6 text-center">
         <Navbar />
         {/* // HEADER
         // Wallet not connected yet, show the header with the wallet connect button */}

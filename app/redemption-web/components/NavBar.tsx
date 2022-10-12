@@ -13,7 +13,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className='flex items-center flex-wrap p-3 bg-transparent'>
+      <nav className='flex items-center flex-wrap p-0 md:p-3 bg-transparent'>
         <Link href='/'>
           <a className='inline-flex items-center p-2 mr-4 '>
             <div className='mr-2'>
