@@ -181,7 +181,7 @@ export async function createNFT(
         feePayer: nftMintKeypair.publicKey,
         recentBlockhash: (await connection.getLatestBlockhash('confirmed')).blockhash,
     }, {
-        edition: (await PDA.Redemption.getNFTMasterEditionPDA(nftMint))[0],
+        edition: (await PDA.IMSOClaim.getNFTMasterEditionPDA(nftMint))[0],
         metadata: (await Metadata.getPDA(nftMint)),
         mint: nftMint,
         mintAuthority: nftMintKeypair.publicKey,

@@ -100,6 +100,8 @@ export class IMSOClaim extends Program.Program {
     accounts: ImsoClaimInstruction.RedeemNFTForRainAccounts,
     options?: { commitment: web3.Commitment, timeout?: number },
   ): Promise<{ txid: string; slot: number }> {
+    debugger;
+    console.log(`args:`,args);
     const instruction = await this.instruction.redeemPandaOwnershipRainTokens(
       args,
       accounts

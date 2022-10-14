@@ -5,7 +5,7 @@ import * as Anchor from "@project-serum/anchor";
 import { useEffect, useState } from 'react';
 import { Metaplex, Nft } from "@metaplex-foundation/js";
 
-import { Redemption } from "@raindrop-studios/rain-redemptions";
+import { IMSOClaim } from "../../lib/build/index";
 import { Wallet } from "@raindrop-studios/sol-kit";
 
 import pandaLogo from '../public/LogoTransp.png';
@@ -18,7 +18,7 @@ import { Navbar } from '../components/NavBar';
 import Header from "../components/Header";
 import Footer from '../components/Footer';
 
-const lookupNFT = async (program: Redemption | undefined, mintAddress: string, setResults: any) => {
+const lookupNFT = async (program: IMSOClaim | undefined, mintAddress: string, setResults: any) => {
   console.log("lookupNFT");
   if (mintAddress && program) {
     console.log("mintAddress && program");
@@ -36,13 +36,11 @@ const lookupNFT = async (program: Redemption | undefined, mintAddress: string, s
             console.log("verified Creators");
             await nft.metadataTask.run();
             const isRedeemed = await program.isNFTRedeemed(mintPubKey, { commitment: "finalized" });
-            const isRedeemedAsSet = await program.isRugSetNFTRedeemed(mintPubKey, { commitment: "finalized" });
             const result = {
               image: nft.metadata.image,
               dtpType: getDTPType(verifiedDTPCreators[0]),
               isDTPRedeemable: true,
-              redeemed: isRedeemed,
-              redeemedInSet: isRedeemedAsSet
+              redeemed: isRedeemed
             };
             console.log(result)
             setResults(result);
@@ -93,7 +91,7 @@ const RedemptionChecker: NextPage = () => {
         asyncSigning: true,
         provider       
       };
-      setRedemptionProgramWrapper(Redemption.getProgramWithConfig(Redemption, config)
+      setRedemptionProgramWrapper(IMSOClaim.getProgramWithConfig(IMSOClaim, config)
       , setRedemptionProgram);
   }, []);
 
@@ -170,13 +168,6 @@ const RedemptionChecker: NextPage = () => {
                   <div className='mt-8'>
                     {redemptionResult.redeemed ? "": "Not"} Redeemed
                     <br />
-                    { redemptionResult.dtpType === DTP_TYPE.RUG && (
-                      <div>
-                        and
-                        <br/>
-                        {redemptionResult.redeemedInSet ? "": "Not"} Redeemed as part of set
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>

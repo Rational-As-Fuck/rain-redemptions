@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head'
 
 import { Wallet } from "@raindrop-studios/sol-kit";
-import { Redemption } from "@raindrop-studios/rain-redemptions";
+import { IMSOClaim } from "../../lib/build/index";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 
 import NFTGrid from "../components/NFTGrid";
@@ -89,7 +89,8 @@ const Home: NextPage = () => {
         asyncSigning: true,
         provider       
       };
-      setRedemptionProgramWrapper(Redemption.getProgramWithConfig(Redemption, config)
+      debugger;
+      setRedemptionProgramWrapper(IMSOClaim.getProgramWithConfig(IMSOClaim, config)
       , setRedemptionProgram);
      }
 

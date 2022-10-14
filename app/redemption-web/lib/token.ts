@@ -7,11 +7,11 @@ import {
 } from "@solana/spl-token";
 import { AnchorProvider } from '@project-serum/anchor';
 
-import { Redemption } from "@raindrop-studios/rain-redemptions";
+import { IMSOClaim } from "../../lib/src/";
 
 // import { RAIN_MINT } from './constants';
 
-export const getOrCreateAssociatedTokenAccount = async (program: Redemption, mint: Web3.PublicKey) => {
+export const getOrCreateAssociatedTokenAccount = async (program: IMSOClaim, mint: Web3.PublicKey) => {
   const associatedTokenAddress = await getAssociatedTokenAddress(
     mint,
     (program.client.provider as AnchorProvider).wallet.publicKey

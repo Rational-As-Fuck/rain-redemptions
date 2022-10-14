@@ -6,7 +6,7 @@ import {
   AccountLayout,
 } from "../node_modules/@solana/spl-token";
 
-import { Redemption } from "@raindrop-studios/rain-redemptions";
+import {IMSOClaim} from "../../lib/src/"
 
 import { DTP_TYPE, getDTPType, NFT } from './nft';
 import { CREATORS } from './constants';
@@ -97,17 +97,12 @@ export const createNFTForNFTToken = async (connection: Web3.Connection, token: {
   return null;
 };
 
-export const updateIfNftsAreRedeemed = async (nfts: NFT[], redemptionProgram: Redemption, setNfts: any) => {
+export const updateIfNftsAreRedeemed = async (nfts: NFT[], redemptionProgram: IMSOClaim, setNfts: any) => {
   setNfts(await Promise.all(nfts.map(async (nft) => {
     console.log("Checking if NFT is redeemed", nft.mint);
     let redeemed = await redemptionProgram.isNFTRedeemed(nft.mint);
     console.log("Nft redemption status", redeemed);
     nft.isRedeemed = redeemed;
-    if (nft.dtpType === DTP_TYPE.RUG) {
-      let redeemed = await redemptionProgram.isRugSetNFTRedeemed(nft.mint);
-      console.log("Nft rug set redemption status", redeemed);
-      nft.isRedeemedForSet = redeemed;
-    }
     return nft;
   })));
 }

@@ -2,14 +2,14 @@
 import log from "loglevel";
 import { web3 } from "@project-serum/anchor";
 
-import { Redemption } from "@raindrop-studios/rain-redemptions";
+import { IMSOClaim } from "../../../lib";
 import { Wallet, CLI } from "@raindrop-studios/sol-command";
 
 CLI.programCommandWithConfig("initialize", async (config, options, _files) => {
   const { keypair, env, rpcUrl } = options;
 
-  const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
-    Redemption,
+  const redemptionProgram = await IMSOClaim.getProgramWithWalletKeyPair(
+    IMSOClaim,
     await Wallet.loadWalletKey(keypair),
     env,
     rpcUrl,
@@ -33,8 +33,8 @@ CLI.programCommand("show_treasury", false)
     const { keypair, env, rpcUrl } =
       cmd.opts();
 
-    const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
-      Redemption,
+    const redemptionProgram = await IMSOClaim.getProgramWithWalletKeyPair(
+      IMSOClaim,
       keypair ? await Wallet.loadWalletKey(keypair) : web3.Keypair.generate(),
       env,
       rpcUrl,
@@ -60,8 +60,8 @@ const enableDisableTreasury = [
 CLI.programCommandWithArgs("enable_treasury", enableDisableTreasury, async (updateAuthority, options, _cmd) => {
   const { keypair, env, rpcUrl } = options;
     
-    const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
-      Redemption,
+    const redemptionProgram = await IMSOClaim.getProgramWithWalletKeyPair(
+      IMSOClaim,
       await Wallet.loadWalletKey(keypair),
       env,
       rpcUrl,
@@ -79,8 +79,8 @@ CLI.programCommandWithArgs("enable_treasury", enableDisableTreasury, async (upda
 CLI.programCommandWithArgs("disable_treasury", enableDisableTreasury, async (updateAuthority, options, _cmd) => {
   const { keypair, env, rpcUrl } = options;
     
-    const redemptionProgram = await Redemption.getProgramWithWalletKeyPair(
-      Redemption,
+    const redemptionProgram = await IMSOClaim.getProgramWithWalletKeyPair(
+      IMSOClaim,
       await Wallet.loadWalletKey(keypair),
       env,
       rpcUrl,

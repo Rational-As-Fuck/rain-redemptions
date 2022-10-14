@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 let timerType: ReturnType<typeof setInterval> | undefined;
 
 function updateLoadingText(loadingText: string, setLoadingText: any, setTimerId: any, mounted: boolean) {
-  console.log("updating loading - ", mounted);
+  //console.log("updating loading - ", mounted);
   if (loadingText.includes("...")) {
     loadingText = "LOADING";
   } else {

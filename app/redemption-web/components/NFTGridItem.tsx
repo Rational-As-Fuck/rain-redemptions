@@ -1,10 +1,10 @@
-import { Redemption } from "@raindrop-studios/rain-redemptions";
+import { IMSOClaim } from "../../lib/src/";
 import { useState, useEffect } from 'react';
 
 import { NFT } from '../lib/nft';
 
 function updateRedeemingText(redeemingText: string, setRedeemingText: any, setTimerId: any) {
-  console.log("updating redeeming");
+//  console.log("updating redeeming");
   if (redeemingText.includes("...")) {
     redeemingText = "Redeeming";
     setRedeemingText(redeemingText);
@@ -16,7 +16,7 @@ function updateRedeemingText(redeemingText: string, setRedeemingText: any, setTi
 }
 let timerType: ReturnType<typeof setInterval> | undefined;
 
-export default function NFTGridItem(props: { nft: NFT, isRedeemed: boolean, index: string, program: Redemption, redemptionFn: (nft: NFT, program: Redemption) => Promise<void> }) {
+export default function NFTGridItem(props: { nft: NFT, isRedeemed: boolean, index: string, program: IMSOClaim, redemptionFn: (nft: NFT, program: IMSOClaim) => Promise<void> }) {
   const { nft, isRedeemed, index, program, redemptionFn } = props;
   const [redeemingText, setRedeemingText] = useState("Redeeming");
   const [timerId, setTimerId] = useState(timerType);
@@ -25,9 +25,9 @@ export default function NFTGridItem(props: { nft: NFT, isRedeemed: boolean, inde
       updateRedeemingText(redeemingText, setRedeemingText, setTimerId);
   }, [nft.isRedeeming]);
 
-  console.log("Rendering grid item, redeemed", isRedeemed)
-  console.log(nft.imageUrl)
-  console.log("index", index);
+ // console.log("Rendering grid item, redeemed", isRedeemed)
+ // console.log(nft.imageUrl)
+ // console.log("index", index);
   let buttonClassName = [
     "group",
     "focus:outline-none",

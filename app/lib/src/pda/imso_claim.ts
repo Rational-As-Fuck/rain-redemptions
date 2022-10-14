@@ -20,10 +20,15 @@ export const getRainVaultPDA = async (): Promise<[web3.PublicKey, number]> => {
 };
 
 export const getNFTRedeemedPDA = async (nftMint: web3.PublicKey): Promise<[web3.PublicKey, number]> => {
-  return await web3.PublicKey.findProgramAddress(
+  const NFTRedeemedPDA = await web3.PublicKey.findProgramAddress(
     [Buffer.from(IMSOClaim.PREFIX), Buffer.from("imso_claim"), nftMint.toBuffer()],
     REDEMPTION_PROGRAM_ID
   );
+  console.log(`Prefix is: ${IMSOClaim.PREFIX}`);
+  console.log(`nftMint is: ${nftMint}`);
+  console.log(`Redemption Program Id is: ${REDEMPTION_PROGRAM_ID}`);
+  console.log(`NFTRedeemedPDA is: ${NFTRedeemedPDA}`);
+  return NFTRedeemedPDA;
 };
 
 export const getNFTMetadataPDA = async (mint: web3.PublicKey): Promise<[web3.PublicKey, number]> => {

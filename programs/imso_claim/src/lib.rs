@@ -18,7 +18,7 @@ use {
     metaplex_token_metadata::solana_program::msg,
 };
 
-declare_id!("CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP");
+declare_id!("7HXG93N6ino2vUfa3qb9suTbGq7ts7o1pdTs27ayP9pw");
 
 pub const DISCRIMINATOR_SIZE: usize = 8;
 const REDEMPTION_AMOUNT: f64 = 400.0; 
@@ -29,7 +29,8 @@ const PANDA_VERIFIED_CREATORS: &[&str] = &[
     "CLErvyrMpi66RAxNV2wveSi25NxHb8G383MSVuGDgZzp", // Old candymachine
     "HHGsTSzwPpYMYDGgUqssgAsMZMsYbshgrhMge8Ypgsjx", // New candymachine
     // /////////////////////////////////////////////////
-    "ERmHNhqr5bXGRiRWV81q4anLuiy1zXEuJkxfRb5TYwBm", // Testing
+    "ERmHNhqr5bXGRiRWV81q4anLuiy1zXEuJkxfRb5TYwBm",
+    "Db5BpnSHPvAuqH4s7gMCWQkN7F7fRGR7D4z5qPpQMysd",// Testing
 ];
 
 const RAIN_MINT_DECIMALS: u8 = 5;
@@ -41,18 +42,18 @@ pub mod imso_claim {
     pub fn initialize<'info>(ctx: Context<InitializeTreasury<'info>>, args: Treasury) -> Result<()> {
 
         let treasury = &mut ctx.accounts.treasury;
-        msg!("treasury is: {}", treasury.key());
+        msg!("treasury is: {:?}", treasury.key());
         
         treasury.set_inner(args.clone());
         treasury.rain_mint = ctx.accounts.rain_mint.key();
-        msg!("rain_mint is: {}", treasury.rain_mint);
+        msg!("rain_mint is: {:?}", treasury.rain_mint);
         treasury.rain_vault = ctx.accounts.rain_vault.key();
-        msg!("rain_vault is: {}", treasury.rain_vault);
+        msg!("rain_vault is: {:?}", treasury.rain_vault);
         treasury.bump = *ctx.bumps.get("treasury").unwrap();
-        msg!("treasury bump is {}", treasury.bump);
+        msg!("treasury bump is {:?}", treasury.bump);
         
         treasury.update_authority = args.update_authority;
-        msg!("update_authority is: {}", treasury.update_authority);
+        msg!("update_authority is: {:?}", treasury.update_authority);
         treasury.enabled = false;
         Ok(())
     }
@@ -77,6 +78,12 @@ pub mod imso_claim {
 
     pub fn redeem_panda_ownership_rain_tokens<'info>(ctx: Context<RedeemNFTForRain<'info>>) -> Result<()> {
         treasury_enabled_or_error(&ctx.accounts.treasury).unwrap();
+        msg!("treasury is: {:?}", &ctx.accounts.treasury.key());
+        msg!("nft token account is: {:?}", &ctx.accounts.nft_token_account.key());
+        msg!("nft mint key is: {:?}", &ctx.accounts.nft_mint.key());
+        msg!("owner is: {:?}", &ctx.accounts.owner.key());
+        msg!("token metadata program is: {:?}",&ctx.accounts.token_metadata_program.key());
+        
         verify_nft_ownership(
             &ctx.accounts.nft_token_account,
             &ctx.accounts.nft_mint.key(),
@@ -89,7 +96,10 @@ pub mod imso_claim {
 
         let amount: f64;
         amount = REDEMPTION_AMOUNT; 
-
+        msg!("Calling transfer_rain with");
+        msg!("{}", &ctx.accounts.rain_vault.key());
+        msg!("{}", &ctx.accounts.dest_rain_token_account.key());
+        msg!("{}", &ctx.accounts.token_program.key());
         transfer_rain(
             &ctx.accounts.rain_vault,
             &ctx.accounts.dest_rain_token_account,
@@ -198,6 +208,7 @@ fn transfer_rain<'info>(
         b"rain_vault".as_ref(),
         rain_vault_bump,
     ];
+    
     let wrapped_signer_seeds = vec![signer_seeds.as_slice()];
 
     let transfer_instruction = Transfer {
@@ -291,7 +302,7 @@ pub struct RedeemNFTForRain<'info> {
     treasury: Box<Account<'info, Treasury>>,
     #[account(
         init,
-        seeds = [PREFIX, b"redemption", nft_mint.key().as_ref()],
+        seeds = [PREFIX, b"imso_claim", nft_mint.key().as_ref()],
         payer = owner,
         bump,
         space = NFTRedeemed::SPACE,

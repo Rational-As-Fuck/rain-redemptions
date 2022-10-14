@@ -1,16 +1,15 @@
 import * as Web3 from '@solana/web3.js';
 import { JsonMetadata } from "@metaplex-foundation/js";
 
-import { Redemption } from "@raindrop-studios/rain-redemptions";
+import { IMSOClaim } from "../../lib/src/";
 
-import { PANDA_CREATORS, RUG_CREATOR, RAIN_MINT } from './constants';
+import { PANDA_CREATORS, RAIN_MINT } from './constants';
 import { getOrCreateAssociatedTokenAccount } from './token';
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { AnchorProvider } from '@project-serum/anchor';
 
 export enum DTP_TYPE {
-  PANDA = "PANDA",
-  RUG = "RUG",
+  PANDA = "PANDA"
 }
 
 export class NFT {
@@ -56,8 +55,6 @@ export class NFT {
 export const getDTPType = (creator: string) => {
   if (PANDA_CREATORS.includes(creator)) {
     return DTP_TYPE.PANDA;
-  } else if (RUG_CREATOR === creator) {
-    return DTP_TYPE.RUG;
   } else {
     throw new Error(`Unknown creator: ${creator}`);
   }
@@ -67,7 +64,7 @@ export const getDTPType = (creator: string) => {
 //   return new Promise(resolve => setTimeout(resolve, ms));
 // }
 
-export const redeemPandaOrRugNFT = async (nft: NFT, program: Redemption) => {
+export const redeemPanda = async (nft: NFT, program: IMSOClaim) => {
   // await sleep(5000);
 
   // TODO:
@@ -106,18 +103,23 @@ export const redeemPandaOrRugNFT = async (nft: NFT, program: Redemption) => {
 
   console.log(`Calling redemption program to redeem: ${program.client.provider.connection.rpcEndpoint}`)
   try {
+    
     if (nft.dtpType === DTP_TYPE.PANDA) {
-      await program.redeemPandaOwnershipRainTokens(
-        {},
-        redemptionAccounts,
-        { commitment: "finalized", timeout: 60_000 }
-      );
-    } else if (nft.dtpType === DTP_TYPE.RUG) {
-      await program.redeemRugOwnershipRainTokens(
-        {},
-        redemptionAccounts,
-        { commitment: "finalized", timeout: 60_000 }
-      );
+
+      console.log(`The redemption accounts are:`);
+      console.log(redemptionAccounts);
+      try {
+        debugger;
+        const redemptionResult = await program.redeemPandaOwnershipRainTokens(
+          {},
+          redemptionAccounts,
+          { commitment: "finalized", timeout: 60_000 }
+        );
+        console.log(redemptionResult);
+      } catch (err) {
+        console.log(err);
+        debugger;
+      }
     } else {
       throw new Error("Unknown DTP nft type");
     }

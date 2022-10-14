@@ -9,7 +9,7 @@ export class Treasury {
   bump: number;
   enabled: boolean;
 
-  constructor(key, data) {
+  constructor(key: any, data: any) {
     this.key = key;
     this.updateAuthority = data.updateAuthority;
     this.rainMint = data.rainMint;
@@ -27,7 +27,7 @@ export enum NFTSetRedemptionStateStatus {
     REDEEMED,
 }
 export namespace NFTSetRedemptionStateStatus {
-  export function getStatus(status): NFTSetRedemptionStateStatus {
+  export function getStatus(status: any): NFTSetRedemptionStateStatus {
     const statusKey = Object.keys(status).shift();
     switch (statusKey) {
       case "init":
@@ -50,7 +50,7 @@ export class NFTRedemptionState {
   metadataKey: web3.PublicKey;
   isVerified: boolean;
 
-  constructor(data) {
+  constructor(data: any) {
     this.key = data.key;
     this.tokenKey = data.tokenKey;
     this.metadataKey = data.metadataKey;
@@ -66,7 +66,7 @@ export class NFTSetRedemptionState {
   nft5: NFTRedemptionState | null;
   nft6: NFTRedemptionState | null;
 
-  constructor(data) {
+  constructor(data: any) {
     this.status = NFTSetRedemptionStateStatus.getStatus(data.status);
     this.nft1 = new NFTRedemptionState(data.nft1);
     this.nft2 = new NFTRedemptionState(data.nft2);

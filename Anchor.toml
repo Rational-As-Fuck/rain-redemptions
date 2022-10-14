@@ -2,7 +2,7 @@
 seeds = false
 
 [programs.localnet]
-imso_claim = "CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP"
+imso_claim = "7HXG93N6ino2vUfa3qb9suTbGq7ts7o1pdTs27ayP9pw"
 
 [registry]
 url = "https://anchor.projectserum.com"

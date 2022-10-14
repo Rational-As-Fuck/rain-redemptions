@@ -23,7 +23,6 @@
   "license": "ISC",
   "dependencies": {
     "@solana/spl-token": "^0.2.0",
-    "@raindrop-studios/rain-redemptions": "^0.1.9",
     "@raindrop-studios/sol-command": "^0.4.0"
   },
   "devDependencies": {

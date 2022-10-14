@@ -2,8 +2,8 @@ import assert from 'assert';
 import * as anchor from "@project-serum/anchor";
 import { Program } from '@raindrop-studios/sol-kit';
 
-import { Redemption, PDA } from "../app/lib/src/index";
-import { NFTSetRedemptionStateStatus } from '../app/lib/src/state/redemption';
+import { IMSOClaim, PDA } from "../app/lib/src/index";
+import { NFTSetRedemptionStateStatus } from '../app/lib/src/state/imso_claim';
 import { newMint } from '../app/cli/src/cli/utils';
 
 import { airdrop, createNFT, loadWalletKey, getOrCreateAssociatedTokenAccount, mintTo, getAccount } from './utils';
@@ -22,7 +22,7 @@ describe("imso_claim", () => {
     idl
   };
 
-  let redemptionProgram: Redemption;
+  let redemptionProgram: IMSOClaim;
   let wallet, connection;
 
   const redemptionUpdateAuthority = anchor.web3.Keypair.generate();
@@ -33,8 +33,8 @@ describe("imso_claim", () => {
   let redeemerRainTokenAccount;
 
   before(async () => {
-    redemptionProgram = await Redemption.getProgramWithConfig(
-      Redemption,
+    redemptionProgram = await IMSOClaim.getProgramWithConfig(
+      IMSOClaim,
       config,
     );
     ({ wallet, connection } = (redemptionProgram.client.provider as anchor.AnchorProvider));
@@ -67,8 +67,8 @@ describe("imso_claim", () => {
 
   it("initialize", async () => {
     const treasury = await redemptionProgram.fetchTreasury();
-    const [treasuryPDA, treasuryBump] = await PDA.Redemption.getTreasuryPDA();
-    const [rainVaultPDA, _rainVaultbump] = await PDA.Redemption.getRainVaultPDA();
+    const [treasuryPDA, treasuryBump] = await PDA.IMSOClaim.getTreasuryPDA();
+    const [rainVaultPDA, _rainVaultbump] = await PDA.IMSOClaim.getRainVaultPDA();
 
     assert.ok(treasury.key.equals(treasuryPDA));
     assert.ok(treasury.updateAuthority.equals(redemptionUpdateAuthority.publicKey));
@@ -85,7 +85,7 @@ describe("imso_claim", () => {
         updateAuthority: redemptionUpdateAuthority,
       });
 
-      const [rainVaultPDA, _rainVaultbump] = await PDA.Redemption.getRainVaultPDA();
+      const [rainVaultPDA, _rainVaultbump] = await PDA.IMSOClaim.getRainVaultPDA();
 
       await mintTo(
         connection,
@@ -101,7 +101,7 @@ describe("imso_claim", () => {
       await redemptionProgram.disableTreasury({
         updateAuthority: redemptionUpdateAuthority,
       });
-      const [_treasuryPDA, treasuryBump] = await PDA.Redemption.getTreasuryPDA();
+      const [_treasuryPDA, treasuryBump] = await PDA.IMSOClaim.getTreasuryPDA();
       const [nftMint, nftTokenAccount] = await createNFT(connection, pandasMintKeypair, wallet.publicKey);
 
       await assert.rejects(() => {
@@ -120,7 +120,7 @@ describe("imso_claim", () => {
     });
 
     it("is nft redeemed", async () => {
-      const [_treasuryPDA, treasuryBump] = await PDA.Redemption.getTreasuryPDA();
+      const [_treasuryPDA, treasuryBump] = await PDA.IMSOClaim.getTreasuryPDA();
       const [nftMint, nftTokenAccount] = await createNFT(connection, pandasMintKeypair, wallet.publicKey);
 
       assert.ok(!(await redemptionProgram.isNFTRedeemed(nftMint)));
@@ -139,7 +139,7 @@ describe("imso_claim", () => {
 
     describe("redeem_panda", () => {
       it("redeemPandaOwnershipRainTokens twice errors", async () => {
-        const [_treasuryPDA, treasuryBump] = await PDA.Redemption.getTreasuryPDA();
+        const [_treasuryPDA, treasuryBump] = await PDA.IMSOClaim.getTreasuryPDA();
         const [nftMint, nftTokenAccount] = await createNFT(connection, pandasMintKeypair, wallet.publicKey);
   
         await redemptionProgram.redeemPandaOwnershipRainTokens({
@@ -163,7 +163,7 @@ describe("imso_claim", () => {
 
       describe("panda", () => {
         it("redeemPandaOwnershipRainTokens noXALT", async () => {
-          const [_treasuryPDA, treasuryBump] = await PDA.Redemption.getTreasuryPDA();
+          const [_treasuryPDA, treasuryBump] = await PDA.IMSOClaim.getTreasuryPDA();
           const [nftMint, nftTokenAccount] = await createNFT(connection, pandasMintKeypair, wallet.publicKey);
     
           const reedemerRainTokenAccountAmount = (await getAccount(connection, redeemerRainTokenAccount.address)).amount;

@@ -10,6 +10,7 @@ import {
   getNFTMasterEditionPDA,
 } from "../../pda/imso_claim";
 import { TOKEN_PROGRAM_ID, TOKEN_METADATA_PROGRAM_ID } from "../../constants/programIds";
+import { convertStringsToPublicKeys } from "@raindrop-studios/sol-kit/dist/src/instruction/utils";
 
 export interface InitializeArgs {
   updateAuthority: web3.PublicKey,
@@ -110,17 +111,46 @@ export class Instruction extends SolKitInstruction {
     accounts: RedeemNFTForRainAccounts,
     _additionalArgs: RedeemNFTForRainAdditionalArgs = {}
   ) {
+    console.log(args);
+    console.log(accounts);
+    console.log(_additionalArgs);
+
+    debugger;
     const [treasuryPDA, _treasuryBump] = await getTreasuryPDA();
+    console.log(`treasuryPDA is `, treasuryPDA.toString());
+    console.log(`_treasuryBump is `, _treasuryBump);
 
     const [rainVaultPDA, _bump] = await getRainVaultPDA();
+    console.log(`rainVaultPDA is ${rainVaultPDA.toString()}`);
+    console.log(`_bump is ${_bump}`);
     const [nftRedeemedPDA, _nftRedeemedBump] = await getNFTRedeemedPDA(accounts.nftMint);
+    console.log(`nftRedeemedPDA is ${nftRedeemedPDA.toString()}`);
+    console.log(`_nftRedeemedBump is ${_nftRedeemedBump}`);
     const [nftMetadataPDA, _nftMetadataBump] = await getNFTMetadataPDA(accounts.nftMint);
+    console.log(`nftMetadataPDA is ${nftMetadataPDA.toString()}`);
+    console.log(`_nftMetadataBump is ${_nftMetadataBump}`);
     const [nftMasterEditionPDA, _nftMasterEditionBump] = await getNFTMasterEditionPDA(accounts.nftMint);
-
-    return [
-      await this.program.client.methods
-        .redeemPandaOwnershipRainTokens()
-        .accounts({
+    console.log(`nftMasterEditionPDA is ${nftMasterEditionPDA.toString()}`);
+    console.log(`_nftMasterEditionBump is ${_nftMasterEditionBump}`);
+    console.log(`calling redeemPandaOwnershipRainTokens with `);
+    console.log(`treasuryPDA: ${treasuryPDA.toString()}`);
+    console.log(`nftRedeemedPDA: ${nftRedeemedPDA.toString()}`);
+    console.log(`owner: ${(this.program.client.provider as AnchorProvider).wallet.publicKey.toString()}`);
+    console.log(`nftMint: ${accounts.nftMint.toString()}`);
+    console.log(`nftTokenAccount: ${accounts.nftTokenAccount.toString()}`);
+    console.log(`nftMasterEditionAccount: ${nftMasterEditionPDA.toString()}`);
+    console.log(`nftMetadataAccount: ${nftMetadataPDA.toString()}`);
+    console.log(`tokenMetadataProgram: ${TOKEN_METADATA_PROGRAM_ID}`);
+    console.log(`rainVault: ${rainVaultPDA.toString()}`);
+    console.log(`destRainTokenAccount: ${accounts.destRainTokenAccount.toString()}`);
+    console.log(`tokenProgram: ${TOKEN_PROGRAM_ID}`);
+    console.log(`systemProgram: ${SystemProgram.programId.toString()}`);
+    console.log(`rent: ${web3.SYSVAR_RENT_PUBKEY}`);
+    console.log(`recentSlothashes: ${web3.SYSVAR_SLOT_HASHES_PUBKEY.toString()}`);
+    debugger;
+    const redeemMethod = this.program.client.methods.redeemPandaOwnershipRainTokens();
+    debugger;
+    const accountList = await redeemMethod.accounts({
           treasury: treasuryPDA,
           nftRedeemed: nftRedeemedPDA,
           owner: (this.program.client.provider as AnchorProvider).wallet.publicKey,
@@ -135,9 +165,11 @@ export class Instruction extends SolKitInstruction {
           systemProgram: SystemProgram.programId,
           rent: web3.SYSVAR_RENT_PUBKEY,
           recentSlothashes: web3.SYSVAR_SLOT_HASHES_PUBKEY,
-        })
-        .instruction(),
-    ];
+    });
+    debugger;
+    const programInst = await accountList.instruction();
+    debugger;
+    return [programInst];
   }
 };
 

@@ -17,7 +17,6 @@ import {
 
 import {PDA, IMSOClaim } from '../app/lib/src';
 
-//import { IMSOClient, PDA } from '../app/lib/src';
 import { Connection as SolKitConnection } from "@raindrop-studios/sol-kit";
 
 const { Clusters } = SolKitConnection;
@@ -106,8 +105,8 @@ CLI.programCommandWithArgs("deploy", [], async () => {
 
 CLI.programCommandWithArgs("idl", [], async () => {
   console.log("👷‍♂️ Uploading Redemption contract IDLs");
-  execSync('anchor idl init --provider.cluster localnet -f target/idl/imso_claim.json CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP', { stdio: "ignore" });
-  execSync('anchor idl upgrade --provider.cluster localnet -f target/idl/imso_claim.json CgWrLM8UqxNvaHUKVfVFjW7XSiQNYP4qyk9SoCbfcXPP', { stdio: "ignore" });
+  execSync('anchor idl init --provider.cluster localnet -f target/idl/imso_claim.json 7HXG93N6ino2vUfa3qb9suTbGq7ts7o1pdTs27ayP9pw', { stdio: "ignore" });
+  execSync('anchor idl upgrade --provider.cluster localnet -f target/idl/imso_claim.json 7HXG93N6ino2vUfa3qb9suTbGq7ts7o1pdTs27ayP9pw', { stdio: "ignore" });
   console.log("🎉 You can now call `initialize`");
 }, false);
 
@@ -204,5 +203,30 @@ CLI.programCommandWithArgs("enable", [], async () => {
   });
   console.log("🎉 You can now start redeeming")
 }, false);
+
+CLI.programCommandWithArgs("redeem", [], async () => {
+  const connection = new Connection(LOCALHOST);
+  const amman = Amman.instance();
+  const redemptionAuthority = await amman.loadKeypair('redemption-authority');
+  const [_, redemptionAuthorityKeyPair] = redemptionAuthority;
+  const redemptionProgram = await IMSOClaim.getProgramWithWalletKeyPair(
+    IMSOClaim,
+    redemptionAuthorityKeyPair,
+    Clusters.Localnet,
+  );
+  console.log("Attempting to redeem")
+  const args = {};
+  const accountList = {"nftMint": new web3.PublicKey("hWwexF12NVBZAVGK38Brnipt8hkAEoJjSvqMLjx575z"),
+                       "nftTokenAccount": new web3.PublicKey("7nebBsNBm5pBFxBnLTsdvJmNNEjs3mS7CQGQrav5iWon"),
+                       "destRainTokenAccount": new web3.PublicKey("GDa27Td3tF9PW3isJ7cWZcWjhC3cM9dwHCAj3mEYgidn"),
+                       "redeemNFTForRainAccount": new web3.PublicKey("7HXG93N6ino2vUfa3qb9suTbGq7ts7o1pdTs27ayP9pw")}
+  
+  await redemptionProgram.redeemPandaOwnershipRainTokens(
+    args,
+    accountList,
+  );
+  console.log("Redemption done");
+}, false);
+
 
 CLI.Program.parseAsync(process.argv);
