@@ -1,4 +1,6 @@
-# $RAIN redemptions
+# IMSO $RAIN redemptions
+
+# Many thanks to Raindrop Studios for the baseline repo (https://github.com/raindrop-studios/rain-redemptions) @only_raindrops
 
 ## Bootstrapping environment
 

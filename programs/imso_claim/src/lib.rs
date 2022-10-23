@@ -42,18 +42,13 @@ pub mod imso_claim {
     pub fn initialize<'info>(ctx: Context<InitializeTreasury<'info>>, args: Treasury) -> Result<()> {
 
         let treasury = &mut ctx.accounts.treasury;
-        msg!("treasury is: {:?}", treasury.key());
-        
+       
         treasury.set_inner(args.clone());
         treasury.rain_mint = ctx.accounts.rain_mint.key();
-        msg!("rain_mint is: {:?}", treasury.rain_mint);
         treasury.rain_vault = ctx.accounts.rain_vault.key();
-        msg!("rain_vault is: {:?}", treasury.rain_vault);
         treasury.bump = *ctx.bumps.get("treasury").unwrap();
-        msg!("treasury bump is {:?}", treasury.bump);
         
         treasury.update_authority = args.update_authority;
-        msg!("update_authority is: {:?}", treasury.update_authority);
         treasury.enabled = false;
         Ok(())
     }
@@ -78,11 +73,6 @@ pub mod imso_claim {
 
     pub fn redeem_panda_ownership_rain_tokens<'info>(ctx: Context<RedeemNFTForRain<'info>>) -> Result<()> {
         treasury_enabled_or_error(&ctx.accounts.treasury).unwrap();
-        msg!("treasury is: {:?}", &ctx.accounts.treasury.key());
-        msg!("nft token account is: {:?}", &ctx.accounts.nft_token_account.key());
-        msg!("nft mint key is: {:?}", &ctx.accounts.nft_mint.key());
-        msg!("owner is: {:?}", &ctx.accounts.owner.key());
-        msg!("token metadata program is: {:?}",&ctx.accounts.token_metadata_program.key());
         
         verify_nft_ownership(
             &ctx.accounts.nft_token_account,
@@ -96,10 +86,6 @@ pub mod imso_claim {
 
         let amount: f64;
         amount = REDEMPTION_AMOUNT; 
-        msg!("Calling transfer_rain with");
-        msg!("{}", &ctx.accounts.rain_vault.key());
-        msg!("{}", &ctx.accounts.dest_rain_token_account.key());
-        msg!("{}", &ctx.accounts.token_program.key());
         transfer_rain(
             &ctx.accounts.rain_vault,
             &ctx.accounts.dest_rain_token_account,
