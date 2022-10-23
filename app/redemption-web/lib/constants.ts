@@ -30,7 +30,7 @@ let endpoint ="https://127.0.0.1:8899";
 //let endpoint = "https://solana-devnet.g.alchemy.com/v2/t0-XFKw5rFAafXfyWRmjzgm_ygXilUk4";
 // let rainMint = new web3.PublicKey("rainH85N1vCoerCi4cQ3w6mCf7oYUdrsTFtFzpaRwjL");
 //let rainMint = new web3.PublicKey("J8oPSr8PSBEm5BA6o4fou1q4UiHLWAqqSZxs88jiwmHp");
-let rainMint = new web3.PublicKey("ArFJY756CjfdnwHiB2Q3G6s2oUvTsEZAmmY9tah2zriJ");
+let rainMint = new web3.PublicKey("7CtqjfzKSYXafskXjSR1s52HjyNJXRBRSXiabWLkDThc");
 
 switch(environment) {
   case Environment.Localnet:
